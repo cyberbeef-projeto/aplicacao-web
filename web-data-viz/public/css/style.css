@@ -9,19 +9,21 @@ body {
   min-height: 100vh;
   background: #000;
   display: flex;
+  overflow: hidden;
 }
 
 body::before {
   content: "";
   position: absolute;
   right: -150px;
-  top: -100px;
+  top: 500px;
   width: 400px;
   height: 400px;
   background: #4B6CF0;
   filter: blur(180px);
   opacity: 0.7;
-  z-index: 0;
+  z-index: 1;
+
 }
 
 .container {
@@ -70,7 +72,7 @@ body::before {
 
 .form-box {
   width: 50%;
-  padding: 80px;
+  padding: 90px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -78,6 +80,7 @@ body::before {
   color: #fff;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+  margin-left: 100px;
 }
 
 .form-box h1 {
