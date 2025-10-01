@@ -85,23 +85,24 @@ body::before {
 
 .form-box h1 {
   font-size: 32px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .form-box p {
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .form-box p a {
   color: #4B6CF0;
   font-weight: bold;
   text-decoration: none;
+
 }
 
 .input-box {
   position: relative;
-  margin: 25px 0;
+  margin: 40px 0;
 }
 
 .input-box input {
@@ -122,10 +123,19 @@ body::before {
 .input-box i {
   position: absolute;
   left: 8px;
-  top: 50%;
+  top: 65%;
   transform: translateY(-50%);
   font-size: 18px;
   color: #4B6CF0;
+}
+
+.input-box label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;  
+  text-align: left;
 }
 
 
