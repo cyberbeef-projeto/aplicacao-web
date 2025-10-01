@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #fff;
+}
+
+.container {
+    position: relative;
+    width: 850px;
+    height: 550px;
+    background-color: blue;
+    border-radius: 32px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+
+.form-box {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-color: blue ;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+}
+
+form {
+    width: 100%;
+}
+
+.container h1 {
+    font-size: 36px;
+    margin: -10px 0 ;
+}
+
+.input-box {
+    position: relative;
+    margin: 36px 0;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 13px 50px 13px 20px;
+    background-color: azure;
+    border: none;
+    outline: none;
+    border-radius: 32px;
+    font-size: 16px;
+    color: #333;
+    font-family: 500;
+
+}
+
+.input-box input::placeholder{
+    color: #888;
+    font-weight: 400;
+
+}
+
+.input-box i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: aqua;
+
+}
+
+.forgot-link {
+   margin: -15px 0 15px;
+}
+
+
+.forgot-link a {
+    font-size: 14.5px;
+    color: #333;
+    text-decoration: none;
+}
+
+.btn {
+    width: 100%;
+    height: 48px;
+    background: #888;
+    border-radius: 32px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.toggle-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.toggle-box::before{
+    content: "";
+    position: absolute;
+    left: -250%;
+    width: 300%;
+    height: 100%;
+    background-color: greenyellow;
+    z-index: 2;
+    border-radius: 150px;
+}
+
+.toggle-painel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background-color: greenyellow;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+
