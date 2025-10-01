@@ -11,6 +11,19 @@ body {
   display: flex;
 }
 
+body::before {
+  content: "";
+  position: absolute;
+  right: -150px;
+  top: -100px;
+  width: 400px;
+  height: 400px;
+  background: #4B6CF0;
+  filter: blur(180px);
+  opacity: 0.7;
+  z-index: 0;
+}
+
 .container {
   width: 100%;
   height: 100vh;
@@ -18,7 +31,6 @@ body {
   overflow: hidden; 
 }
 
-/* LADO ESQUERDO */
 .img-box {
   position: relative;
   width: 50%;
@@ -90,7 +102,7 @@ body {
 }
 
 .input-box input {
-  width: 100%;
+  width: 80%;
   padding: 12px 40px 12px 35px;
   background: transparent;
   border: none;
@@ -113,13 +125,7 @@ body {
   color: #4B6CF0;
 }
 
-.input-box .toggle-pass {
-  left: auto;
-  right: 8px;
-  cursor: pointer;
-  color: #888;
-  
-}
+
 
 .options {
   display: flex;
@@ -142,7 +148,7 @@ body {
 }
 
 .btn {
-  width: 100%;
+  width: 80%;
   padding: 14px;
   border: none;
   border-radius: 30px;
