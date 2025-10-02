@@ -9,8 +9,12 @@ body {
   min-height: 100vh;
   background: #000;
   display: flex;
-  overflow: hidden;
+  overflow-x: hidden;
  
+}
+
+::-webkit-scrollbar {
+  width: 1px;
 }
 
 body::before {
@@ -77,6 +81,7 @@ body::before {
 
 .form-box {
   width: 50%;
+  height: 100vh;
   padding: 90px;
   display: flex;
   flex-direction: column;
