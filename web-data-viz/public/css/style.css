@@ -10,6 +10,7 @@ body {
   background: #000;
   display: flex;
   overflow: hidden;
+ 
 }
 
 body::before {
@@ -38,8 +39,8 @@ body::before {
   width: 50%;
   height: 100%;
   overflow: hidden;
-  border-top-right-radius: 90px;
-   border-bottom-right-radius: 90px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
 .img-box img {
@@ -85,6 +86,7 @@ body::before {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
   margin-left: 100px;
+  margin-top: 15px;
 }
 
 .form-box h1 {
@@ -152,12 +154,6 @@ body::before {
   font-size: 13px;
 }
 
-.options label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-}
 
 .options a {
   color: #888;
@@ -181,3 +177,103 @@ body::before {
 .btn:hover {
   background: #3a55d6;
 }
+
+@media screen and (max-width: 1200px) {
+      .form-box {
+        padding: 60px;
+        margin-left: 50px;
+        
+      }
+      
+      .input-box input, .btn {
+        width: 90%;
+      }
+    }
+
+    @media screen and (max-width: 992px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+      }
+      
+      .img-box {
+        width: 100%;
+        height: 300px;
+        border-radius: 0;
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+      }
+      
+      .form-box {
+        width: 100%;
+        margin: 0;
+        padding: 40px 30px;
+        border-radius: 0;
+      }
+      
+      .input-box input, .btn {
+        width: 100%;
+      }
+      
+      body::before {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 576px) {
+        .container{
+            overflow-y: auto;
+        }
+      .img-box {
+        height: 200px;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+      }
+      
+      .form-box {
+        padding: 30px 20px;
+        
+      }
+      
+      .form-box h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+      }
+      
+      .input-box {
+        margin: 25px 0;
+      }
+      
+      .logo {
+        top: 20px;
+        left: 20px;
+      }
+      
+      .logo img {
+        width: 70%;
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      .img-box {
+        height: 150px;
+      }
+      
+      .form-box h1 {
+        font-size: 22px;
+      }
+      
+      .input-box input {
+        font-size: 14px;
+        padding: 10px 35px 10px 30px;
+      }
+      
+      .input-box i {
+        font-size: 16px;
+      }
+    }
+
+
+
+
