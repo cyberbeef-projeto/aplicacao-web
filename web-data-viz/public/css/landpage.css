@@ -1,0 +1,310 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #fff;
+    color: #000;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Header */
+header {
+    background: #111;
+    padding: 20px 60px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Hero */
+.hero {
+    padding: 100px 60px;
+    background: #f5f5f5;
+    text-align: left;
+}
+
+.hero h1 {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.3;
+    margin-bottom: 30px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.btn {
+    background: #111;
+    color: #fff;
+    padding: 15px 40px;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 0;
+}
+
+/* Beneficios */
+.beneficios {
+    padding: 100px 60px;
+    text-align: center;
+}
+
+.beneficios h2 {
+    font-size: 32px;
+    margin-bottom: 60px;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.card {
+    width: 30%;
+    text-align: center;
+}
+
+.card img {
+    width: 90px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.beneficios-extra {
+    font-size: 18px;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* Processo */
+.processo {
+    padding: 100px 60px;
+    text-align: center;
+}
+
+.processo h2 {
+    font-size: 32px;
+    margin-bottom: 60px;
+}
+
+.etapas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+}
+
+.etapa {
+    text-align: center;
+}
+
+.etapa span {
+    display: block;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.etapa h4 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.etapa p {
+    font-size: 18px;
+}
+
+.etapa img {
+    margin-top: 20px;
+    width: 120px;
+}
+
+/* Sobre */
+.sobre {
+    padding: 100px 60px;
+}
+
+.sobre h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.sobre-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.sobre-content .texto {
+    width: 65%;
+    font-size: 18px;
+}
+
+.sobre-content img {
+    width: 30%;
+    border-radius: 10px;
+}
+
+/* Depoimentos */
+.depoimentos {
+    padding: 100px 60px;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.depoimentos h2 {
+    font-size: 32px;
+    margin-bottom: 60px;
+}
+
+.clientes {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.cliente {
+    width: 45%;
+    text-align: left;
+}
+
+.cliente .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.cliente blockquote {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.cliente cite {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Valores */
+.valores {
+    padding: 100px 60px;
+    text-align: center;
+}
+
+.valores h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.intro-valores {
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.valores-itens {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.valores-itens div {
+    width: 30%;
+    font-size: 16px;
+}
+
+.valores-itens img {
+    width: 70px;
+    margin-bottom: 15px;
+}
+
+/* Contato */
+.contato {
+    padding: 100px 60px;
+    text-align: center;
+}
+
+.contato h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.contato form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 500px;
+    margin: auto;
+    text-align: left;
+}
+
+.contato input,
+.contato textarea {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #aaa;
+    border-radius: 0;
+}
+
+.contato textarea {
+    min-height: 120px;
+}
+
+.contato button {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.chamada {
+    margin-top: 20px;
+    font-size: 18px;
+    font-style: italic;
+}
+
+footer {
+    background: #111;
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+    font-size: 16px;
+}
