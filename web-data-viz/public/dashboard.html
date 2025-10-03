@@ -43,9 +43,11 @@
       <ul></ul>
       <li class="clicado"><a href="">Home</a></li>
       <li class="clicado"><a href="">Dashboard</a></li>
-      <li class="clicado"><a href="">Usuários</a></li>
-      <li class="clicado"><a href="">Setores</a></li>
       <li class="clicado"><a href="">Máquinas</a></li>
+      <li class="clicado"><a href="">Ocorrências</a></li>
+      <li class="clicado"><a href="">Setores</a></li>
+      <li class="clicado"><a href="">Usuários</a></li>
+
     </div>
   </div>
 
@@ -54,34 +56,34 @@
       <span class="card sombreado">
         <b class="dado_card" id="kpi1">KPI1</b>
         <p></p>
-        <i class="kpi clicavel" onclick="click_kp1()">[...]</i>
+        <i class="kpi clicavel" onclick="click_kp1()">Setores Monitorados</i>
       </span>
 
 
       <span class="card sombreado">
         <b class="dado_card" id="kpi2">KPI2</b>
         <p></p>
-        <i class="kpi clicavel" onclick="click_kp2()">[...]</i>
+        <i class="kpi clicavel" onclick="click_kp2()">Ocorrências nos últimos 7 dias</i>
       </span>
 
 
       <span class="card sombreado">
         <b class="dado_card" id="kpi3">KPI3</b>
         <p></p>
-        <i class="kpi clicavel" id="compKpi3" onclick="click_kp3()">[...]</i>
+        <i class="kpi clicavel" id="compKpi3" onclick="click_kp3()">Dias sem ocorrências</i>
       </span>
 
 
       <span class="card sombreado">
         <b class="dado_card" id="kpi4">KPI4</b>
         <p></p>
-        <i class="kpi clicavel" id="compKpi4" onclick="click_kp4()">[...]</i>
+        <i class="kpi clicavel" id="compKpi4" onclick="click_kp4()">Componente com mais ocorrêcias</i>
       </span>
 
     </div>
     <div id="graficos">
-      <span class="grafico sombreado">Gráfico1 - Linhas<canvas id=""></canvas> </span>
-      <span class="grafico sombreado">Gráfico2 - Histograma<canvas id=""></canvas> </span>
+      <span class="grafico sombreado">Gráfico1 - Linhas (Número de ocorrêcias por mês)<canvas id=""></canvas> </span>
+      <span class="grafico sombreado">Gráfico2 - Barras (Número de ocorrências por componente) <canvas id=""></canvas> </span> <!--Lembrar de colocar um histograma-->
     </div>
   </div>
 
