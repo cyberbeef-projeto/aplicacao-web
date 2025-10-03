@@ -26,8 +26,6 @@
         <p>Se você já tem uma conta</p>
         <p><a href="./login.html">Entre aqui!</a></p>
 
-
-
         <div class="input-box">
            <label for="email">E-mail</label>
           <i class='bx bx-envelope'></i>
@@ -52,9 +50,23 @@
           <input type="password" placeholder="Insira sua senha" required>
         </div>
 
+          <div class="select-container">
+     
+          <label for="nivel">Nível de permissão</label>
+          <i class='bx  bx-list-ul'></i> 
+          <select class="select-box" name="nivel" id="nivel" required>
+            <option value="" disabled selected>Selecione o nível</option>
+            <option value="1">Nível 1 - Básico</option>
+            <option value="2">Nível 2 - Intermediário</option>
+            <option value="3">Nível 3 - Avançado</option>
+          </select>
+        </div>
+        <!-- </div> -->
+
        
         <button type="submit" class="btn">Registrar-se</button>
       </form>
+      </div>
     </div>
   </div>
 </body>
