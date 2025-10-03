@@ -42,8 +42,7 @@ html{
     flex-direction: row;
     align-items: center;
     position: fixed;
-    padding: 1vh 1vh 1vh 2.5vh;
-    margin: 0vh 0vh 1vh 0vh;
+    padding: 1vh 0vh 1vh 2.5vh;
     justify-content: space-between;
     top: 0;
     gap: 2%;
@@ -53,11 +52,11 @@ html{
     font-weight: bold;
     opacity: 98%;
     color: white;
-    background-color: #4B6CF0;
+    background-color: midnightblue;
     z-index: 10;
 }
 
-.sel_setores{
+.sel_dash{
     border: none;
     background: none;
     color: #fff;
@@ -66,15 +65,36 @@ html{
     cursor: pointer;
 }
 
+.sel_dash option {
+    background-color: midnightblue;
+}
+
 #but_atualizar_bl{
     width: 2%;
-    height: 50%;
+    font-size: 2vw;
+    height: 100%;
     text-align: center;
     border: none;
     background: none;
     color: #fff;
 }
 
+#buts_superiores{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 22%;
+}
+#buts_superiores a{
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 1.2vw;
+    font-weight: normal;
+    background-color: rgb(51, 51, 148);
+    border-radius: 0.5vw;
+}
 .barra_lateral {
     display: flex;
     flex-direction: column;
@@ -107,10 +127,22 @@ html{
 
 #usuario{
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1%;
     width: 100%;
     height: 15%;
-    background-color: azure;
     color: #000;
+}
+
+#usuario .bxs-user{
+   font-size: 4vw;
+}
+
+#usuario a {
+    font-size: 1.5vw;
+    text-decoration: none;   
+    color: #fff;
 }
 
 #home{
@@ -147,8 +179,6 @@ html{
     text-decoration: none;   
     color: #fff;
 }
-
-
 
 #sel_home{
     width: 100%;
@@ -245,6 +275,10 @@ html{
 
 .clicavel{
     cursor: pointer;
+}
+
+.clicado:active{
+    transform: scale(0.95);
 }
 
 

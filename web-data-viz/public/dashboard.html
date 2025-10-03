@@ -4,33 +4,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/estiloDashboard.css">
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>  <link rel="stylesheet" href="css/estiloDashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" href="assets/icon/chip.png">
   <title>Dados - CyberBeef</title>
 </head>
 
 <body onload="">
   <header class="navbar">
-    <button id="but_atualizar_bl" class="clicavel" onclick="atualizarBarraLateral()">←</button>
-    <select name="op_setor" class="sel_setores">
-      <option value="setorTeste">Setor Teste</option>
+    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select" onclick="atualizarBarraLateral()"></button>
+    <select name="op_setor" class="sel_dash">
+      <option value="setorTeste">Máquina1</option>
+      <option value="setorTeste">Máquina2</option>
+      <option value="setorTeste">Máquina3</option>
+    </select>
+    <select name="op_setor" class="sel_dash">
+      <option value="setorTeste">Geral</option>
+      <option value="setorTeste">CPU</option>
+      <option value="setorTeste">RAM</option>
+      <option value="setorTeste">Disco</option>
+      <option value="setorTeste">Rede</option>
     </select>
     </div>
     <nav id="buts_superiores">
-      <a class="clicavel">But1</a> 
-      <a class="clicavel">But2</a>
+      <a class="clicavel clicado">Exportar dados ↓</a>
+      <a class="clicavel clicado" style="background-color: #F04B4C;">Gerar Relatório</a>
     </nav>
   </header>
   <div class="barra_lateral sombreado ativa">
     <div id="logo"></div>
-    <div id="usuario">USUÁRIO</div>
+    <hr>
+    <div id="usuario">
+    <i class='bxr  bxs-user'  style='color:#fffafa'></i> 
+      <a href="" class="texto_perfil">Fulano de Tal</a>
+    </div>
+    <hr>
     <div id="home" class="ops_home">
       <ul></ul>
-      <li><a href="">Home</a></li>
-      <li><a href="">Dashboard</a></li>
-      <li><a href="">Usuários</a></li>
-      <li><a href="">Setores</a></li>
-      <li><a href="">Máquinas</a></li>
+      <li class="clicado"><a href="">Home</a></li>
+      <li class="clicado"><a href="">Dashboard</a></li>
+      <li class="clicado"><a href="">Usuários</a></li>
+      <li class="clicado"><a href="">Setores</a></li>
+      <li class="clicado"><a href="">Máquinas</a></li>
     </div>
   </div>
 
@@ -39,14 +54,14 @@
       <span class="card sombreado">
         <b class="dado_card" id="kpi1">KPI1</b>
         <p></p>
-        <i class="kpi clicavel"onclick="click_kp1()">[...]</i>
+        <i class="kpi clicavel" onclick="click_kp1()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
         <b class="dado_card" id="kpi2">KPI2</b>
         <p></p>
-        <i class="kpi clicavel"  onclick="click_kp2()">[...]</i>
+        <i class="kpi clicavel" onclick="click_kp2()">[...]</i>
       </span>
 
 
@@ -79,13 +94,11 @@
   function atualizarBarraLateral() {
     barraLateral.classList.toggle('ativa');
     elementos.classList.toggle('bl_ativa');
-    if (but_atualizar_bl.innerHTML == "☰") {
-      but_atualizar_bl.innerHTML = "←"
-    } else {
-      but_atualizar_bl.innerHTML = "☰"
-    }
-    
+    but_atualizar_bl.classList.toggle('bxs-menu-wide');
+    but_atualizar_bl.classList.toggle('bxs-menu-select');
+
   }
 
 </script>
+
 </html>
