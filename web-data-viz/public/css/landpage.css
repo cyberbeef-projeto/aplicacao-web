@@ -74,6 +74,19 @@ header {
     border-radius: 0;
 }
 
+.btn-hero {
+  width: 80%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: #4b6cf000;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  box-shadow: 0 0 2px rgb(240, 240, 240);
+  transition: 0.3s;
+}
+
 /* Beneficios */
 .beneficios {
     padding: 100px 60px;
