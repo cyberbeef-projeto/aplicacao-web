@@ -81,7 +81,7 @@ body::before {
 
 .form-box {
   width: 50%;
-  height: 100vh;
+  height: 72vh;
   padding: 90px;
   display: flex;
   flex-direction: column;
@@ -91,7 +91,7 @@ body::before {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
   margin-left: 100px;
-  margin-top: 15px;
+  margin-top: 6rem;
 }
 
 .form-box h1 {
