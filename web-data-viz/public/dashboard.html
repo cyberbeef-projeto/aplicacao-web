@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/estiloDashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Dados - CyberBeef</title>
+</head>
+
+<body onload="">
+  <header class="navbar">
+    <button id="but_atualizar_bl" class="clicavel" onclick="atualizarBarraLateral()">←</button>
+    <select name="op_setor" class="sel_setores">
+      <option value="setorTeste">Setor Teste</option>
+    </select>
+    </div>
+    <nav id="buts_superiores">
+      <a class="clicavel">But1</a> 
+      <a class="clicavel">But2</a>
+    </nav>
+  </header>
+  <div class="barra_lateral sombreado ativa">
+    <div id="logo">LOGO</div>
+    <div id="usuario">USUÁRIO</div>
+    <div id="home" class="ops_home">
+      <ul></ul>
+      <li><a href="">Home</a></li>
+      <li><a href="">Dashboard</a></li>
+      <li><a href="">Usuários</a></li>
+      <li><a href="">Setores</a></li>
+      <li><a href="">Máquinas</a></li>
+    </div>
+  </div>
+
+  <div id="elementos" class="bl_ativa">
+    <div id="cards">
+      <span class="card sombreado">
+        <b class="dado_card" id="kpi1">KPI1</b>
+        <p></p>
+        <i class="kpi clicavel"onclick="click_kp1()">[...]</i>
+      </span>
+
+
+      <span class="card sombreado">
+        <b class="dado_card" id="kpi2">KPI2</b>
+        <p></p>
+        <i class="kpi clicavel"  onclick="click_kp2()">[...]</i>
+      </span>
+
+
+      <span class="card sombreado">
+        <b class="dado_card" id="kpi3">KPI3</b>
+        <p></p>
+        <i class="kpi clicavel" id="compKpi3" onclick="click_kp3()">[...]</i>
+      </span>
+
+
+      <span class="card sombreado">
+        <b class="dado_card" id="kpi4">KPI4</b>
+        <p></p>
+        <i class="kpi clicavel" id="compKpi4" onclick="click_kp4()">[...]</i>
+      </span>
+
+    </div>
+    <div id="graficos">
+      <span class="grafico sombreado">Gráfico1 - Linhas<canvas id=""></canvas> </span>
+      <span class="grafico sombreado">Gráfico2 - Histograma<canvas id=""></canvas> </span>
+    </div>
+  </div>
+
+</body>
+<script>
+  var barraLateral = document.querySelector('.barra_lateral');
+  var but_atualizar_bl = document.getElementById('but_atualizar_bl');
+  var elementos = document.getElementById('elementos');
+
+  function atualizarBarraLateral() {
+    barraLateral.classList.toggle('ativa');
+    elementos.classList.toggle('bl_ativa');
+    if (but_atualizar_bl.innerHTML == "☰") {
+      but_atualizar_bl.innerHTML = "←"
+    } else {
+      but_atualizar_bl.innerHTML = "☰"
+    }
+    
+  }
+
+</script>
+</html>
