@@ -95,6 +95,7 @@ html{
     justify-content: center;
     width: 50%;
     height: 100%;
+    user-select: none;
     color: #fff;
     font-size: 1.1vw;
     text-align: center;
@@ -287,6 +288,5 @@ html{
 .clicado:active{
     transform: scale(0.95);
 }
-
 
 

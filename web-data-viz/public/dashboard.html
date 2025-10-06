@@ -19,16 +19,16 @@
       <option value="setorTeste">Máquina3</option>
     </select>
     <select id="sel_componentes" name="op_setor" class="sel_dash clicado">
-      <option value="dash_geral" data-kpi1="Setores Monitorados" data-kpi2="Ocorrências nos últimos 7 dias" 
+      <option value="dash_geral" data-kpi1="Setores Monitorados" data-kpi2="Ocorrências (últimos 7 dias)" 
       data-kpi3="Dias sem ocorrências" data-kpi4="Componente com mais ocorrêcias">Geral</option>
-      <option value="dash_cpu" data-kpi1="cpu" data-kpi2="cpu" 
-      data-kpi3="cpu" data-kpi4="cpu">CPU</option>
-      <option value="dash_ram" data-kpi1="ram" data-kpi2="ram" 
-      data-kpi3="ram" data-kpi4="ram">RAM</option>
-      <option value="dash_disco" data-kpi1="disco" data-kpi2="disco" 
-      data-kpi3="disco" data-kpi4="disco">Disco</option>
-      <option value="dash_rede" data-kpi1="rede" data-kpi2="rede" 
-      data-kpi3="rede" data-kpi4="rede">Rede</option>
+      <option value="dash_cpu" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)" 
+      data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">CPU</option>
+      <option value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)" 
+      data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">RAM</option>
+      <option value="dash_disco" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)" 
+      data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">Disco</option>
+      <option value="dash_rede" data-kpi1="Dados enviados(MB)/recebidos(MB)" data-kpi2="Ocorrências (últimos 7 dias)" 
+      data-kpi3="% variação dados enviados/recebidos" data-kpi4="% Perda de pacotes">Rede</option>
     </select>
     </div>
     <nav id="buts_superiores">
@@ -59,67 +59,121 @@
   <div id="elementos" class="bl_ativa">
     <div id="cards">
       <span class="card sombreado">
-        <b class="dado_card" id="kpi1">KPI1</b>
-        <p></p>
-        <i id="kpi1_desc" class="kpi clicavel" onclick="click_kp1()">Setores Monitorados</i>
+        <b id="kpi1" class="dado_card" >KPI1</b>
+        <p id="kpi1_desc">Setores Monitorados</p>
+        <i id="kpi1_result" class="kpi clicavel" onclick="click_kp1()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
-        <b class="dado_card" id="kpi2">KPI2</b>
-        <p></p>
-        <i id="kpi2_desc" class="kpi clicavel" onclick="click_kp2()">Ocorrências nos últimos 7 dias</i>
+        <b id="kpi2" class="dado_card" >KPI2</b>
+        <p id="kpi2_desc">Ocorrências (últimos 7 dias)</p>
+        <i id="kpi2_result" class="kpi clicavel" onclick="click_kp2()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
-        <b class="dado_card" id="kpi3">KPI3</b>
-        <p></p>
-        <i id="kpi3_desc" class="kpi clicavel" id="compKpi3" onclick="click_kp3()">Dias sem ocorrências</i>
+        <b id="kpi3" class="dado_card" >KPI3</b>
+        <p id="kpi3_desc">Dias sem ocorrências</p>
+        <i id="kpi3_result" class="kpi clicavel" id="compKpi3" onclick="click_kp3()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
-        <b class="dado_card" id="kpi4">KPI4</b>
-        <p></p>
-        <i id="kpi4_desc" class="kpi clicavel" id="compKpi4" onclick="click_kp4()">Componente com mais ocorrêcias</i>
+        <b id="kpi4" class="dado_card" >KPI4</b>
+        <p id="kpi4_desc">Componente com mais ocorrêcias</p>
+        <i id="kpi4_result" class="kpi clicavel" id="compKpi4" onclick="click_kp4()">[...]</i>
       </span>
 
     </div>
     <div id="graficos">
-      <span class="grafico sombreado">Gráfico1 - Linhas (Número de ocorrêcias por mês)<canvas id=""></canvas> </span>
-      <span class="grafico sombreado">Gráfico2 - Barras (Número de ocorrências por componente) <canvas id=""></canvas> </span> <!--Lembrar de colocar um histograma-->
+      <span class="grafico sombreado"><canvas id="grafico1"></canvas> </span>
+      <span class="grafico sombreado"><canvas id="grafico2"></canvas> </span> <!--Lembrar de colocar um histograma-->
     </div>
   </div>
 
 </body>
 <script>
   const barraLateral = document.querySelector('.barra_lateral');
-  const but_atualizar_bl = document.getElementById('but_atualizar_bl');
+  const butAtualizarBl = document.getElementById('but_atualizar_bl');
   const elementos = document.getElementById('elementos');
+  const selectComp = document.getElementById("sel_componentes");
 
-  const select = document.getElementById("sel_componentes");
-  const kpi1Desc = document.getElementById("kpi1_desc");
-  const kpi2Desc= document.getElementById("kpi2_desc");
-  const kpi3Desc = document.getElementById("kpi3_desc");
-  const kpi4Desc = document.getElementById("kpi4_desc");
+  const js_grafico1 = document.getElementById('grafico1');
+  const js_grafico2 = document.getElementById('grafico2');
+
+  new Chart(js_grafico1, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+      datasets: [{label: 'Número de Ocorrências', data: [8, 7, 5, 5, 4, 4],}]
+    },
+    options: {
+      scales: {
+        x: {beginAtZero: true, title: {display: true, text: 'Meses'},},
+        y: {beginAtZero: true, title: {display: true, text: 'Número de Ocorrência'},}
+      },
+      plugins: {title: {display: true, text: 'Número de Ocorrências por Mês'}}
+    },
+  });
+
+  
+  new Chart(js_grafico2, {
+    type: 'bar',
+    data: {
+      labels: ['CPU', 'RAM', 'Disco', 'Rede'],
+      datasets: [{label: 'Número de Ocorrências', data: [7, 7, 5, 4, 3, 3], borderWidth: 1}]
+    },
+    options: {
+      scales: {
+      x: {beginAtZero: true, title: {display: true,text: 'Componente'},},
+      y: {beginAtZero: true, title: {display: true, text: 'Número de Ocorrências'}}
+      },
+      plugins: {title: { display: true, text: 'Número de Ocorrências por Componente'}}
+    }
+  });
+
+  let dadosKpis = [];
+  let dadosCompKpis = [];
+  let dadosGrafico1 = [];
+  let dadosGrafico2 = [];
+
+  function trazerDados (dashboard){
+    dadosKpis = [-1, 0, 1, 2];
+    dadosCompKpis = [-1, 0, 1, "N"];
+    dadosGrafico1 = [[-1, 0, 1, 2], [-1, 0, 1, 2]];
+    dadosGrafico2 = [[-1, 0, 1, 2], [-1, 0, 1, 2]];
+  }
 
   function atualizarBarraLateral() {
     barraLateral.classList.toggle('ativa');
     elementos.classList.toggle('bl_ativa');
-    but_atualizar_bl.classList.toggle('bxs-menu-wide');
-    but_atualizar_bl.classList.toggle('bxs-menu-select');
+    butAtualizarBl.classList.toggle('bxs-menu-wide');
+    butAtualizarBl.classList.toggle('bxs-menu-select');
+  }
+
+  function textoComparacao(comparacao) {
+    if (isNaN(comparacao)) return ["blue", "Veja mais🔍︎"]
+    else if (comparacao > 0) return ["red", comparacao + " A mais que o período anterior▲"]
+    else if (comparacao < 0) return ["green", comparacao * (-1) +  " A menos que o período anterior ▼"]
+    else return ["goldenrod", "Número igual ao período anterior"]
   }
   
-  select.addEventListener("change", () => {
-  const opt = select.selectedOptions[0];
-  kpi1Desc.textContent = opt.dataset.kpi1;
-  kpi2Desc.textContent = opt.dataset.kpi2;
-  kpi3Desc.textContent = opt.dataset.kpi3;
-  kpi4Desc.textContent = opt.dataset.kpi4;
+  selectComp.addEventListener("change", () => {
+    const opt = selectComp.selectedOptions[0];
+    trazerDados(opt.value);
+
+    for (let i = 0; i < 4; i++) {
+      const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
+      const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
+
+      const [color, text] = textoComparacao(dadosCompKpis[i]);
+      kpiDesc.textContent = opt.dataset[`kpi${i + 1}`];
+      kpiResult.style.color = color;
+      kpiResult.textContent = text;
+    }
   }); 
-
-
+  selectComp.dispatchEvent(new Event("change"));
 
 </script>
 
