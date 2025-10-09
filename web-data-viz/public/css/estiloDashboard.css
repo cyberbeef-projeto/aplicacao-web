@@ -66,7 +66,7 @@ html{
 }
 
 .sel_dash option {
-    background-color: #4B6CF0;
+    background-color: rgb(11, 15, 25, 100%);
 }
 
 #but_atualizar_bl{
@@ -202,11 +202,6 @@ html{
     cursor: pointer;
 }
 
-#sel_home option{
-    border: none;
-    background: none;
-}
-
 .barra_lateral.ativa {
   left: 0;
 }
@@ -267,6 +262,42 @@ html{
     font-size: x-large;
 }
 
+.fundo_pop_up {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.pop_up {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 90%;
+    height: 90%;
+    background: rgb(11, 15, 25);
+    border-radius: 1vw;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    padding: 1%;
+}
+
+.fundo_pop_up.mostrar .pop_up {
+    opacity: 1;
+    transform: scale(1);
+  }
 
 #graficos {
     display: flex;
@@ -287,6 +318,11 @@ html{
     margin: 0.5%;
     border-radius: 1vh;
     background-color: rgb(11, 15, 25, 80%);
+}
+
+.mostrar{
+    display: flex;
+    opacity: 1;
 }
 
 .sombreado{

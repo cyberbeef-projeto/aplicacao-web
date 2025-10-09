@@ -57,33 +57,39 @@
     </div>
   </div>
 
+  <div id="fundo_pop_up" class="fundo_pop_up">
+  <div class="pop_up">
+    <button id="fechar_pop_up" class="fechar" onclick="click_kpi()">X</button>
+  </div>
+  </div>
+
   <div id="elementos" class="bl_ativa">
     <div id="cards">
       <span class="card sombreado">
         <b id="kpi1" class="dado_card" >KPI1</b>
         <p id="kpi1_desc">Setores Monitorados</p>
-        <i id="kpi1_result" class="kpi clicavel" onclick="click_kp1()">[...]</i>
+        <i id="kpi1_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
         <b id="kpi2" class="dado_card" >KPI2</b>
         <p id="kpi2_desc">Ocorrências (últimos 7 dias)</p>
-        <i id="kpi2_result" class="kpi clicavel" onclick="click_kp2()">[...]</i>
+        <i id="kpi2_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
         <b id="kpi3" class="dado_card" >KPI3</b>
         <p id="kpi3_desc">Dias sem ocorrências</p>
-        <i id="kpi3_result" class="kpi clicavel" id="compKpi3" onclick="click_kp3()">[...]</i>
+        <i id="kpi3_result" class="kpi clicavel clicado" id="compKpi3" onclick="click_kpi()">[...]</i>
       </span>
 
 
       <span class="card sombreado">
         <b id="kpi4" class="dado_card" >KPI4</b>
         <p id="kpi4_desc">Componente com mais ocorrêcias</p>
-        <i id="kpi4_result" class="kpi clicavel" id="compKpi4" onclick="click_kp4()">[...]</i>
+        <i id="kpi4_result" class="kpi clicavel clicado" id="compKpi4" onclick="click_kpi()">[...]</i>
       </span>
 
     </div>
@@ -99,6 +105,7 @@
   const butAtualizarBl = document.getElementById('but_atualizar_bl');
   const elementos = document.getElementById('elementos');
   const selectComp = document.getElementById("sel_componentes");
+  const popUp = document.getElementById("fundo_pop_up");
 
   const js_grafico1 = document.getElementById('grafico1');
   const js_grafico2 = document.getElementById('grafico2');
@@ -169,6 +176,10 @@
     else if (comparacao > 0) return ["#ff4d4d", comparacao + " A mais que o período anterior▲"]
     else if (comparacao < 0) return ["#4caf50", comparacao * (-1) +  " A menos que o período anterior ▼"]
     else return ["#fdd835", "Número igual ao período anterior"]
+  }
+
+  function click_kpi(){
+    popUp.classList.toggle('mostrar');
   }
   
   selectComp.addEventListener("change", () => {
