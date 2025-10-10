@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
   <link rel="stylesheet"type="text/css" href="./css/style.css">
   <link rel="icon" href="./assets/icon/chip.png">
+  <script type="text/javascript" src="./js/login.js"></script>
 </head>
 <body>
   <div class="container">
@@ -24,28 +25,22 @@
         <p><a href="./index.html#contato">Entre em contato conosco!</a></p>
 
         <div class="input-box">
-          <label for="codigo">Token empresa</label>
-          <i class='bx bx-key'></i>
-          <input type="text" placeholder="Insira o token de sua empresa" required>
-        </div>
-
-        <div class="input-box">
            <label for="email">E-mail</label>
           <i class='bx bx-envelope'></i>
-          <input type="email" placeholder="Insira seu endereço de email" required>
+          <input id="email_input" type="email" placeholder="Insira seu endereço de email" required>
         </div>
 
         <div class="input-box">
           <label for="senha">Senha</label>
           <i class='bx bx-lock'></i>
-          <input type="password" placeholder="Insira sua senha" required>
+          <input id="senha_input" type="password" placeholder="Insira sua senha" required>
         </div>
 
         <div class="options">
           <a href="./recuperar.html">Esqueceu a senha?</a>
         </div>
 
-        <button type="submit" class="btn">Entrar</button>
+        <button onclick="entrar(event)" type="submit" class="btn">Entrar</button>
       </form>
     </div>
   </div>

@@ -7,10 +7,11 @@
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>  <link rel="stylesheet" href="css/estiloDashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="assets/icon/chip.png">
+  <script src="./js/sessao.js"></script>
   <title>Dados - CyberBeef</title>
 </head>
 
-<body onload="">
+<body onload="validarSessao()">
   <header class="navbar">
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado" onclick="atualizarBarraLateral()"></button>
     <select name="op_setor" class="sel_dash clicado">
@@ -41,8 +42,8 @@
     <hr>
     <div id="usuario">
     <i class='bxr  bxs-user'  style='color:#fffafa'></i> 
-    <a href="" class="texto_perfil">Fulano de Tal</a>
-    <i class='bxr  bx-arrow-out-left-square-half clicavel clicado' style="color: #fffafa;"></i> 
+    <a id="b_usuario" class="texto_perfil"></a>
+    <i onclick="limparSessao()" class='bxr  bx-arrow-out-left-square-half clicavel clicado' style="color: #fffafa;"></i> 
     </div>
     <hr>
     <div id="home" class="ops_home">
