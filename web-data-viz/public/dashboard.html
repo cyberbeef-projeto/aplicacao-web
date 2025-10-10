@@ -42,7 +42,7 @@
     <div id="usuario">
     <i class='bxr  bxs-user'  style='color:#fffafa'></i> 
     <a href="" class="texto_perfil">Fulano de Tal</a>
-    <i class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i> 
+    <i class='bxr  bx-arrow-out-left-square-half clicavel clicado' style="color: #fffafa;"></i> 
     </div>
     <hr>
     <div id="home" class="ops_home">
@@ -59,7 +59,7 @@
 
   <div id="fundo_pop_up" class="fundo_pop_up">
   <div class="pop_up">
-    <button id="fechar_pop_up" class="fechar" onclick="click_kpi()">X</button>
+    <button id="fechar_pop_up" class="clicavel clicado" onclick="click_kpi()">X</button>
   </div>
   </div>
 
@@ -120,7 +120,7 @@
     data: {
       labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
       datasets: [{label: 'Número de Ocorrências', data: [8, 7, 5, 5, 4, 4], 
-      borderColor: '#4B6CF0', backgroundColor: "rgba(0, 198, 255, 0.2)", tension: 0.2,
+      borderColor: '#4B6CF0', backgroundColor: "rgba(0, 198, 255, 0.2)", 
       fill: true, pointRadius: 4, pointBackgroundColor: '#4B6CF0'}]
     },
     options: {   
