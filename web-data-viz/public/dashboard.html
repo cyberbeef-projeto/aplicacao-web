@@ -4,32 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>  <link rel="stylesheet" href="css/estiloDashboard.css">
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="css/estiloDashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="assets/icon/chip.png">
-  <script src="./js/sessao.js"></script>
+  <!--<script src="./js/sessao.js"></script> ATIVAR NO FINAL-->
   <title>Dados - CyberBeef</title>
 </head>
 
 <body onload="validarSessao()">
   <header class="navbar">
-    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado" onclick="atualizarBarraLateral()"></button>
+    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
+      onclick="atualizarBarraLateral()"></button>
     <select name="op_setor" class="sel_dash clicado">
       <option value="setorTeste">Máquina1</option>
       <option value="setorTeste">Máquina2</option>
       <option value="setorTeste">Máquina3</option>
     </select>
     <select id="sel_componentes" name="op_setor" class="sel_dash clicado">
-      <option value="dash_geral" data-kpi1="Setores Monitorados" data-kpi2="Ocorrências (últimos 7 dias)" 
-      data-kpi3="Dias sem ocorrências" data-kpi4="Componente com mais ocorrêcias">Geral</option>
-      <option value="dash_cpu" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)" 
-      data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">CPU</option>
-      <option value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)" 
-      data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">RAM</option>
-      <option value="dash_disco" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)" 
-      data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">Disco</option>
-      <option value="dash_rede" data-kpi1="Dados enviados(MB)/recebidos(MB)" data-kpi2="Ocorrências (últimos 7 dias)" 
-      data-kpi3="% variação dados enviados/recebidos" data-kpi4="% Perda de pacotes">Rede</option>
+      <option value="dash_geral" data-kpi1="Setores Monitorados" data-kpi2="Ocorrências (últimos 7 dias)"
+        data-kpi3="Dias sem ocorrências" data-kpi4="Componente com mais ocorrêcias">Geral</option>
+      <option value="dash_cpu" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)"
+        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">CPU</option>
+      <option value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)"
+        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">RAM</option>
+      <option value="dash_disco" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)"
+        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">Disco</option>
+      <option value="dash_rede" data-kpi1="Dados enviados(MB)/recebidos(MB)" data-kpi2="Ocorrências (últimos 7 dias)"
+        data-kpi3="% variação dados enviados/recebidos" data-kpi4="% Perda de pacotes">Rede</option>
     </select>
     </div>
     <nav id="buts_superiores">
@@ -37,62 +39,60 @@
       <a class="clicavel clicado" style="background-color: #F04B4C;">Gerar Relatório</a>
     </nav>
   </header>
+
   <div class="barra_lateral sombreado ativa">
     <div id="logo"></div>
     <hr>
     <div id="usuario">
-    <i class='bxr  bxs-user'  style='color:#fffafa'></i> 
-    <a id="b_usuario" class="texto_perfil"></a>
-    <i onclick="limparSessao()" class='bxr  bx-arrow-out-left-square-half clicavel clicado' style="color: #fffafa;"></i> 
+      <i class='bxr  bxs-user' style='color:#fffafa'></i>
+      <a id="b_usuario" class="texto_perfil">User</a>
     </div>
     <hr>
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="">Home</a></li>
-      <li class="clicado"><a href="">Dashboard</a></li>
+      <li class="clicado"><a href="">Dashboard</a></li> <!--Pesquisar sobre acoordion--> 
       <li class="clicado"><a href="">Máquinas</a></li>
       <li class="clicado"><a href="">Ocorrências</a></li>
       <li class="clicado"><a href="">Setores</a></li>
       <li class="clicado"><a href="">Usuários</a></li>
-
+      <i onclick="limparSessao()" class='bxr  bx-arrow-out-left-square-half clicavel clicado'
+      style="color: #fffafa;"></i>
     </div>
   </div>
 
-  <div id="fundo_pop_up" class="fundo_pop_up">
-  <div class="pop_up">
-    <button id="fechar_pop_up" class="clicavel clicado" onclick="click_kpi()">X</button>
-  </div>
-  </div>
-
   <div id="elementos" class="bl_ativa">
-    <div id="cards">
-      <span class="card sombreado">
-        <b id="kpi1" class="dado_card" >KPI1</b>
-        <p id="kpi1_desc">Setores Monitorados</p>
-        <i id="kpi1_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
+    <div class="cards">
+      <span class="kpis">
+        <span class="card sombreado">
+          <b id="kpi1" class="dado_card">KPI1</b>
+          <p id="kpi1_desc">Setores Monitorados</p>
+          <i id="kpi1_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
+        </span>
+
+
+        <span class="card sombreado">
+          <b id="kpi2" class="dado_card">KPI2</b>
+          <p id="kpi2_desc">Ocorrências (últimos 7 dias)</p>
+          <i id="kpi2_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
+        </span>
+
+
+        <span class="card sombreado">
+          <b id="kpi3" class="dado_card">KPI3</b>
+          <p id="kpi3_desc">Dias sem ocorrências</p>
+          <i id="kpi3_result" class="kpi clicavel clicado" id="compKpi3" onclick="click_kpi()">[...]</i>
+        </span>
+
+
+        <span class="card sombreado">
+          <b id="kpi4" class="dado_card">KPI4</b>
+          <p id="kpi4_desc">Componente com mais ocorrêcias</p>
+          <i id="kpi4_result" class="kpi clicavel clicado" id="compKpi4" onclick="click_kpi()">[...]</i>
+        </span>
       </span>
-
-
-      <span class="card sombreado">
-        <b id="kpi2" class="dado_card" >KPI2</b>
-        <p id="kpi2_desc">Ocorrências (últimos 7 dias)</p>
-        <i id="kpi2_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
-      </span>
-
-
-      <span class="card sombreado">
-        <b id="kpi3" class="dado_card" >KPI3</b>
-        <p id="kpi3_desc">Dias sem ocorrências</p>
-        <i id="kpi3_result" class="kpi clicavel clicado" id="compKpi3" onclick="click_kpi()">[...]</i>
-      </span>
-
-
-      <span class="card sombreado">
-        <b id="kpi4" class="dado_card" >KPI4</b>
-        <p id="kpi4_desc">Componente com mais ocorrêcias</p>
-        <i id="kpi4_result" class="kpi clicavel clicado" id="compKpi4" onclick="click_kpi()">[...]</i>
-      </span>
-
+      <div class="info_kpi">
+      </div>
     </div>
     <div id="graficos">
       <span class="grafico sombreado"><canvas id="grafico1"></canvas> </span>
@@ -106,7 +106,6 @@
   const butAtualizarBl = document.getElementById('but_atualizar_bl');
   const elementos = document.getElementById('elementos');
   const selectComp = document.getElementById("sel_componentes");
-  const popUp = document.getElementById("fundo_pop_up");
 
   const js_grafico1 = document.getElementById('grafico1');
   const js_grafico2 = document.getElementById('grafico2');
@@ -120,36 +119,38 @@
     type: 'line',
     data: {
       labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-      datasets: [{label: 'Número de Ocorrências', data: [8, 7, 5, 5, 4, 4], 
-      borderColor: '#4B6CF0', backgroundColor: "rgba(0, 198, 255, 0.2)", 
-      fill: true, pointRadius: 4, pointBackgroundColor: '#4B6CF0'}]
+      datasets: [{
+        label: 'Número de Ocorrências', data: [8, 7, 5, 5, 4, 4],
+        borderColor: '#4B6CF0', backgroundColor: "rgba(0, 198, 255, 0.2)",
+        fill: true, pointRadius: 4, pointBackgroundColor: '#4B6CF0'
+      }]
     },
-    options: {   
+    options: {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        x: {grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: {display: true, text: 'Meses'},},
-        y: {grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: {display: true, text: 'Número de Ocorrências'},}
+        x: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Meses' }, },
+        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Ocorrências' }, }
       },
-      plugins: {title: {display: true, text: 'Número de Ocorrências por Mês'}}
+      plugins: { title: { display: true, text: 'Número de Ocorrências por Mês' } }
     },
   });
 
-  
+
   new Chart(js_grafico2, {
     type: 'bar',
     data: {
       labels: ['CPU', 'RAM', 'Disco', 'Rede'],
-      datasets: [{label: 'Número de Ocorrências', data: [7, 7, 5, 4, 3, 3], borderWidth: 1, backgroundColor: '#4B6CF0',}]
+      datasets: [{ label: 'Número de Ocorrências', data: [7, 7, 5, 4, 3, 3], borderWidth: 1, backgroundColor: '#4B6CF0', }]
     },
     options: {
       maintainAspectRatio: false,
       responsive: true,
       scales: {
-      x: {grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: {display: true,text: 'Componente'},},
-      y: {grid: { color: "rgba(255,255,255,0.05)" },beginAtZero: true, title: {display: true, text: 'Número de Ocorrências'}}
+        x: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Componente' }, },
+        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Ocorrências' } }
       },
-      plugins: {title: { display: true, text: 'Número de Ocorrências por Componente'}}
+      plugins: { title: { display: true, text: 'Número de Ocorrências por Componente' } }
     }
   });
 
@@ -158,7 +159,7 @@
   let dadosGrafico1 = [];
   let dadosGrafico2 = [];
 
-  function trazerDados (dashboard){
+  function trazerDados(dashboard) {
     dadosKpis = [-1, 0, 1, 2];
     dadosCompKpis = [-1, 0, 1, "N"];
     dadosGrafico1 = [[-1, 0, 1, 2], [-1, 0, 1, 2]];
@@ -175,14 +176,10 @@
   function textoComparacao(comparacao) {
     if (isNaN(comparacao)) return ["#00c6ff", "Veja mais🔍︎"]
     else if (comparacao > 0) return ["#ff4d4d", comparacao + " A mais que o período anterior▲"]
-    else if (comparacao < 0) return ["#4caf50", comparacao * (-1) +  " A menos que o período anterior ▼"]
+    else if (comparacao < 0) return ["#4caf50", comparacao * (-1) + " A menos que o período anterior▼"]
     else return ["#fdd835", "Número igual ao período anterior"]
   }
 
-  function click_kpi(){
-    popUp.classList.toggle('mostrar');
-  }
-  
   selectComp.addEventListener("change", () => {
     const opt = selectComp.selectedOptions[0];
     trazerDados(opt.value);
@@ -196,7 +193,7 @@
       kpiResult.style.color = color;
       kpiResult.textContent = text;
     }
-  }); 
+  });
   selectComp.dispatchEvent(new Event("change"));
 
 </script>
