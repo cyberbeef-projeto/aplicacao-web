@@ -1,333 +1,392 @@
+/* === RESET === */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-    background: #000000;
-    color: #ffffff;
-    font-size: 16px;
-    line-height: 1.5;
+  background: radial-gradient(circle at top, #0a0b14 0%, #020408 100%);
+  color: #ffffff;
+  font-family: "Roboto Slab", serif;
+  overflow-x: hidden;
 }
 
-/* Header */
+/* === HEADER === */
 header {
-    background: #ffffff00;
-    background-image: url("../assets/imgs/background.jpg");
-    background-size: cover;
-    padding: 20px 60px;
+  background: rgba(0, 0, 0, 0.6);
+  background-image: url("../assets/imgs/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px 80px;
 }
 
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.logo {
-    width: 200px;
-}
-
-.redes {
-    width: 200px;
+.logo img {
+  width: 180px;
 }
 
 .menu {
-    list-style: none;
-    display: flex;
-    gap: 40px;
+  list-style: none;
+  display: flex;
+  gap: 40px;
 }
 
 .menu a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
 }
 
-/* Hero */
+.menu a:hover {
+  color: #4c6fff;
+}
+
+/* === HERO === */
 .hero {
-    padding: 100px 60px;
-    color: #fff;
-    text-align: left;
+  padding: 160px 80px 120px;
+  max-width: 1200px;
 }
 
 .hero h1 {
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 1.3;
-    margin-bottom: 30px;
-    padding-right: 53%;
-    font-family: 'Roboto Slab', serif;
+  font-size: 45px;
+  line-height: 1.3;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .hero p {
-    font-size: 20px;
-    padding-right: 73%;
-    margin-bottom: 40px;
-}
-
-.btn {
-    background: #111;
-    color: #fff;
-    padding: 15px 40px;
-    font-size: 18px;
-    text-decoration: none;
-    border-radius: 0;
+  font-size: 18px;
+  color: #cfcfcf;
+  margin-bottom: 40px;
+  max-width: 600px;
 }
 
 .btn-hero {
-  width: 80%;
-  padding: 14px;
-  padding-right: 3%;
-  padding-left: 3%;
-  border: none;
+  display: inline-block;
+  padding: 14px 40px;
   border-radius: 30px;
-  background: #4b6cf000;
-  color: #fff;
-  font-size: 30px;
-  font-weight: bold;
-  box-shadow: 0 0 2px rgb(240, 240, 240);
-  transition: 0.3s;
+  border: 1.5px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/* Beneficios */
+.btn-hero:hover {
+  background: #4c6fff;
+  border-color: #4c6fff;
+  box-shadow: 0 0 15px #4c6fff;
+}
+
+/* === BENEFÍCIOS === */
 .beneficios {
-    padding: 100px 60px;
-    text-align: center;
+  padding: 120px 80px;
+  text-align: center;
+  background: #050811;
 }
 
 .beneficios h2 {
-    font-size: 32px;
-    margin-bottom: 60px;
+  font-size: 28px;
+  margin-bottom: 60px;
+  color: #ffffff;
 }
 
 .cards {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
 }
 
 .card {
-    width: 30%;
-    text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 40px 25px;
+  width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 25px rgba(76, 111, 255, 0.3);
 }
 
 .card img {
-    width: 90px;
-    margin-bottom: 20px;
+  width: 65px;
+  margin-bottom: 25px;
+  filter: brightness(0) invert(1);
 }
 
 .card h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #ffffff;
 }
 
-.beneficios-extra {
-    font-size: 18px;
-    font-style: italic;
-    margin-top: 20px;
+.card p {
+  font-size: 15px;
+  color: #cfcfcf;
 }
 
-/* Processo */
+/* === PROCESSO === */
 .processo {
-    padding: 100px 60px;
-    text-align: center;
+  padding: 120px 80px;
+  text-align: center;
+  background: linear-gradient(180deg, #050811 0%, #0a0e1d 100%);
 }
 
 .processo h2 {
-    font-size: 32px;
-    margin-bottom: 60px;
+  font-size: 28px;
+  margin-bottom: 60px;
 }
 
 .etapas {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 60px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  justify-items: center;
 }
 
 .etapa {
-    text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 480px;
+  transition: 0.3s;
 }
 
-.etapa span {
-    display: block;
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.etapa h4 {
-    font-size: 22px;
-    margin-bottom: 15px;
-}
-
-.etapa p {
-    font-size: 18px;
+.etapa:hover {
+  box-shadow: 0 0 25px rgba(76, 111, 255, 0.3);
 }
 
 .etapa img {
-    margin-top: 20px;
-    width: 120px;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
 }
 
-/* Sobre */
+.etapa span {
+  font-size: 28px;
+  display: block;
+  margin-top: 20px;
+  color: #4c6fff;
+  font-weight: 700;
+}
+
+.etapa h4 {
+  font-size: 20px;
+  margin: 15px 0;
+}
+
+.etapa p {
+  font-size: 15px;
+  padding: 0 20px 30px;
+  color: #cfcfcf;
+}
+
+/* === SOBRE === */
 .sobre {
-    padding: 100px 60px;
+  padding: 120px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  background: #050811;
 }
 
 .sobre h2 {
-    font-size: 32px;
-    margin-bottom: 40px;
-    text-align: center;
+  font-size: 30px;
 }
 
 .sobre-content {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
+  max-width: 1100px;
 }
 
 .sobre-content .texto {
-    width: 65%;
-    font-size: 18px;
+  width: 60%;
+  font-size: 16px;
+  color: #cfcfcf;
+  line-height: 1.7;
 }
 
 .sobre-content img {
-    width: 30%;
-    border-radius: 10px;
+  width: 40%;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(76, 111, 255, 0.2);
 }
 
-/* Depoimentos */
+/* === DEPOIMENTOS === */
 .depoimentos {
-    padding: 100px 60px;
-    background: #000000;
-    color: #fff;
-    text-align: center;
+  padding: 120px 80px;
+  background: #000000;
+  text-align: center;
 }
 
 .depoimentos h2 {
-    font-size: 32px;
-    margin-bottom: 60px;
+  font-size: 28px;
+  margin-bottom: 60px;
 }
 
 .clientes {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
 .cliente {
-    width: 45%;
-    text-align: left;
-}
-
-.cliente .avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 30px;
+  width: 450px;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(76, 111, 255, 0.1);
 }
 
 .cliente blockquote {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #333;
+  font-size: 15px;
+  color: #cfcfcf;
+  margin-bottom: 15px;
 }
 
 .cliente cite {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
+  font-weight: 600;
+  color: #ffffff;
 }
 
-/* Valores */
+/* === VALORES === */
 .valores {
-    padding: 100px 60px;
-    text-align: center;
+  padding: 120px 80px;
+  text-align: center;
+  background: #050811;
 }
 
 .valores h2 {
-    font-size: 32px;
-    margin-bottom: 40px;
+  font-size: 30px;
+  margin-bottom: 15px;
 }
 
 .intro-valores {
-    margin-bottom: 40px;
-    font-size: 18px;
+  color: #cfcfcf;
+  margin-bottom: 50px;
+  font-size: 16px;
 }
 
 .valores-itens {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
 }
 
 .valores-itens div {
-    width: 30%;
-    font-size: 16px;
+  width: 250px;
 }
 
 .valores-itens img {
-    width: 70px;
-    margin-bottom: 15px;
+  width: 70px;
+  margin-bottom: 20px;
+  filter: brightness(0) invert(1);
 }
 
-/* Contato */
+.valores-itens h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.valores-itens p {
+  color: #cfcfcf;
+  font-size: 15px;
+}
+
+/* === CONTATO === */
 .contato {
-    padding: 100px 60px;
-    text-align: center;
+  padding: 120px 80px;
+  background: #000;
+  text-align: center;
 }
 
 .contato h2 {
-    font-size: 32px;
-    margin-bottom: 40px;
+  font-size: 28px;
+  margin-bottom: 40px;
 }
 
 .contato form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 500px;
-    margin: auto;
-    text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 500px;
+  margin: 0 auto 40px;
 }
 
 .contato input,
 .contato textarea {
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #aaa;
-    border-radius: 0;
-}
-
-.contato textarea {
-    min-height: 120px;
+  background: #0b0e19;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 15px;
 }
 
 .contato button {
-    background: #111;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
+  background: #4c6fff;
+  border: none;
+  color: #fff;
+  padding: 14px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.chamada {
-    margin-top: 20px;
-    font-size: 18px;
-    font-style: italic;
+.contato button:hover {
+  box-shadow: 0 0 20px #4c6fff;
 }
 
+/* === FOOTER === */
 footer {
-    background: #111;
-    color: #fff;
-    padding: 40px;
-    text-align: center;
-    font-size: 16px;
+  background: #050811;
+  color: #aaa;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer .redes {
+  margin-top: 15px;
+}
+
+footer .redes img {
+  width: 30px;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  filter: brightness(0) invert(1);
+}
+
+footer .redes img:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px #4c6fff);
 }
