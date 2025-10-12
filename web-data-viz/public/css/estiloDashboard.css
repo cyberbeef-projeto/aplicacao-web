@@ -7,34 +7,32 @@
     box-sizing: border-box;
 }
 
-body{
-    padding: 6% 0% 0% 0%;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  right: -10vw;
-  top: 70vh;
-  width: 40vw;
-  height: 40vw;
-  background: #4B6CF0;
-  filter: blur(180px);
-  opacity: 0.7;
-  z-index: -5;
-
-}
-
-
 html {
     width: 100%;
     height: 100%;
     background-color: #000;
     background-image: url("");
 }
+
+body {
+    padding: 6% 0% 0% 0%;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+    body::before {
+    content: "";
+    position: fixed;
+    right: -10vw;
+    top: 70vh;
+    width: 40vw;
+    height: 40vw;
+    background: #4B6CF0;
+    filter: blur(180px);
+    opacity: 0.7;
+    z-index: -5;
+    }
 
 .navbar {
     display: flex;
@@ -65,9 +63,9 @@ html {
     cursor: pointer;
 }
 
-.sel_dash option {
-    background-color: rgb(11, 15, 25, 100%);
-}
+    .sel_dash option {
+        background-color: rgb(11, 15, 25, 100%);
+    }
 
 #but_atualizar_bl {
     width: 2%;
@@ -87,22 +85,24 @@ html {
     height: 100%;
     width: 22%;
 }
-#buts_superiores a {
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    height: 100%;
-    user-select: none;
-    color: #fff;
-    font-size: 1.1vw;
-    text-align: center;
-    font-weight: normal;
-    background-color: #4B6CF0;
-    border-radius: 0.5vw;
-}
+
+    #buts_superiores a {
+        display: flex;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        height: 100%;
+        user-select: none;
+        color: #fff;
+        font-size: 1.1vw;
+        text-align: center;
+        font-weight: normal;
+        background-color: #4B6CF0;
+        border-radius: 0.5vw;
+    }
+
 .barra_lateral {
     display: flex;
     flex-direction: column;
@@ -143,15 +143,15 @@ html {
     color: #000;
 }
 
-#usuario .bxs-user {
-   font-size: 4vw;
-}
+    #usuario .bxs-user {
+    font-size: 4vw;
+    }
 
-#usuario a {
-    font-size: 1.5vw;
-    text-decoration: none;   
-    color: #fff;
-}
+    #usuario a {
+        font-size: 1.5vw;
+        text-decoration: none;   
+        color: #fff;
+    }
 
 #home {
     display: flex;
@@ -163,30 +163,30 @@ html {
     color: #000;
 }
 
-#home li {
-    display: flex;
-    width: 90%;
-    height: 10%;
-    cursor: pointer;
-    justify-content: center;
-    padding: 0% 0% 0% 10%;
-    border-radius: 8px;
+    #home li {
+        display: flex;
+        width: 90%;
+        height: 10%;
+        cursor: pointer;
+        justify-content: center;
+        padding: 0% 0% 0% 10%;
+        border-radius: 8px;
 
-}
+    }
 
-#home li:hover {
-  background: rgba(255, 255, 255, 0.15); 
-  border-left: 0.3vw solid #4B6CF0; 
-}
+    #home li:hover {
+    background: rgba(255, 255, 255, 0.15); 
+    border-left: 0.3vw solid #4B6CF0; 
+    }
 
-#home a {
-    display: block;
-    width: 100%;
-    height: 100%;
-    font-size: 1.5vw;
-    text-decoration: none;   
-    color: #fff;
-}
+    #home a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 1.5vw;
+        text-decoration: none;   
+        color: #fff;
+    }
 
 #sel_home {
     width: 100%;
@@ -196,13 +196,13 @@ html {
     cursor: pointer;
 }
 
-#home .bx-arrow-out-left-square-half {
-   font-size: 2.5vw;
-}
+    #home .bx-arrow-out-left-square-half {
+    font-size: 2.5vw;
+    }
 
-.barra_lateral.ativa {
-  left: 0;
-}
+    .barra_lateral.ativa {
+    left: 0;
+    }
 
 #elementos {
     display: flex;
@@ -211,66 +211,72 @@ html {
     height: 100%;
 }
 
-#elementos.bl_ativa {
-    padding-left: 20vw;
-}
+    #elementos.bl_ativa {
+        padding-left: 20vw;
+    }
 
-.navbar nav a {
-    margin-right: 3vh;
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 3.5vh;
-  }
+    .navbar nav a {
+        margin-right: 3vh;
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        font-size: 3.5vh;
+    }
 
 .cards {
     display: flex;
     flex-direction: column;
     align-self: center;
-    width: 80%; 
+    width: 75%; 
     height: 100%;
 }
 
-.kpis{
+.abas_kpis{
     display: flex; 
     flex-direction: row; 
-    height: 20%;
+    height: 15%;
 }
 
-.card {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 25%;
-    height: 100%;
-    margin: 0% 0.5% 0% 0.5%;
-    padding: 1%;
-    font-size: small;
-    text-align: center;
-    border-radius: 1vh;
-    color: rgb(255, 255, 255, 90%);
+    .abas_kpis button{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 25%;
+        height: 100%;
+        margin: 0% 0.5% 0% 0.5%;
+        padding: 1%;
+        font-size: 0.8vw;
+        text-align: center;
+        border-radius: 1vh;
+        color: rgb(255, 255, 255, 90%);
+        background-color: rgb(11, 15, 25, 80%);
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .abas_kpis button.ativa {
+        background: rgb(75, 108, 240, 0.7);
+        border-bottom: 2px solid rgb(75, 108, 240, 0.7);
+    }
+
+.aba_conteudo {
+    display: none;
+    width: 98.7%; 
+    height: 80%;
+    margin: 1.5% 0% 0% 0.5%;
+    border-radius: 2vh;
+    color: aliceblue;
     background-color: rgb(11, 15, 25, 80%);
 }
-
-.info_kpi {
-    width: 100%; 
-    height: 75%; 
-    background-color: rgb(11, 15, 25, 80%);
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 0.5vw rgba(0, 198, 255, 0.15);
-  }
-
-.kpi:hover {
-    text-decoration: underline;
-  }
+    .aba_conteudo.ativa {
+        display: block;
+    }
 
 .dado_card {
-    font-size: large;
+    font-size: 1.5vw;
 }
 
 #graficos {
@@ -293,11 +299,6 @@ html {
     background-color: rgb(11, 15, 25, 80%);
 }
 
-.grafico:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 16px rgba(0, 198, 255, 0.15);
-}
-
 .sombreado {
     box-shadow: 1vh 1vh 1vh rgba(0, 0, 0, 0.1);
 }
@@ -306,8 +307,13 @@ html {
     cursor: pointer;
 }
 
-.clicado:active {
-    transform: scale(0.95);
+    .clicado:active {
+        transform: scale(0.95);
+    }
+
+.interativo:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 0 16px rgba(0, 198, 255, 0.15);
 }
 
 

@@ -36,7 +36,7 @@
     </div>
     <nav id="buts_superiores">
       <a class="clicavel clicado">Exportar dados ↓</a>
-      <a class="clicavel clicado" style="background-color: #F04B4C;">Gerar Relatório</a>
+      <a class="clicavel clicado">Gerar Relatório</a>
     </nav>
   </header>
 
@@ -51,52 +51,63 @@
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="">Home</a></li>
-      <li class="clicado"><a href="">Dashboard</a></li> <!--Pesquisar sobre acoordion--> 
+      <li id="sel_dash" class="clicado"><a href="">Painéis▸</a></li> <!--Pesquisar sobre acoordion-->
       <li class="clicado"><a href="">Máquinas</a></li>
       <li class="clicado"><a href="">Ocorrências</a></li>
       <li class="clicado"><a href="">Setores</a></li>
       <li class="clicado"><a href="">Usuários</a></li>
       <i onclick="limparSessao()" class='bxr  bx-arrow-out-left-square-half clicavel clicado'
-      style="color: #fffafa;"></i>
+        style="color: #fffafa;"></i>
     </div>
   </div>
 
   <div id="elementos" class="bl_ativa">
     <div class="cards">
-      <span class="kpis">
-        <span class="card sombreado">
+      <span class="abas_kpis">
+        <button data-aba="1" class="interativo ativa">
           <b id="kpi1" class="dado_card">KPI1</b>
           <p id="kpi1_desc">Setores Monitorados</p>
-          <i id="kpi1_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
-        </span>
+          <i id="kpi1_result" class="" onclick="click_kpi()">[...]</i>
+        </button>
 
-
-        <span class="card sombreado">
+        <button data-aba="2" class="interativo">
           <b id="kpi2" class="dado_card">KPI2</b>
           <p id="kpi2_desc">Ocorrências (últimos 7 dias)</p>
-          <i id="kpi2_result" class="kpi clicavel clicado" onclick="click_kpi()">[...]</i>
-        </span>
+          <i id="kpi2_result" class="" onclick="click_kpi()">[...]</i>
+        </button>
 
-
-        <span class="card sombreado">
+        <button data-aba="3" class="interativo">
           <b id="kpi3" class="dado_card">KPI3</b>
           <p id="kpi3_desc">Dias sem ocorrências</p>
-          <i id="kpi3_result" class="kpi clicavel clicado" id="compKpi3" onclick="click_kpi()">[...]</i>
-        </span>
+          <i id="kpi3_result" class="" id="compKpi3" onclick="click_kpi()">[...]</i>
+        </button>
 
-
-        <span class="card sombreado">
+        <button data-aba="4" class="interativo">
           <b id="kpi4" class="dado_card">KPI4</b>
           <p id="kpi4_desc">Componente com mais ocorrêcias</p>
-          <i id="kpi4_result" class="kpi clicavel clicado" id="compKpi4" onclick="click_kpi()">[...]</i>
-        </span>
+          <i id="kpi4_result" class="" id="compKpi4" onclick="click_kpi()">[...]</i>
+        </button>
       </span>
-      <div class="info_kpi">
+      <div id="aba-1" class="aba_conteudo interativo ativa">
+        <h3>Conteúdo da Aba 1</h3>
+        <p>Texto referente à primeira aba.</p>
+      </div>
+      <div id="aba-2" class="aba_conteudo interativo">
+        <h3>Conteúdo da Aba 2</h3>
+        <p>Texto referente à aba.</p>
+      </div>
+      <div id="aba-3" class="aba_conteudo interativo">
+        <h3>Conteúdo da Aba 3</h3>
+        <p>Texto referente à aba.</p>
+      </div>
+      <div id="aba-4" class="aba_conteudo interativo">
+        <h3>Conteúdo da Aba 4</h3>
+        <p>Texto referente à aba.</p>
       </div>
     </div>
     <div id="graficos">
-      <span class="grafico sombreado"><canvas id="grafico1"></canvas> </span>
-      <span class="grafico sombreado"><canvas id="grafico2"></canvas> </span> <!--Lembrar de colocar um histograma-->
+      <span class="grafico sombreado interativo"><canvas id="grafico1"></canvas> </span>
+      <span class="grafico sombreado interativo"><canvas id="grafico2"></canvas> </span> <!--Lembrar de colocar um histograma-->
     </div>
   </div>
 
@@ -106,6 +117,18 @@
   const butAtualizarBl = document.getElementById('but_atualizar_bl');
   const elementos = document.getElementById('elementos');
   const selectComp = document.getElementById("sel_componentes");
+  const buttons = document.querySelectorAll('.abas_kpis button');
+  const contents = document.querySelectorAll('.aba_conteudo');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('ativa'));
+      contents.forEach(c => c.classList.remove('ativa'));
+
+      btn.classList.add('ativa');
+      document.getElementById(`aba-${btn.dataset.aba}`).classList.add('ativa');
+    });
+  });
 
   const js_grafico1 = document.getElementById('grafico1');
   const js_grafico2 = document.getElementById('grafico2');
@@ -113,7 +136,7 @@
   Chart.defaults.color = "rgba(255,255,255,0.8)";
   Chart.defaults.font.family = "Inter, sans-serif";
   Chart.defaults.plugins.tooltip.bodyColor = "#fff";
-  Chart.defaults.font.size = 14;
+  Chart.defaults.font.size = 12;
 
   new Chart(js_grafico1, {
     type: 'line',
@@ -174,10 +197,10 @@
   }
 
   function textoComparacao(comparacao) {
-    if (isNaN(comparacao)) return ["#00c6ff", "Veja mais🔍︎"]
-    else if (comparacao > 0) return ["#ff4d4d", comparacao + " A mais que o período anterior▲"]
-    else if (comparacao < 0) return ["#4caf50", comparacao * (-1) + " A menos que o período anterior▼"]
-    else return ["#fdd835", "Número igual ao período anterior"]
+    if (isNaN(comparacao)) return ["#FFFF", "Veja mais🔍︎"]
+    else if (comparacao > 0) return ["#E94F37", comparacao + " A mais que o período anterior▲"]
+    else if (comparacao < 0) return ["#6EEB83", comparacao * (-1) + " A menos que o período anterior▼"]
+    else return ["#FFD447", "Número igual ao período anterior"]
   }
 
   selectComp.addEventListener("change", () => {
