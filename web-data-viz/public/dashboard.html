@@ -16,11 +16,6 @@
   <header class="navbar">
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
       onclick="atualizarBarraLateral()"></button>
-    <select name="op_setor" class="sel_dash clicado">
-      <option value="setorTeste">Máquina1</option>
-      <option value="setorTeste">Máquina2</option>
-      <option value="setorTeste">Máquina3</option>
-    </select>
     <select id="sel_componentes" name="op_setor" class="sel_dash clicado">
       <option value="dash_geral" data-kpi1="Setores Monitorados" data-kpi2="Ocorrências (últimos 7 dias)"
         data-kpi3="Dias sem ocorrências" data-kpi4="Componente com mais ocorrêcias">Geral</option>
@@ -51,13 +46,37 @@
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="">Home</a></li>
-      <li id="sel_dash" class="clicado"><a href="">Painéis▸</a></li> <!--Pesquisar sobre acoordion-->
+      <li class="clicado"><a id="sel_maq">Painéis▾</a></li> <!--Pesquisar sobre acoordion-->
       <li class="clicado"><a href="">Máquinas</a></li>
       <li class="clicado"><a href="">Ocorrências</a></li>
       <li class="clicado"><a href="">Setores</a></li>
       <li class="clicado"><a href="">Usuários</a></li>
       <i onclick="limparSessao()" class='bxr  bx-arrow-out-left-square-half clicavel clicado'
         style="color: #fffafa;"></i>
+    </div>
+  </div>
+
+  <div class="popup" id="popupFiltros">
+    <div class="popup-header">
+      <input type="text" placeholder="Pesquisar..." id="pesquisa">
+    </div>
+
+    <div class="accordion">
+      <div class="item clicado">
+        <div class="titulo">Todas as Máquinas</a></div>
+      </div>
+
+      <div class="item clicado">
+        <div class="titulo">Máquina 1</div>
+      </div>
+
+      <div class="item clicado">
+        <div class="titulo">Máquina 2</div>
+      </div>
+
+      <div class="item clicado">
+        <div class="titulo">Máquina 3</div>
+      </div>
     </div>
   </div>
 
@@ -107,7 +126,8 @@
     </div>
     <div id="graficos">
       <span class="grafico sombreado interativo"><canvas id="grafico1"></canvas> </span>
-      <span class="grafico sombreado interativo"><canvas id="grafico2"></canvas> </span> <!--Lembrar de colocar um histograma-->
+      <span class="grafico sombreado interativo"><canvas id="grafico2"></canvas> </span>
+      <!--Lembrar de colocar um histograma-->
     </div>
   </div>
 
@@ -119,6 +139,30 @@
   const selectComp = document.getElementById("sel_componentes");
   const buttons = document.querySelectorAll('.abas_kpis button');
   const contents = document.querySelectorAll('.aba_conteudo');
+  const sel_maq = document.getElementById('sel_maq');
+  const popup = document.getElementById('popupFiltros');
+
+  sel_maq.addEventListener('click', e => {
+    e.stopPropagation();
+    popup.classList.toggle('ativo');
+    sel_maq.textContent = popup.classList.contains('ativo') ? 'Painéis▴' : 'Painéis▾';
+  });
+
+  window.addEventListener('click', e => {
+    if (!popup.contains(e.target) && e.target !== sel_maq) {
+      popup.classList.remove('ativo');
+    }
+  });
+
+  const campo = document.getElementById('pesquisa');
+  
+  campo.addEventListener('input', e => {
+    const termo = e.target.value.toLowerCase();
+    document.querySelectorAll('.item').forEach(item => {
+      const texto = item.querySelector('.titulo').textContent.toLowerCase();
+      item.style.display = texto.includes(termo) ? 'block' : 'none';
+    });
+  });
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
