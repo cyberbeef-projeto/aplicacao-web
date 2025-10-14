@@ -55,16 +55,52 @@ body::before {
 }
 
 .sel_dash {
-    border: none;
-    background: none;
-    color: #fff;
-    font-size: larger;
-    font-weight: bold;
-    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 41.5%;
+    gap: 3%;
+
 }
 
-.sel_dash option {
-    background-color: rgb(11, 15, 25, 100%);
+.sel_dash p {
+    font-size: 1.3vw;
+    max-width: 40%;
+    margin-right: 5%;
+    align-self: flex-start;
+    white-space: nowrap;       
+    overflow: hidden;          
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+.sel_dash button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.3vw;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: color 0.3s;
+}
+
+.sel_dash button:hover {
+    color: #4B6CF0;
+}
+
+.sel_dash button.ativo::after {
+    content: "";
+    position: absolute;
+    bottom: -0.5vw;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 60%;
+    height: 0.3vw;
+    background: #4B6CF0;
+    border-radius: 0.5vw;
 }
 
 #but_atualizar_bl {
@@ -198,6 +234,7 @@ body::before {
 
 #home .bx-arrow-out-left-square-half {
     font-size: 2.5vw;
+    margin-left: 0.9vw;
 }
 
 .barra_lateral.ativa {
@@ -207,9 +244,9 @@ body::before {
 .popup {
     display: none;
     position: absolute;
-    left: 0.5%;
+    left: 0%;
     top: 49%;
-    width: 19%;
+    width: 20%;
     background: #000;
     border-radius: 0.5vw;
     flex-direction: column;
@@ -221,13 +258,26 @@ body::before {
     border-color: slategrey;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .popup.ativo {
     display: flex;
 }
 
 .accordion {
     width: 100%;
-    max-height: 20vh;
+    height: 21vh;
+    max-height: 21vh;
     padding: 1vh;
     overflow-y: auto;
 }
@@ -289,7 +339,7 @@ body::before {
 .abas_kpis {
     display: flex;
     flex-direction: row;
-    height: 15%;
+    height: 20%;
 }
 
 .abas_kpis button {
@@ -320,7 +370,7 @@ body::before {
 .aba_conteudo {
     display: none;
     width: 98.7%;
-    height: 80%;
+    height: 75%;
     margin: 1.5% 0% 0% 0.5%;
     border-radius: 2vh;
     color: aliceblue;

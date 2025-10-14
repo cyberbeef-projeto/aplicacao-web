@@ -14,23 +14,27 @@
 
 <body onload="validarSessao()">
   <header class="navbar">
-    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
-      onclick="atualizarBarraLateral()"></button>
-    <select id="sel_componentes" name="op_setor" class="sel_dash clicado">
-      <option value="dash_geral" data-kpi1="Setores Monitorados" data-kpi2="Ocorrências (últimos 7 dias)"
-        data-kpi3="Dias sem ocorrências" data-kpi4="Componente com mais ocorrêcias">Geral</option>
-      <option value="dash_cpu" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)"
-        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">CPU</option>
-      <option value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)"
-        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">RAM</option>
-      <option value="dash_disco" data-kpi1="Última medição de uso" data-kpi2="Ocorrências (últimos 7 dias)"
-        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">Disco</option>
-      <option value="dash_rede" data-kpi1="Dados enviados(MB)/recebidos(MB)" data-kpi2="Ocorrências (últimos 7 dias)"
-        data-kpi3="% variação dados enviados/recebidos" data-kpi4="% Perda de pacotes">Rede</option>
-    </select>
+    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado" onclick="atualizarBarraLateral()"></button>
+    <span id="sel_componentes" name="op_setor" class="sel_dash">
+      <p>TODAS AS MÁQUINAS</p>
+      <button class="" value="dash_geral" data-kpi1="Setores monitorados" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Dias sem alertas" data-kpi4="Componente com mais ocorrêcias">GERAL</button>
+
+      <button value="dash_cpu" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">CPU</button>
+
+      <button value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">RAM</button>
+
+      <button value="dash_disco" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">DISCO</button>
+
+      <button value="dash_rede" data-kpi1="Dados enviados(MB)/recebidos(MB)" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Porcentagem de variação dados enviados/recebidos" data-kpi4="% Perda de pacotes">REDE</button>
+    </span>
     </div>
     <nav id="buts_superiores">
-      <a class="clicavel clicado">Exportar dados ↓</a>
+      <a class="clicavel clicado">Exportar dados ⤓</a>
       <a class="clicavel clicado">Gerar Relatório</a>
     </nav>
   </header>
@@ -46,12 +50,12 @@
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="">Home</a></li>
-      <li class="clicado"><a id="sel_maq">Painéis▾</a></li> <!--Pesquisar sobre acoordion-->
+      <li class="clicado"><a id="sel_maq">Painéis▾</a></li> 
       <li class="clicado"><a href="">Máquinas</a></li>
-      <li class="clicado"><a href="">Ocorrências</a></li>
+      <li class="clicado"><a href="">Alertas</a></li>
       <li class="clicado"><a href="">Setores</a></li>
       <li class="clicado"><a href="">Usuários</a></li>
-      <i onclick="limparSessao()" class='bxr  bx-arrow-out-left-square-half clicavel clicado'
+      <i onclick="limparSessao()" title="Clique para sair de sua conta" class='bxr  bx-arrow-out-left-square-half clicavel clicado'
         style="color: #fffafa;"></i>
     </div>
   </div>
@@ -91,13 +95,13 @@
 
         <button data-aba="2" class="interativo">
           <b id="kpi2" class="dado_card">KPI2</b>
-          <p id="kpi2_desc">Ocorrências (últimos 7 dias)</p>
+          <p id="kpi2_desc">Alertas (últimos 7 dias)</p>
           <i id="kpi2_result" class="" onclick="click_kpi()">[...]</i>
         </button>
 
         <button data-aba="3" class="interativo">
           <b id="kpi3" class="dado_card">KPI3</b>
-          <p id="kpi3_desc">Dias sem ocorrências</p>
+          <p id="kpi3_desc">Dias sem alertas</p>
           <i id="kpi3_result" class="" id="compKpi3" onclick="click_kpi()">[...]</i>
         </button>
 
@@ -136,11 +140,12 @@
   const barraLateral = document.querySelector('.barra_lateral');
   const butAtualizarBl = document.getElementById('but_atualizar_bl');
   const elementos = document.getElementById('elementos');
-  const selectComp = document.getElementById("sel_componentes");
+  const botoescomp = document.querySelectorAll("#sel_componentes button");
   const buttons = document.querySelectorAll('.abas_kpis button');
   const contents = document.querySelectorAll('.aba_conteudo');
   const sel_maq = document.getElementById('sel_maq');
   const popup = document.getElementById('popupFiltros');
+
 
   sel_maq.addEventListener('click', e => {
     e.stopPropagation();
@@ -151,11 +156,12 @@
   window.addEventListener('click', e => {
     if (!popup.contains(e.target) && e.target !== sel_maq) {
       popup.classList.remove('ativo');
+      sel_maq.textContent = popup.classList.contains('ativo') ? 'Painéis▴' : 'Painéis▾';
     }
   });
 
   const campo = document.getElementById('pesquisa');
-  
+
   campo.addEventListener('input', e => {
     const termo = e.target.value.toLowerCase();
     document.querySelectorAll('.item').forEach(item => {
@@ -187,7 +193,7 @@
     data: {
       labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
       datasets: [{
-        label: 'Número de Ocorrências', data: [8, 7, 5, 5, 4, 4],
+        label: 'Número de Alertas', data: [8, 7, 5, 5, 4, 4],
         borderColor: '#4B6CF0', backgroundColor: "rgba(0, 198, 255, 0.2)",
         fill: true, pointRadius: 4, pointBackgroundColor: '#4B6CF0'
       }]
@@ -197,9 +203,9 @@
       maintainAspectRatio: false,
       scales: {
         x: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Meses' }, },
-        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Ocorrências' }, }
+        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Alertas' }, }
       },
-      plugins: { title: { display: true, text: 'Número de Ocorrências por Mês' } }
+      plugins: { title: { display: true, text: 'Número de Alertas por Mês' } }
     },
   });
 
@@ -208,16 +214,16 @@
     type: 'bar',
     data: {
       labels: ['CPU', 'RAM', 'Disco', 'Rede'],
-      datasets: [{ label: 'Número de Ocorrências', data: [7, 7, 5, 4, 3, 3], borderWidth: 1, backgroundColor: '#4B6CF0', }]
+      datasets: [{ label: 'Número de Alertas', data: [7, 7, 5, 4, 3, 3], borderWidth: 1, backgroundColor: '#4B6CF0', }]
     },
     options: {
       maintainAspectRatio: false,
       responsive: true,
       scales: {
         x: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Componente' }, },
-        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Ocorrências' } }
+        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Alertas' } }
       },
-      plugins: { title: { display: true, text: 'Número de Ocorrências por Componente' } }
+      plugins: { title: { display: true, text: 'Número de Alertas por Componente' } }
     }
   });
 
@@ -247,21 +253,25 @@
     else return ["#FFD447", "Número igual ao período anterior"]
   }
 
-  selectComp.addEventListener("change", () => {
-    const opt = selectComp.selectedOptions[0];
-    trazerDados(opt.value);
 
-    for (let i = 0; i < 4; i++) {
-      const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
-      const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
+  botoescomp.forEach(botao => {
+    botao.addEventListener("click", () => {
+      botoescomp.forEach(b => b.classList.remove("ativo"));
+      botao.classList.add("ativo");
+      trazerDados(botao.value);
 
-      const [color, text] = textoComparacao(dadosCompKpis[i]);
-      kpiDesc.textContent = opt.dataset[`kpi${i + 1}`];
-      kpiResult.style.color = color;
-      kpiResult.textContent = text;
-    }
+      for (let i = 0; i < 4; i++) {
+        const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
+        const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
+
+        const [color, text] = textoComparacao(dadosCompKpis[i]);
+        kpiDesc.textContent = botao.dataset[`kpi${i + 1}`];
+        kpiResult.style.color = color;
+        kpiResult.textContent = text;
+      }
+    });
   });
-  selectComp.dispatchEvent(new Event("change"));
+  botoescomp[0].dispatchEvent(new Event("click"));
 
 </script>
 
