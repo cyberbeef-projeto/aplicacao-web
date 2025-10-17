@@ -68,13 +68,14 @@ body::before {
     max-width: 40%;
     margin-right: 5%;
     align-self: flex-start;
-    white-space: nowrap;       
-    overflow: hidden;          
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
 }
 
 .sel_dash button {
+    display: none;
     background: none;
     border: none;
     color: #fff;
@@ -84,6 +85,10 @@ body::before {
     position: relative;
     user-select: none;
     transition: color 0.3s;
+}
+
+.sel_dash button.aparente{
+    display: flex;
 }
 
 .sel_dash button:hover {
@@ -125,7 +130,7 @@ body::before {
 #buts_superiores a {
     display: flex;
     box-sizing: border-box;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 50%;
@@ -256,6 +261,8 @@ body::before {
     border-style: solid;
     border-width: 0.1vw 0.1vw 0.1vw 0.1vw;
     border-color: slategrey;
+    scrollbar-width: thin;
+    scrollbar-color: slategrey #000;
 }
 
 @keyframes fadeIn {
@@ -282,10 +289,11 @@ body::before {
     overflow-y: auto;
 }
 
-.titulo {
+.titulo_dash {
     width: 99%;
     padding: 0.5vw;
-    background: #f0f0f0;
+    background: rgb(11, 15, 25, 80%);
+    color: #fff;
     border-radius: 0.4vw;
     margin-bottom: 1.5%;
     user-select: none;
@@ -293,8 +301,8 @@ body::before {
     transition: background 0.2s;
 }
 
-.titulo:hover {
-    background: #e3e3e3;
+.titulo_dash:hover {
+    background: #4B6CF0;
 }
 
 .popup-header {
@@ -302,11 +310,17 @@ body::before {
 }
 
 .popup-header input {
+    background-color: #1a1a1a;
+    color: #fff;
     width: 98%;
     padding: 0.5vw 0.5vw;
     border: none;
-    border-radius: 0.5vw;
+    border-radius: 0.1vw;
     outline: none;
+}
+
+.popup-header input::placeholder {
+    color: #fff;
 }
 
 #elementos {
@@ -367,22 +381,101 @@ body::before {
     border-bottom: 0.2vw solid rgb(75, 108, 240, 0.7);
 }
 
-.aba_conteudo {
-    display: none;
+#aba_conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 98.7%;
     height: 75%;
+    max-height: 75%;
     margin: 1.5% 0% 0% 0.5%;
+    padding: 2vw;
+    gap: 2vw;
     border-radius: 2vh;
     color: aliceblue;
     background-color: rgb(11, 15, 25, 80%);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4B6CF0 #1a1a1a;
 }
 
-.aba_conteudo.ativa {
+#titulo-conteudo {
+    margin: 0 0 1.5vw;
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #ffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5vw;
+}
+
+#cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.2vw;
+    width: 100%;
+}
+
+.card {
+    background-color: rgba(30, 35, 45, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1vh;
+    padding: 1.2vw;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    background-color: rgba(50, 60, 80, 0.85);
+    transform: translateY(-2px);
+}
+
+.card h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1vw;
+    text-align: center;
+}
+
+.dados {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8vw 1vw;
+}
+
+.dado-item {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-radius: 0.6vh;
+    padding: 0.8vw;
+    text-align: center;
+}
+
+.dado-nome {
     display: block;
+    font-size: 0.9em;
+    color: #b8c3e0;
+    margin-bottom: 0.4em;
+}
+
+.dado-valor {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #dbe4ff;
 }
 
 .dado_card {
     font-size: 1.5vw;
+}
+
+.text_longo {
+    width: 100%;
+    font-size: 0.73vw;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kpi:hover p {
+    overflow: visible;
 }
 
 #graficos {

@@ -9,32 +9,40 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="assets/icon/chip.png">
   <!--<script src="./js/sessao.js"></script> ATIVAR NO FINAL-->
+  <script src="./js/dadosMock.js"></script>
   <title>Dados - CyberBeef</title>
 </head>
 
 <body onload="validarSessao()">
   <header class="navbar">
-    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado" onclick="atualizarBarraLateral()"></button>
+    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
+      onclick="atualizarBarraLateral()"></button>
     <span id="sel_componentes" name="op_setor" class="sel_dash">
       <p>TODAS AS MÁQUINAS</p>
-      <button class="" value="dash_geral" data-kpi1="Setores monitorados" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Dias sem alertas" data-kpi4="Componente com mais ocorrêcias">GERAL</button>
 
-      <button value="dash_cpu" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">CPU</button>
+      <button id="dash_todas_maquinas" class="aparente" data-comp="geral" data-kpi1="Máquinas monitoradas"
+        data-kpi2="Alertas (últimos 7 dias)" data-kpi3="Dias sem alertas"
+        data-kpi4="Máquina com mais alertas (últimos 7 dias)">GERAL</button>
 
-      <button value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">RAM</button>
+      <button data-comp="geral" class="" data-comp="geral" data-kpi1="Setores monitorados"
+        data-kpi2="Alertas (últimos 7 dias)" data-kpi3="Dias sem alertas"
+        data-kpi4="Componente com mais alertas (últimos 7 dias)">GERAL</button>
 
-      <button value="dash_disco" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Coeficiente de variação de uso" data-kpi4="% Crescimento de uso (últimos 7 dias)">DISCO</button>
+      <button data-comp="cpu" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Dias sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">CPU</button>
 
-      <button value="dash_rede" data-kpi1="Dados enviados(MB)/recebidos(MB)" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Porcentagem de variação dados enviados/recebidos" data-kpi4="% Perda de pacotes">REDE</button>
+      <button data-comp="ram" value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Dias sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">RAM</button>
+
+      <button data-comp="disco" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Dias sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">DISCO</button>
+
+      <button data-comp="rede" data-kpi1="Últimos dados enviados" data-kpi2="Alertas (últimos 7 dias)"
+        data-kpi3="Dias sem alertas" data-kpi4="Perda de pacotes (última captura)">REDE</button>
     </span>
     </div>
     <nav id="buts_superiores">
-      <a class="clicavel clicado">Exportar dados ⤓</a>
+      <a class="clicavel clicado">Exportar dados <i class='bxr  bx-arrow-down-stroke-circle'></i></a>
       <a class="clicavel clicado">Gerar Relatório</a>
     </nav>
   </header>
@@ -50,13 +58,13 @@
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="">Home</a></li>
-      <li class="clicado"><a id="sel_maq">Painéis▾</a></li> 
+      <li class="clicado"><a id="sel_maq">Painéis▾</a></li>
       <li class="clicado"><a href="">Máquinas</a></li>
       <li class="clicado"><a href="">Alertas</a></li>
       <li class="clicado"><a href="">Setores</a></li>
       <li class="clicado"><a href="">Usuários</a></li>
-      <i onclick="limparSessao()" title="Clique para sair de sua conta" class='bxr  bx-arrow-out-left-square-half clicavel clicado'
-        style="color: #fffafa;"></i>
+      <i onclick="limparSessao()" title="Clique para sair de sua conta"
+        class='bxr  bx-arrow-out-left-square-half clicavel clicado' style="color: #fffafa;"></i>
     </div>
   </div>
 
@@ -65,68 +73,43 @@
       <input type="text" placeholder="Pesquisar..." id="pesquisa">
     </div>
 
-    <div class="accordion">
-      <div class="item clicado">
-        <div class="titulo">Todas as Máquinas</a></div>
-      </div>
-
-      <div class="item clicado">
-        <div class="titulo">Máquina 1</div>
-      </div>
-
-      <div class="item clicado">
-        <div class="titulo">Máquina 2</div>
-      </div>
-
-      <div class="item clicado">
-        <div class="titulo">Máquina 3</div>
-      </div>
+    <div id="nomes_dash" class="accordion">
     </div>
   </div>
 
   <div id="elementos" class="bl_ativa">
     <div class="cards">
       <span class="abas_kpis">
-        <button data-aba="1" class="interativo ativa">
+        <button data-aba="1" class="kpi interativo ativa">
           <b id="kpi1" class="dado_card">KPI1</b>
           <p id="kpi1_desc">Setores Monitorados</p>
-          <i id="kpi1_result" class="" onclick="click_kpi()">[...]</i>
+          <i id="kpi1_result" class="" onclick="">[...]</i>
         </button>
 
-        <button data-aba="2" class="interativo">
+        <button data-aba="2" class="kpi interativo">
           <b id="kpi2" class="dado_card">KPI2</b>
           <p id="kpi2_desc">Alertas (últimos 7 dias)</p>
-          <i id="kpi2_result" class="" onclick="click_kpi()">[...]</i>
+          <i id="kpi2_result" class="" onclick="">[...]</i>
         </button>
 
-        <button data-aba="3" class="interativo">
+        <button data-aba="3" class="kpi interativo">
           <b id="kpi3" class="dado_card">KPI3</b>
           <p id="kpi3_desc">Dias sem alertas</p>
-          <i id="kpi3_result" class="" id="compKpi3" onclick="click_kpi()">[...]</i>
+          <i id="kpi3_result" class="" id="compKpi3" onclick="">[...]</i>
         </button>
 
-        <button data-aba="4" class="interativo">
+        <button data-aba="4" class="kpi interativo">
           <b id="kpi4" class="dado_card">KPI4</b>
-          <p id="kpi4_desc">Componente com mais ocorrêcias</p>
-          <i id="kpi4_result" class="" id="compKpi4" onclick="click_kpi()">[...]</i>
+          <p id="kpi4_desc" class="text_longo">Componente com mais ocorrêcias</p>
+          <i id="kpi4_result" class="" id="compKpi4" onclick="">[...]</i>
         </button>
       </span>
-      <div id="aba-1" class="aba_conteudo interativo ativa">
-        <h3>Conteúdo da Aba 1</h3>
-        <p>Texto referente à primeira aba.</p>
+
+      <div id="aba_conteudo" class="interativo">
+        <h2 id="titulo-conteudo">Resumo de Vendas</h2>
+        <div id="cardsContainer"></div>
       </div>
-      <div id="aba-2" class="aba_conteudo interativo">
-        <h3>Conteúdo da Aba 2</h3>
-        <p>Texto referente à aba.</p>
-      </div>
-      <div id="aba-3" class="aba_conteudo interativo">
-        <h3>Conteúdo da Aba 3</h3>
-        <p>Texto referente à aba.</p>
-      </div>
-      <div id="aba-4" class="aba_conteudo interativo">
-        <h3>Conteúdo da Aba 4</h3>
-        <p>Texto referente à aba.</p>
-      </div>
+
     </div>
     <div id="graficos">
       <span class="grafico sombreado interativo"><canvas id="grafico1"></canvas> </span>
@@ -137,15 +120,141 @@
 
 </body>
 <script>
+  // Dados Mockados vindo de "./js/dadosMock.js"
+  let dashAtual = dados[0];
   const barraLateral = document.querySelector('.barra_lateral');
   const butAtualizarBl = document.getElementById('but_atualizar_bl');
   const elementos = document.getElementById('elementos');
   const botoescomp = document.querySelectorAll("#sel_componentes button");
   const buttons = document.querySelectorAll('.abas_kpis button');
-  const contents = document.querySelectorAll('.aba_conteudo');
   const sel_maq = document.getElementById('sel_maq');
   const popup = document.getElementById('popupFiltros');
+  const contents = document.getElementById('aba_conteudo');
+  const tituloContent = document.getElementById('titulo-conteudo');
+  const nomesDash = document.getElementById('nomes_dash');
 
+  Chart.defaults.color = "rgba(255,255,255,0.8)";
+  Chart.defaults.font.family = "Inter, sans-serif";
+  Chart.defaults.plugins.tooltip.bodyColor = "#fff";
+  Chart.defaults.font.size = 12;
+
+  const graficosAtivos = {};
+
+  function montarGrafico({ id, tipo, dados, labels, titulo = "", xylabels = [] }) {
+    const ctx = document.getElementById(id).getContext("2d");
+
+    if (graficosAtivos[id]) {
+      graficosAtivos[id].destroy();
+    }
+
+    const ehHistograma = tipo === "histograma";
+
+    if (ehHistograma) {
+      const binSize = 10;
+      const bins = gerarBins(dados, binSize);
+      labels = bins.map(b => `${Math.trunc(b.x*100)/100}-${Math.trunc((b.x + binSize)*100)/100}`);
+      dados = bins.map(b => b.count);
+      tipo = "bar";
+    }
+
+    graficosAtivos[id] = new Chart(ctx, {
+      type: tipo,
+      data: {
+        labels: labels,
+        datasets: [{
+          label: titulo || tipo.charAt(0).toUpperCase() + tipo.slice(1),
+          data: dados,
+          backgroundColor: tipo === "line"
+            ? "rgba(75, 108, 240, 0.3)"
+            : "rgba(75, 108, 240, 0.6)",
+          borderColor: "#4B6CF0",
+          borderWidth: 2,
+          tension: 0.1,
+          fill: tipo === "line",
+          ...(ehHistograma && {
+            barPercentage: 1.0,
+            categoryPercentage: 1.0
+          })
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: !!titulo,
+            text: titulo
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: xylabels[0] },
+            callback: function (value) {
+              const label = this.getLabelForValue(value);
+              return isNaN(label) ? label : Math.trunc(Number(label) * 100) / 100;
+            }
+          },
+          y: {
+            title: { display: true, text: xylabels[1] },
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: "rgba(255,255,255, 0.05)"
+            },
+            ticks: {
+              stepSize: 1,
+              callback: function (value) {
+                return Number.isInteger(value) ? value : null;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+
+  function gerarBins(dados, binSize) {
+    const min = Math.min(...dados);
+    const max = Math.max(...dados);
+    const bins = [];
+
+    const nBins = Math.ceil((max - min) / binSize);
+
+    for (let j = 0; j < nBins; j++) {
+      const x = Math.trunc((min + j * binSize) * 100) / 100;
+      bins.push({ x: x, count: 0 });
+    }
+
+    dados.forEach(valor => {
+      const index = Math.floor((valor - min) / binSize);
+      if (bins[index]) bins[index].count++;
+    });
+
+    return bins;
+  }
+
+  // Exemplo de uso:
+  // montarGrafico({ id: "grafico1" , tipo: "bar", dados: [10, 15, 7, 12, 20, 18], labels: labelsExemplo, titulo: "Gráfico de Barras", xylabels: ["A", "B"] });
+  // montarGrafico({ id: "grafico1", tipo: "line", dados: [2, 4, 6, 8, 12, 14], labels: labelsExemplo, titulo: "Gráfico de Linhas", xylabels: ["A", "B"]  });
+  // montarGrafico({ id: "grafico1", tipo: "histograma", dados: dadosExemplo, titulo: "Histograma", xylabels: ["A", "B"] });
+
+  function atualizarBarraLateral() {
+    barraLateral.classList.toggle('ativa');
+    elementos.classList.toggle('bl_ativa');
+    butAtualizarBl.classList.toggle('bxs-menu-wide');
+    butAtualizarBl.classList.toggle('bxs-menu-select');
+  }
+
+  for (let i = 0; i < dados.length; i++) {
+    dash = dados[i];
+    const nome = document.createElement("div");
+    nome.classList.add("item", "clicado");
+
+    nome.innerHTML = `<div id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></div>`;
+    nomesDash.appendChild(nome);
+  }
 
   sel_maq.addEventListener('click', e => {
     e.stopPropagation();
@@ -165,86 +274,61 @@
   campo.addEventListener('input', e => {
     const termo = e.target.value.toLowerCase();
     document.querySelectorAll('.item').forEach(item => {
-      const texto = item.querySelector('.titulo').textContent.toLowerCase();
+      const texto = item.querySelector('.titulo_dash').textContent.toLowerCase();
       item.style.display = texto.includes(termo) ? 'block' : 'none';
     });
   });
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('ativa'));
-      contents.forEach(c => c.classList.remove('ativa'));
+  const dashboards = document.querySelectorAll(".titulo_dash");
 
-      btn.classList.add('ativa');
-      document.getElementById(`aba-${btn.dataset.aba}`).classList.add('ativa');
+  dashboards.forEach(dash => {
+    dash.addEventListener('click', e => {
+      indexDash = (parseInt((dash.id).split("_")[0]))
+      dashAtual = dados[indexDash]
+      document.querySelectorAll("#sel_componentes p")[0].textContent = dashAtual.dashboard.toUpperCase();
+      if (indexDash != 0) {
+        botoescomp.forEach(botao => {
+          if (botao.id == "dash_todas_maquinas") botao.classList.remove('aparente');
+          else botao.classList.add('aparente')
+          botoescomp[1].dispatchEvent(new Event("click"));
+        })
+      }
+      else {
+        botoescomp.forEach(botao => {
+          if (botao.id == "dash_todas_maquinas") botao.classList.add('aparente');
+          else botao.classList.remove('aparente')
+          botoescomp[0].dispatchEvent(new Event("click"));
+        })
+      }
+    })
+  });
+
+  const dadosCard = document.querySelectorAll('.dado_card')
+  let componente;
+
+  botoescomp.forEach(botao => {
+    botao.addEventListener("click", () => {
+      botoescomp.forEach(b => b.classList.remove("ativo"));
+      botao.classList.add("ativo");
+      componente = dashAtual.recursos[botao.dataset['comp']];
+      montarGrafico(componente["grafico1"])
+      montarGrafico(componente["grafico2"])
+
+      for (let i = 0; i < 4; i++) {
+        const kpiDado = document.querySelector(`#kpi${i + 1}`)
+        const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
+        const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
+
+        kpiDado.textContent = componente[Object.keys(componente)[i]][0]
+        kpiDesc.textContent = botao.dataset[`kpi${i + 1}`];
+        const [color, text] = textoComparacao(componente[Object.keys(componente)[i]][1]);
+        kpiResult.style.color = color;
+        kpiResult.textContent = text;
+      }
+      buttons[0].dispatchEvent(new Event("click"));
     });
   });
-
-  const js_grafico1 = document.getElementById('grafico1');
-  const js_grafico2 = document.getElementById('grafico2');
-
-  Chart.defaults.color = "rgba(255,255,255,0.8)";
-  Chart.defaults.font.family = "Inter, sans-serif";
-  Chart.defaults.plugins.tooltip.bodyColor = "#fff";
-  Chart.defaults.font.size = 12;
-
-  new Chart(js_grafico1, {
-    type: 'line',
-    data: {
-      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-      datasets: [{
-        label: 'Número de Alertas', data: [8, 7, 5, 5, 4, 4],
-        borderColor: '#4B6CF0', backgroundColor: "rgba(0, 198, 255, 0.2)",
-        fill: true, pointRadius: 4, pointBackgroundColor: '#4B6CF0'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Meses' }, },
-        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Alertas' }, }
-      },
-      plugins: { title: { display: true, text: 'Número de Alertas por Mês' } }
-    },
-  });
-
-
-  new Chart(js_grafico2, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco', 'Rede'],
-      datasets: [{ label: 'Número de Alertas', data: [7, 7, 5, 4, 3, 3], borderWidth: 1, backgroundColor: '#4B6CF0', }]
-    },
-    options: {
-      maintainAspectRatio: false,
-      responsive: true,
-      scales: {
-        x: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Componente' }, },
-        y: { grid: { color: "rgba(255,255,255,0.05)" }, beginAtZero: true, title: { display: true, text: 'Número de Alertas' } }
-      },
-      plugins: { title: { display: true, text: 'Número de Alertas por Componente' } }
-    }
-  });
-
-  let dadosKpis = [];
-  let dadosCompKpis = [];
-  let dadosGrafico1 = [];
-  let dadosGrafico2 = [];
-
-  function trazerDados(dashboard) {
-    dadosKpis = [-1, 0, 1, 2];
-    dadosCompKpis = [-1, 0, 1, "N"];
-    dadosGrafico1 = [[-1, 0, 1, 2], [-1, 0, 1, 2]];
-    dadosGrafico2 = [[-1, 0, 1, 2], [-1, 0, 1, 2]];
-  }
-
-  function atualizarBarraLateral() {
-    barraLateral.classList.toggle('ativa');
-    elementos.classList.toggle('bl_ativa');
-    butAtualizarBl.classList.toggle('bxs-menu-wide');
-    butAtualizarBl.classList.toggle('bxs-menu-select');
-  }
+  botoescomp[0].dispatchEvent(new Event("click"));
 
   function textoComparacao(comparacao) {
     if (isNaN(comparacao)) return ["#FFFF", "Veja mais🔍︎"]
@@ -253,26 +337,43 @@
     else return ["#FFD447", "Número igual ao período anterior"]
   }
 
+  const container = document.getElementById("cardsContainer");
 
-  botoescomp.forEach(botao => {
-    botao.addEventListener("click", () => {
-      botoescomp.forEach(b => b.classList.remove("ativo"));
-      botao.classList.add("ativo");
-      trazerDados(botao.value);
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('ativa'));
+      document.getElementById('titulo-conteudo').textContent = btn.querySelector('p').textContent;
+      var conteudo = componente[btn.querySelector('b').id][2];
+      container.innerHTML = "";
 
-      for (let i = 0; i < 4; i++) {
-        const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
-        const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
+      conteudo.forEach((bloco) => {
+        const card = document.createElement("div");
 
-        const [color, text] = textoComparacao(dadosCompKpis[i]);
-        kpiDesc.textContent = botao.dataset[`kpi${i + 1}`];
-        kpiResult.style.color = color;
-        kpiResult.textContent = text;
-      }
+        card.classList.add("card");
+
+        card.innerHTML = `
+        <h3>${bloco.titulo}</h3>
+        <div class="dados">
+          ${bloco.dados
+            .map(
+              (d) => `
+              <div class="dado-item">
+                <span class="dado-nome">${d.nome}</span>
+                <span class="dado-valor">${d.valor}</span>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
+        `;
+        container.appendChild(card);
+      });
+
+
+      btn.classList.add('ativa');
     });
   });
-  botoescomp[0].dispatchEvent(new Event("click"));
-
+  buttons[0].dispatchEvent(new Event("click"));
 </script>
 
 </html>
