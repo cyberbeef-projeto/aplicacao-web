@@ -186,11 +186,10 @@ header h1 {
 #app {
     display: flex;
     flex-direction: column;
-    height: 90%;
+    height: 100%;
     max-height: 90%;
-    margin: 1vw auto;
+    margin: 0.5vw auto;
     box-sizing: border-box;
-    position: relative;
 }
 
 #app.bl_ativa {
@@ -231,9 +230,31 @@ header h1 {
     overflow-y: scroll;
     border-radius: 1vw;
     padding: 1vw;
-    min-height: 50%;
-    margin-left: 1%;
-    gap: 1%
+    min-height: 100%;
+    margin-left: 0.5%;
+}
+
+.list-panel #metricas {
+    width: 100%;
+    min-height: 18%;
+    flex-direction: row;
+    align-self: flex-start;
+    justify-content: space-between;
+    margin-bottom: 3%;
+}
+
+.list-panel span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 24.5%;
+    height: 90%;
+    border-radius: 1vh;
+}
+
+.list-panel span p{
+    font-size: small;
 }
 
 table {
@@ -307,38 +328,33 @@ tbody tr:hover {
 }
 
 .info::after {
-  content: attr(data-title);
-  position: absolute;
-  white-space: pre-line;
-  bottom: 43%; 
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1e293b;
-  color: #f8fafc;
-  line-height: 1.4;
-  padding: 1%;
-  border-radius: 2vh;
-  width: 15%;
-  text-align: left;
-  font-size: small;
-  box-shadow: 0 1% 1.5% rgba(0,0,0,0.25);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: 100;
+    content: attr(data-title);
+    position: absolute;
+    white-space: pre-line;
+    top: 25%;
+    width: 20%;
+    max-height: 30%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #64748b transparent;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 1%;
+    border-radius: 2vh;
+    text-align: left;
+    font-size: small;
+    box-shadow: 0 1% 1.5% rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 100;
 }
 
 .info:hover::after,
 .info:hover::before {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-4px);
-}
-
-.info::after {
-  max-height: 30%;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #64748b transparent;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
 }
 
 .campo-card input,

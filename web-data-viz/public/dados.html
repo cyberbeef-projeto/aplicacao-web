@@ -41,6 +41,34 @@
 
   <div id="app" class="bl_ativa">
     <main class="list-panel">
+      <div style="display: none;" id="metricas">
+      <h3 style="display: block; align-self: flex-start;">Métricas Alertas</h3>
+        <span>
+          <h3>CPU</h3>
+          <p>Alerta Critico - &gt;80%</p>
+          <p>Alerta Anormal - 85% ≤ x ≤ 90%</p>
+          <p>Normal - &lt; 60%</p>
+        </span>
+        <span>
+          <h3>RAM</h3>
+          <p>Alerta Critico - &gt;90%</p>
+          <p>Alerta Anormal - 60% ≤ x ≤ 80%</p>
+          <p>Normal - &lt; 70%</p>
+        </span>
+        <span>
+          <h3>Disco</h3>
+          <p>Alerta Critico - &gt;90%</p>
+          <p>Alerta Anormal - 70% ≤ x ≤ 90%</p>
+          <p>Normal - &lt; 70%</p>
+        </span>
+        <span>
+          <h3>Perda de Pacotes</h3>
+          <p>Alerta Critico - &lt; 5%</p>
+          <p>Alerta Anormal - 2% ≤ x ≤ 5%</p>
+          <p>Normal - &gt; 5%</p>
+        </span>
+      </div>
+      <h3 style="align-self: flex-start; margin-bottom: 1%;">Registros</h3>
       <table aria-label="lista de registros">
         <thead>
           <tr id="tableHead"></tr>
@@ -77,6 +105,12 @@
     const tipoDados = params.get('tipoDados');
     const tituloPagina = params.get('titulo');
 
+    if (tipoDados == 'alerta') {
+      document.getElementById('btnNew').style.display = 'none';
+      document.getElementById('titulo_pagina').style.marginRight = '50%';
+      document.getElementById('metricas').style.display = 'flex';
+    }
+
     const campos = {
       user: [
         { key: 'nome', label: 'Nome', type: 'text' },
@@ -87,18 +121,18 @@
       ],
       maquina: [
         { key: 'nome', label: 'Nome', type: 'text' },
-        { key: 'ultimaCap', label: 'Última Captura', type: 'date', readOnly: true}
+        { key: 'ultimaCap', label: 'Última Captura', type: 'date', readOnly: true }
       ],
       setor: [
         { key: 'nome', label: 'Nome', type: 'text' },
-        { key: 'numMaq', label: 'Número de Máquinas', type: 'text'}
+        { key: 'numMaq', label: 'Número de Máquinas', type: 'text' }
       ],
       alerta: [
-        { key: 'data', label: 'Data', type: 'text', readOnly: true},
-        { key: 'maquina', label: 'Máquina', type: 'text'},
-        { key: 'componente', label: 'Componente', type: 'text'},
-        { key: 'tipo', label: 'Tipo', type: 'text'},
-        { key: 'dado', label: 'Dado', type: 'text'},
+        { key: 'data', label: 'Data', type: 'text', readOnly: true },
+        { key: 'maquina', label: 'Máquina', type: 'text' },
+        { key: 'componente', label: 'Componente', type: 'text' },
+        { key: 'tipo', label: 'Tipo', type: 'text' },
+        { key: 'dado', label: 'Dado', type: 'text' },
       ]
     };
 
@@ -114,11 +148,6 @@
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
 
-
-
-    console.log(tipoDados); // 42 "wendel"
-
-
     function atualizarBarraLateral() {
       barraLateral.classList.toggle('ativa');
       elementos.classList.toggle('bl_ativa');
@@ -129,17 +158,23 @@
     function renderTable() {
       tableHead.innerHTML = '';
       campos[tipoDados].forEach(f => { const th = document.createElement('th'); th.textContent = f.label; tableHead.appendChild(th); });
-      const thAct = document.createElement('th'); thAct.textContent = 'Ações'; tableHead.appendChild(thAct);
+      if (tipoDados != 'alerta') {
+        const thAct = document.createElement('th'); thAct.textContent = 'Ações'; tableHead.appendChild(thAct);
+      }
       tableBody.innerHTML = '';
       if (store.length === 0) { document.getElementById('emptyState').style.display = 'block'; return; }
       document.getElementById('emptyState').style.display = 'none';
       store.forEach((row, i) => {
         const tr = document.createElement('tr');
         campos[tipoDados].forEach(f => { const td = document.createElement('td'); td.textContent = row[f.key] || '-'; tr.appendChild(td); });
-        const tdAct = document.createElement('td');
-        const btnE = document.createElement('button'); btnE.className = 'btn clicado'; btnE.textContent = 'Editar'; btnE.onclick = () => openModal('Editar Registro', i);
-        const btnD = document.createElement('button'); btnD.className = 'btn danger clicado'; btnD.textContent = 'Excluir'; btnD.onclick = () => { store.splice(i, 1); renderTable(); };
-        tdAct.append(btnE, btnD); tr.appendChild(tdAct);
+        if (tipoDados != 'alerta') {
+          const tdAct = document.createElement('td');
+          const btnE = document.createElement('button'); btnE.className = 'btn clicado'; btnE.textContent = 'Editar';
+          btnE.onclick = () => openModal('Editar Registro', i);
+          const btnD = document.createElement('button'); btnD.className = 'btn danger clicado'; btnD.textContent = 'Excluir';
+          btnD.onclick = () => { store.splice(i, 1); renderTable(); };
+          tdAct.append(btnE, btnD); tr.appendChild(tdAct);
+        }
         tableBody.appendChild(tr);
       });
     }
@@ -180,24 +215,24 @@
         { nome: 'Marco', email: 'marco@ex.com', permissao: '3 - Alto', cargo: 'Chefe de Segurança', senha: '***********' }
       ],
       maquina: [
-        {nome: 'Máquina 1', ultimaCap: '16/10/2025'},
-        {nome: 'Máquina 2', ultimaCap: '16/10/2025'},
-        {nome: 'Máquina 3', ultimaCap: '16/10/2025'}
+        { nome: 'Máquina 1', ultimaCap: '16/10/2025' },
+        { nome: 'Máquina 2', ultimaCap: '16/10/2025' },
+        { nome: 'Máquina 3', ultimaCap: '16/10/2025' }
       ],
       setor: [
-        {nome: 'Setor 1', numMaq: '3'},
-        {nome: 'Setor 2', numMaq: '1'}
+        { nome: 'Setor 1', numMaq: '3' },
+        { nome: 'Setor 2', numMaq: '1' }
       ],
       alerta: [
-        {data: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '90%'},
-        {data: '14/10/2025 14:43', maquina: 'Máquina 1', componente:'Disco', tipo: 'Crítico', dado: '91%'},
-        {data: '14/10/2025 16:44', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%'},
-        {data: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '91%'},
-        {data: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%'}
+        { data: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '90%' },
+        { data: '14/10/2025 14:43', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
+        { data: '14/10/2025 16:44', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
+        { data: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '91%' },
+        { data: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%' }
       ]
     }
     store = dados[tipoDados]
-      renderTable();
+    renderTable();
   </script>
 </body>
 
