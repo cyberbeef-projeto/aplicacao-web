@@ -132,7 +132,7 @@ const m1kpi3Cpu = m1kpi2Cpu
 const m1kpi4Cpu = [
     {
         titulo: "Balanço(últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "60%" }, { nome: "Desvio Padrão", valor: "3" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "60%" }, { nome: "Desvio Padrão", valor: "3" }]
     }
 ]
 
@@ -155,7 +155,7 @@ const m1kpi3Ram = m1kpi2Ram
 const m1kpi4Ram = [
     {
         titulo: "Balanço(últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "70%" }, { nome: "Desvio Padrão", valor: "7" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "70%" }, { nome: "Desvio Padrão", valor: "7" }]
     }
 ]
 
@@ -190,7 +190,7 @@ const m1kpi3Disco = [
 const m1kpi4Disco = [
     {
         titulo: "Balanço (últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "88%" }, { nome: "Desvio Padrão", valor: "0,88" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "88%" }, { nome: "Desvio Padrão", valor: "0,88" }]
     }
 ]
 
@@ -269,7 +269,7 @@ const m2kpi3Cpu = m2kpi2Cpu
 const m2kpi4Cpu = [
     {
         titulo: "Balanço(últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "75%" }, { nome: "Desvio Padrão", valor: "15" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "75%" }, { nome: "Desvio Padrão", valor: "15" }]
     }
 ]
 
@@ -292,7 +292,7 @@ const m2kpi3Ram = m2kpi2Ram
 const m2kpi4Ram = [
     {
         titulo: "Balanço(últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "75%" }, { nome: "Desvio Padrão", valor: "7,5" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "75%" }, { nome: "Desvio Padrão", valor: "7,5" }]
     }
 ]
 
@@ -319,7 +319,7 @@ const m2kpi3Disco = [
 const m2kpi4Disco = [
     {
         titulo: "Balanço (últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "80%" }, { nome: "Desvio Padrão", valor: "0,8" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "80%" }, { nome: "Desvio Padrão", valor: "0,8" }]
     }
 ]
 
@@ -401,7 +401,7 @@ const m3kpi3Cpu = m3kpi2Cpu
 const m3kpi4Cpu = [
     {
         titulo: "Balanço(últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "60%" }, { nome: "Desvio Padrão", valor: "3" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "60%" }, { nome: "Desvio Padrão", valor: "3" }]
     }
 ]
 
@@ -424,7 +424,7 @@ const m3kpi3Ram = m3kpi2Ram
 const m3kpi4Ram = [
     {
         titulo: "Balanço(últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "75%" }, { nome: "Desvio Padrão", valor: "7,5" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "75%" }, { nome: "Desvio Padrão", valor: "7,5" }]
     }
 ]
 
@@ -451,7 +451,7 @@ const m3kpi3Disco = [
 const m3kpi4Disco = [
     {
         titulo: "Balanço (últimos 7 dias)",
-        dados: [{ nome: "N° Capturas", valor: "4000" }, { nome: "Média", valor: "80%" }, { nome: "Desvio Padrão", valor: "0,8" }]
+        dados: [{ nome: "N° Capturas", valor: "50" }, { nome: "Média", valor: "80%" }, { nome: "Desvio Padrão", valor: "0,8" }]
     }
 ]
 

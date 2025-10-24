@@ -152,7 +152,7 @@
     if (ehHistograma) {
       const binSize = 10;
       const bins = gerarBins(dados, binSize);
-      labels = bins.map(b => `${Math.trunc(b.x*100)/100}-${Math.trunc((b.x + binSize)*100)/100}`);
+      labels = bins.map(b => `${Math.trunc(b.x)}-${Math.trunc((b.x + binSize))}`);
       dados = bins.map(b => b.count);
       tipo = "bar";
     }
@@ -192,7 +192,7 @@
             title: { display: true, text: xylabels[0] },
             callback: function (value) {
               const label = this.getLabelForValue(value);
-              return isNaN(label) ? label : Math.trunc(Number(label) * 100) / 100;
+              return isNaN(label) ? label : Math.trunc(Number(label));
             }
           },
           y: {
@@ -216,14 +216,14 @@
 
 
   function gerarBins(dados, binSize) {
-    const min = Math.min(...dados);
-    const max = Math.max(...dados);
+    const min = 0;
+    const max = 100;
     const bins = [];
 
     const nBins = Math.ceil((max - min) / binSize);
 
     for (let j = 0; j < nBins; j++) {
-      const x = Math.trunc((min + j * binSize) * 100) / 100;
+      const x = Math.trunc((min + j * binSize));
       bins.push({ x: x, count: 0 });
     }
 

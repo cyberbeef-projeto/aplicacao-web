@@ -57,9 +57,9 @@
         <h3 id="modalTitle">Novo Registro</h3>
         <i class='bxr bx-help-circle info'
           data-title="Sobre Níveis de Permissão:
-          1 = Visualizar somente os Painéis;
-          2 = Visualizar a todos os dados;
-          3 = Visualizar e editar todos os dados.
+          1 - Básico  = Visualizar somente os Painéis;
+          2 - Médio = Visualizar a todos os dados;
+          3 - Alto = Visualizar e editar todos os dados.
           Sobre Senhas: 
           Quando um novo usuário é criado ou a senha é editada por um administrador, por segurança, será solicitado ao usuário que teve a senha alterada uma nova senha no momento de login.
 ">
@@ -77,7 +77,7 @@
     const campos = [
       { key: 'nome', label: 'Nome', type: 'text' },
       { key: 'email', label: 'E-mail', type: 'email' },
-      { key: 'permissao', label: 'Nível de Permissão', type: 'select', options: ['1', '2', '3'] },
+      { key: 'permissao', label: 'Nível de Permissão', type: 'select', options: ['1 - Básico', '2 - Médio', '3 - Alto'] },
       { key: 'cargo', label: 'Cargo', type: 'email' },
       { key: 'senha', label: 'Senha', type: 'text', readOnly: true }
     ];
@@ -144,13 +144,12 @@
       const inputs = modalBody.querySelectorAll('[data-key]');
       const obj = {};
       inputs.forEach(i => obj[i.dataset.key] = i.value);
-      if (!obj.id) obj.id = uid();
       if (editingIndex >= 0) store[editingIndex] = obj; else store.push(obj);
       modalBackdrop.style.display = 'none'; renderTable();
     };
 
     // seed
-    store = [{ nome: 'Ana', email: 'ana@ex.com', permissao: '1', cargo: 'Analista de Segurança', senha: '***********' }, { nome: 'Marco', email: 'marco@ex.com', permissao: '3', cargo: 'Chefe de Segurança', senha: '***********' }];
+    store = [{ nome: 'Ana', email: 'ana@ex.com', permissao: '1 - Básico', cargo: 'Analista de Segurança', senha: '***********' }, { nome: 'Marco', email: 'marco@ex.com', permissao: '3 - Alto', cargo: 'Chefe de Segurança', senha: '***********' }];
     renderTable();
   </script>
 </body>

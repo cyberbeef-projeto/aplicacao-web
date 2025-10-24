@@ -227,7 +227,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(180deg, #07121a 0%, #081219 100%);
+    background: rgb(11, 15, 25, 80%);
     overflow-y: scroll;
     border-radius: 1vw;
     padding: 1vw;
