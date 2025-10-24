@@ -14,7 +14,7 @@
   <header class="">
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
       onclick="atualizarBarraLateral()"></button>
-    <p>Usuários</p>
+    <p id="titulo_pagina"></p>
     <button class="btn primary clicado" id="btnNew">+ Novo Registro</button>
   </header>
 
@@ -28,12 +28,12 @@
     <hr>
     <div id="home" class="ops_home">
       <ul></ul>
-      <li class="clicado"><a href="">Home</a></li>
+      <li class="clicado"><a href="index.html">Home</a></li>
       <li class="clicado"><a href="dashboard.html">Painéis</a></li>
-      <li class="clicado"><a href="">Máquinas</a></li>
-      <li class="clicado"><a href="">Alertas</a></li>
-      <li class="clicado"><a href="">Setores</a></li>
-      <li class="clicado"><a href="">Usuários</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Úsuarios">Usuários</a></li>
       <i onclick="limparSessao()" title="Clique para sair de sua conta"
         class='bxr  bx-arrow-out-left-square-half clicavel clicado' style="color: #fffafa;"></i>
     </div>
@@ -55,8 +55,7 @@
     <div class="modal">
       <span style="display: flex; align-items: center; flex-wrap: nowrap; gap: 1%;">
         <h3 id="modalTitle">Novo Registro</h3>
-        <i class='bxr bx-help-circle info'
-          data-title="Sobre Níveis de Permissão:
+        <i class='bxr bx-help-circle info' data-title="Sobre Níveis de Permissão:
           1 - Básico  = Visualizar somente os Painéis;
           2 - Médio = Visualizar a todos os dados;
           3 - Alto = Visualizar e editar todos os dados.
@@ -74,13 +73,37 @@
   </div>
 
   <script>
-    const campos = [
-      { key: 'nome', label: 'Nome', type: 'text' },
-      { key: 'email', label: 'E-mail', type: 'email' },
-      { key: 'permissao', label: 'Nível de Permissão', type: 'select', options: ['1 - Básico', '2 - Médio', '3 - Alto'] },
-      { key: 'cargo', label: 'Cargo', type: 'email' },
-      { key: 'senha', label: 'Senha', type: 'text', readOnly: true }
-    ];
+    const params = new URLSearchParams(window.location.search);
+    const tipoDados = params.get('tipoDados');
+    const tituloPagina = params.get('titulo');
+
+    const campos = {
+      user: [
+        { key: 'nome', label: 'Nome', type: 'text' },
+        { key: 'email', label: 'E-mail', type: 'email' },
+        { key: 'permissao', label: 'Nível de Permissão', type: 'select', options: ['1 - Básico', '2 - Médio', '3 - Alto'] },
+        { key: 'cargo', label: 'Cargo', type: 'email' },
+        { key: 'senha', label: 'Senha', type: 'text', readOnly: true }
+      ],
+      maquina: [
+        { key: 'nome', label: 'Nome', type: 'text' },
+        { key: 'ultimaCap', label: 'Última Captura', type: 'date', readOnly: true}
+      ],
+      setor: [
+        { key: 'nome', label: 'Nome', type: 'text' },
+        { key: 'numMaq', label: 'Número de Máquinas', type: 'text'}
+      ],
+      alerta: [
+        { key: 'data', label: 'Data', type: 'text', readOnly: true},
+        { key: 'maquina', label: 'Máquina', type: 'text'},
+        { key: 'componente', label: 'Componente', type: 'text'},
+        { key: 'tipo', label: 'Tipo', type: 'text'},
+        { key: 'dado', label: 'Dado', type: 'text'},
+      ]
+    };
+
+    document.getElementById('titulo_pagina').textContent = tituloPagina;
+    document.querySelector('title').textContent = tituloPagina
 
     const barraLateral = document.querySelector('.barra_lateral');
     const butAtualizarBl = document.getElementById('but_atualizar_bl');
@@ -93,6 +116,9 @@
 
 
 
+    console.log(tipoDados); // 42 "wendel"
+
+
     function atualizarBarraLateral() {
       barraLateral.classList.toggle('ativa');
       elementos.classList.toggle('bl_ativa');
@@ -102,14 +128,14 @@
 
     function renderTable() {
       tableHead.innerHTML = '';
-      campos.forEach(f => { const th = document.createElement('th'); th.textContent = f.label; tableHead.appendChild(th); });
+      campos[tipoDados].forEach(f => { const th = document.createElement('th'); th.textContent = f.label; tableHead.appendChild(th); });
       const thAct = document.createElement('th'); thAct.textContent = 'Ações'; tableHead.appendChild(thAct);
       tableBody.innerHTML = '';
       if (store.length === 0) { document.getElementById('emptyState').style.display = 'block'; return; }
       document.getElementById('emptyState').style.display = 'none';
       store.forEach((row, i) => {
         const tr = document.createElement('tr');
-        campos.forEach(f => { const td = document.createElement('td'); td.textContent = row[f.key] || '-'; tr.appendChild(td); });
+        campos[tipoDados].forEach(f => { const td = document.createElement('td'); td.textContent = row[f.key] || '-'; tr.appendChild(td); });
         const tdAct = document.createElement('td');
         const btnE = document.createElement('button'); btnE.className = 'btn clicado'; btnE.textContent = 'Editar'; btnE.onclick = () => openModal('Editar Registro', i);
         const btnD = document.createElement('button'); btnD.className = 'btn danger clicado'; btnD.textContent = 'Excluir'; btnD.onclick = () => { store.splice(i, 1); renderTable(); };
@@ -122,7 +148,7 @@
       editingIndex = index;
       modalTitle.textContent = title;
       modalBody.innerHTML = '';
-      campos.forEach(f => {
+      campos[tipoDados].forEach(f => {
         const wrap = document.createElement('div'); wrap.className = 'campo-card';
         const lbl = document.createElement('label'); lbl.textContent = f.label; wrap.appendChild(lbl);
         let input;
@@ -148,9 +174,30 @@
       modalBackdrop.style.display = 'none'; renderTable();
     };
 
-    // seed
-    store = [{ nome: 'Ana', email: 'ana@ex.com', permissao: '1 - Básico', cargo: 'Analista de Segurança', senha: '***********' }, { nome: 'Marco', email: 'marco@ex.com', permissao: '3 - Alto', cargo: 'Chefe de Segurança', senha: '***********' }];
-    renderTable();
+    dados = {
+      user: [
+        { nome: 'Ana', email: 'ana@ex.com', permissao: '1 - Básico', cargo: 'Analista de Segurança', senha: '***********' },
+        { nome: 'Marco', email: 'marco@ex.com', permissao: '3 - Alto', cargo: 'Chefe de Segurança', senha: '***********' }
+      ],
+      maquina: [
+        {nome: 'Máquina 1', ultimaCap: '16/10/2025'},
+        {nome: 'Máquina 2', ultimaCap: '16/10/2025'},
+        {nome: 'Máquina 3', ultimaCap: '16/10/2025'}
+      ],
+      setor: [
+        {nome: 'Setor 1', numMaq: '3'},
+        {nome: 'Setor 2', numMaq: '1'}
+      ],
+      alerta: [
+        {data: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '90%'},
+        {data: '14/10/2025 14:43', maquina: 'Máquina 1', componente:'Disco', tipo: 'Crítico', dado: '91%'},
+        {data: '14/10/2025 16:44', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%'},
+        {data: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '91%'},
+        {data: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%'}
+      ]
+    }
+    store = dados[tipoDados]
+      renderTable();
   </script>
 </body>
 
