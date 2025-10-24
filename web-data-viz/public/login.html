@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - CYBERBEEF</title>
   <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-  <link rel="stylesheet"type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
   <link rel="icon" href="./assets/icon/chip.png">
   <script type="text/javascript" src="./js/login.js"></script>
 </head>
+
 <body>
   <div class="container">
     <div class="img-box">
       <img src="./assets/imgs/login.webp" alt="Painel de monitoramento">
       <div class="logo">
         <h2><a href="./index.html"><img src="./assets/imgs/logo.png" alt=""></a></h2>
-       
+
       </div>
     </div>
     <div class="form-box">
@@ -25,7 +27,7 @@
         <p><a href="./index.html#contato">Entre em contato conosco!</a></p>
 
         <div class="input-box">
-           <label for="email">E-mail</label>
+          <label for="email">E-mail</label>
           <i class='bx bx-envelope'></i>
           <input id="email_input" type="email" placeholder="Insira seu endereço de email" required>
         </div>
@@ -41,8 +43,13 @@
         </div>
 
         <button onclick="entrar(event)" type="submit" class="btn">Entrar</button>
+        <a href="./index.html" class="back-btn">
+          <i class='bx bx-chevron-left'></i> Voltar
+        </a>
+
       </form>
     </div>
   </div>
 </body>
+
 </html>
