@@ -20,8 +20,8 @@
     <span id="sel_componentes" name="op_setor" class="sel_dash">
       <p>TODAS AS MÁQUINAS</p>
 
-      <button id="dash_todas_maquinas" class="aparente" data-comp="geral" data-kpi1="Máquinas monitoradas"
-        data-kpi2="Alertas (últimos 7 dias)" data-kpi3="Dias sem alertas"
+      <button id="dash_todas_maquinas" style="display: none;" class="" data-comp="geral"
+        data-kpi1="Máquinas monitoradas" data-kpi2="Alertas (últimos 7 dias)" data-kpi3="Dias sem alertas"
         data-kpi4="Máquina com mais alertas (últimos 7 dias)">GERAL</button>
 
       <button data-comp="geral" class="" data-comp="geral" data-kpi1="Setores monitorados"
@@ -58,7 +58,7 @@
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="index.html">Home</a></li>
-      <li class="clicado"><a id="sel_maq">Painéis▾</a></li>
+      <li class="clicado"><a id="sel_maq">Painéis</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
@@ -68,45 +68,41 @@
     </div>
   </div>
 
-  <div class="popup" id="popupFiltros">
-    <div class="popup-header">
-      <input type="text" placeholder="Pesquisar..." id="pesquisa">
-    </div>
-
-    <div id="nomes_dash" class="accordion">
-    </div>
-  </div>
-
   <div id="elementos" class="bl_ativa">
     <div class="cards">
+      <div id="barra_pesquisa">
+        <input type="text" placeholder="Pesquisar por máquinas..." id="pesquisa">
+
+        <div id="nomes_dash" class="accordion"></div>
+      </div>
       <span class="abas_kpis">
         <button data-aba="1" class="kpi interativo ativa">
           <b id="kpi1" class="dado_card">KPI1</b>
           <p id="kpi1_desc">Setores Monitorados</p>
-          <i id="kpi1_result" class="" onclick="">[...]</i>
+          <i id="kpi1_result" class="text_longo" onclick="">[...]</i>
         </button>
 
         <button data-aba="2" class="kpi interativo">
           <b id="kpi2" class="dado_card">KPI2</b>
           <p id="kpi2_desc">Alertas (últimos 7 dias)</p>
-          <i id="kpi2_result" class="" onclick="">[...]</i>
+          <i id="kpi2_result" class="text_longo" onclick="">[...]</i>
         </button>
 
         <button data-aba="3" class="kpi interativo">
           <b id="kpi3" class="dado_card">KPI3</b>
           <p id="kpi3_desc">Dias sem alertas</p>
-          <i id="kpi3_result" class="" id="compKpi3" onclick="">[...]</i>
+          <i id="kpi3_result" class="text_longo" id="compKpi3" onclick="">[...]</i>
         </button>
 
         <button data-aba="4" class="kpi interativo">
           <b id="kpi4" class="dado_card">KPI4</b>
           <p id="kpi4_desc" class="text_longo">Componente com mais ocorrêcias</p>
-          <i id="kpi4_result" class="" id="compKpi4" onclick="">[...]</i>
+          <i id="kpi4_result" class="text_longo" id="compKpi4" onclick="">[...]</i>
         </button>
       </span>
 
       <div id="aba_conteudo" class="interativo">
-        <h2 id="titulo-conteudo">Resumo de Vendas</h2>
+        <h2 id="titulo-conteudo">[...]</h2>
         <div id="cardsContainer"></div>
       </div>
 
@@ -114,7 +110,6 @@
     <div id="graficos">
       <span class="grafico sombreado interativo"><canvas id="grafico1"></canvas> </span>
       <span class="grafico sombreado interativo"><canvas id="grafico2"></canvas> </span>
-      <!--Lembrar de colocar um histograma-->
     </div>
   </div>
 
@@ -128,7 +123,7 @@
   const botoescomp = document.querySelectorAll("#sel_componentes button");
   const buttons = document.querySelectorAll('.abas_kpis button');
   const sel_maq = document.getElementById('sel_maq');
-  const popup = document.getElementById('popupFiltros');
+  const popup = document.getElementById('barra_pesquisa');
   const contents = document.getElementById('aba_conteudo');
   const tituloContent = document.getElementById('titulo-conteudo');
   const nomesDash = document.getElementById('nomes_dash');
@@ -252,22 +247,9 @@
     const nome = document.createElement("div");
     nome.classList.add("item", "clicado");
 
-    nome.innerHTML = `<div id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></div>`;
+    nome.innerHTML = `<button id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></button>`;
     nomesDash.appendChild(nome);
   }
-
-  sel_maq.addEventListener('click', e => {
-    e.stopPropagation();
-    popup.classList.toggle('ativo');
-    sel_maq.textContent = popup.classList.contains('ativo') ? 'Painéis▴' : 'Painéis▾';
-  });
-
-  window.addEventListener('click', e => {
-    if (!popup.contains(e.target) && e.target !== sel_maq) {
-      popup.classList.remove('ativo');
-      sel_maq.textContent = popup.classList.contains('ativo') ? 'Painéis▴' : 'Painéis▾';
-    }
-  });
 
   const campo = document.getElementById('pesquisa');
 
