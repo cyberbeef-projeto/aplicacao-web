@@ -58,7 +58,7 @@
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="index.html">Home</a></li>
-      <li class="clicado"><a id="sel_maq">Painéis</a></li>
+      <li class="clicado"><a>Painéis</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
@@ -71,7 +71,7 @@
   <div id="elementos" class="bl_ativa">
     <div class="cards">
       <div id="barra_pesquisa">
-        <input type="text" placeholder="Pesquisar por máquinas..." id="pesquisa">
+        <input type="text" placeholder="Pesquisar por máquinas..." id="pesquisa" class="interativo">
 
         <div id="nomes_dash" class="accordion"></div>
       </div>
@@ -115,25 +115,59 @@
 
 </body>
 <script>
-  // Dados Mockados vindo de "./js/dadosMock.js"
-  let dashAtual = dados[0];
-  const barraLateral = document.querySelector('.barra_lateral');
-  const butAtualizarBl = document.getElementById('but_atualizar_bl');
-  const elementos = document.getElementById('elementos');
-  const botoescomp = document.querySelectorAll("#sel_componentes button");
-  const buttons = document.querySelectorAll('.abas_kpis button');
-  const sel_maq = document.getElementById('sel_maq');
-  const popup = document.getElementById('barra_pesquisa');
-  const contents = document.getElementById('aba_conteudo');
-  const tituloContent = document.getElementById('titulo-conteudo');
-  const nomesDash = document.getElementById('nomes_dash');
-
+  // Configurações Básicas dos Gráficos
   Chart.defaults.color = "rgba(255,255,255,0.8)";
   Chart.defaults.font.family = "Inter, sans-serif";
   Chart.defaults.plugins.tooltip.bodyColor = "#fff";
   Chart.defaults.font.size = 12;
 
+  // Dados Mockados vindo de "./js/dadosMock.js"
+  let dashAtual = dados[0];
+  let componente;
   const graficosAtivos = {};
+
+  const botoescomp = document.querySelectorAll("#sel_componentes button");
+
+  const barraLateral = document.querySelector('.barra_lateral');
+  const butAtualizarBl = document.getElementById('but_atualizar_bl');
+
+  const elementos = document.getElementById('elementos');
+
+  const popup = document.getElementById('barra_pesquisa');
+  const campo = document.getElementById('pesquisa');
+  const nomesDash = document.getElementById('nomes_dash');
+
+  const dadosCard = document.querySelectorAll('.dado_card')
+  const buttons = document.querySelectorAll('.abas_kpis button');
+
+  const container = document.getElementById("cardsContainer");
+  const contents = document.getElementById('aba_conteudo');
+  const tituloContent = document.getElementById('titulo-conteudo');
+
+  for (let i = 0; i < dados.length; i++) {
+    dash = dados[i];
+    const nome = document.createElement("div");
+    nome.classList.add("item", "clicado");
+
+    nome.innerHTML = `<button id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></button>`;
+    nomesDash.appendChild(nome);
+  }
+
+  const dashboards = document.querySelectorAll(".titulo_dash");
+
+  function atualizarBarraLateral() {
+    barraLateral.classList.toggle('ativa');
+    elementos.classList.toggle('bl_ativa');
+    butAtualizarBl.classList.toggle('bxs-menu-wide');
+    butAtualizarBl.classList.toggle('bxs-menu-select');
+  }
+
+  function textoComparacao(comparacao) {
+    if (isNaN(comparacao)) return ["#FFFF", "Veja mais🔍︎"]
+    else if (comparacao > 0) return ["#E94F37", comparacao + " A mais que o período anterior▲"]
+    else if (comparacao < 0) return ["#6EEB83", comparacao * (-1) + " A menos que o período anterior▼"]
+    else return ["#FFD447", "Número igual ao período anterior"]
+  }
 
   function montarGrafico({ id, tipo, dados, labels, titulo = "", xylabels = [] }) {
     const ctx = document.getElementById(id).getContext("2d");
@@ -209,7 +243,7 @@
     });
   }
 
-
+  // Função auxiliar de gráficos do tipo histograma
   function gerarBins(dados, binSize) {
     const min = 0;
     const max = 100;
@@ -235,24 +269,7 @@
   // montarGrafico({ id: "grafico1", tipo: "line", dados: [2, 4, 6, 8, 12, 14], labels: labelsExemplo, titulo: "Gráfico de Linhas", xylabels: ["A", "B"]  });
   // montarGrafico({ id: "grafico1", tipo: "histograma", dados: dadosExemplo, titulo: "Histograma", xylabels: ["A", "B"] });
 
-  function atualizarBarraLateral() {
-    barraLateral.classList.toggle('ativa');
-    elementos.classList.toggle('bl_ativa');
-    butAtualizarBl.classList.toggle('bxs-menu-wide');
-    butAtualizarBl.classList.toggle('bxs-menu-select');
-  }
-
-  for (let i = 0; i < dados.length; i++) {
-    dash = dados[i];
-    const nome = document.createElement("div");
-    nome.classList.add("item", "clicado");
-
-    nome.innerHTML = `<button id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></button>`;
-    nomesDash.appendChild(nome);
-  }
-
-  const campo = document.getElementById('pesquisa');
-
+  // Pesquisa
   campo.addEventListener('input', e => {
     const termo = e.target.value.toLowerCase();
     document.querySelectorAll('.item').forEach(item => {
@@ -260,8 +277,6 @@
       item.style.display = texto.includes(termo) ? 'block' : 'none';
     });
   });
-
-  const dashboards = document.querySelectorAll(".titulo_dash");
 
   dashboards.forEach(dash => {
     dash.addEventListener('click', e => {
@@ -282,11 +297,9 @@
           botoescomp[0].dispatchEvent(new Event("click"));
         })
       }
+      campo.value = dash.textContent;
     })
   });
-
-  const dadosCard = document.querySelectorAll('.dado_card')
-  let componente;
 
   botoescomp.forEach(botao => {
     botao.addEventListener("click", () => {
@@ -310,16 +323,6 @@
       buttons[0].dispatchEvent(new Event("click"));
     });
   });
-  botoescomp[0].dispatchEvent(new Event("click"));
-
-  function textoComparacao(comparacao) {
-    if (isNaN(comparacao)) return ["#FFFF", "Veja mais🔍︎"]
-    else if (comparacao > 0) return ["#E94F37", comparacao + " A mais que o período anterior▲"]
-    else if (comparacao < 0) return ["#6EEB83", comparacao * (-1) + " A menos que o período anterior▼"]
-    else return ["#FFD447", "Número igual ao período anterior"]
-  }
-
-  const container = document.getElementById("cardsContainer");
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -350,12 +353,12 @@
         `;
         container.appendChild(card);
       });
-
-
       btn.classList.add('ativa');
     });
   });
+
+  // Cliques iniciais 
+  botoescomp[0].dispatchEvent(new Event("click"));
   buttons[0].dispatchEvent(new Event("click"));
 </script>
-
 </html>
