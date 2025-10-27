@@ -424,3 +424,198 @@ footer .redes img:hover {
   transform: scale(1.1);
   filter: drop-shadow(0 0 8px #000000);
 }
+
+/* === RESPONSIVIDADE MOBILE === */
+@media (max-width: 768px) {
+
+  /* Header */
+  header {
+    padding: 20px 20px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .menu {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .menu li {
+    width: 100%;
+    text-align: left;
+  }
+
+  .logo img {
+    width: 140px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 100px 20px 60px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero p {
+    font-size: 16px;
+    max-width: 100%;
+  }
+
+  .btn-hero {
+    padding: 12px 25px;
+    font-size: 16px;
+  }
+
+  /* Benefícios */
+  .beneficios {
+    padding: 80px 20px;
+  }
+
+  .beneficios h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .cards {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
+
+  /* Processo */
+  .processo {
+    padding: 80px 20px;
+  }
+
+  .processo h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .etapas {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .etapa img {
+    height: 200px;
+  }
+
+  .etapa span {
+    font-size: 22px;
+  }
+
+  .etapa h4 {
+    font-size: 18px;
+  }
+
+  .etapa p {
+    font-size: 14px;
+    padding: 0 15px 20px;
+  }
+
+  /* Sobre */
+  .sobre {
+    padding: 80px 20px;
+  }
+
+  .sobre h2 {
+    font-size: 24px;
+  }
+
+  .sobre-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .sobre-content .texto {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .sobre-content img {
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  /* Depoimentos */
+  .depoimentos {
+    padding: 80px 20px;
+  }
+
+  .depoimentos h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .clientes {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
+
+  .cliente {
+    width: 100%;
+  }
+
+  /* Valores */
+  .valores {
+    padding: 80px 20px;
+  }
+
+  .valores h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .valores-itens {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .valores-itens div {
+    width: 100%;
+  }
+
+  /* Contato */
+  .contato {
+    padding: 80px 20px;
+  }
+
+  .contato h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .contato form {
+    width: 100%;
+  }
+
+  .contato input,
+  .contato textarea {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .contato button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 30px 20px;
+  }
+
+  footer .redes img {
+    width: 25px;
+    margin: 0 5px;
+  }
+}
