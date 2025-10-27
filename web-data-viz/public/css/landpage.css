@@ -149,6 +149,8 @@ header {
   padding: 120px 80px;
   text-align: center;
   background: rgb(3, 3, 3);
+  position: relative;
+  overflow: hidden;
 }
 
 .processo h2 {
@@ -171,6 +173,19 @@ header {
   transition: 0.3s;
 }
 
+.etapa::before {
+  content: "";
+  position: absolute;
+  right: 1000px;
+  top: 500px;
+  width: 400px;
+  height: 400px;
+  background: #4b6cf080;
+  filter: blur(180px);
+  opacity: 0.7;
+  z-index: 0;
+}
+
 .etapa:hover {
   box-shadow: 0 0 25px rgba(76, 111, 255, 0.3);
 }
@@ -179,6 +194,8 @@ header {
   width: 100%;
   height: 220px;
   object-fit: cover;
+  position: relative;
+  z-index: 1;
 }
 
 .etapa span {
@@ -208,6 +225,8 @@ header {
   align-items: center;
   gap: 60px;
   background: rgb(3, 3, 3);
+  position: relative;
+  overflow: hidden;
 }
 
 .sobre h2 {
@@ -220,6 +239,21 @@ header {
   align-items: center;
   gap: 60px;
   max-width: 1100px;
+  position: relative;
+  z-index: 1;
+}
+
+.sobre::before {
+  content: "";
+  position: absolute;
+  right: -150px;
+  top: 100px;
+  width: 400px;
+  height: 400px;
+  background: #4B6CF0;
+  filter: blur(180px);
+  opacity: 0.7;
+  z-index: 0;
 }
 
 .sobre-content .texto {
@@ -230,8 +264,8 @@ header {
 }
 
 .sobre-content img {
-  width: 40%;
-  border-radius: 10px;
+  width: 75%;
+  border-radius: 40px;
   box-shadow: 0 0 25px rgba(76, 111, 255, 0.2);
 }
 
@@ -255,7 +289,7 @@ header {
 }
 
 .cliente {
-  background: rgb(3, 3, 3);
+  background: rgb(255, 255, 255);
   border-radius: 12px;
   padding: 30px;
   width: 450px;
@@ -265,13 +299,13 @@ header {
 
 .cliente blockquote {
   font-size: 15px;
-  color: #cfcfcf;
+  color: #4b4b4b;
   margin-bottom: 15px;
 }
 
 .cliente cite {
   font-weight: 600;
-  color: #ffffff;
+  color: #4c6fff;
 }
 
 /* === VALORES === */
@@ -390,4 +424,3 @@ footer .redes img:hover {
   transform: scale(1.1);
   filter: drop-shadow(0 0 8px #000000);
 }
-
