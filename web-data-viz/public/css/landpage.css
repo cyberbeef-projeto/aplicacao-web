@@ -354,48 +354,108 @@ header {
 
 /* === CONTATO === */
 .contato {
-  padding: 120px 80px;
+  padding: 80px 60px;
   background: rgb(3, 3, 3);
-  text-align: center;
+
 }
 
 .contato h2 {
+  text-align: center;
   font-size: 28px;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
-.contato form {
+.contato-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contato-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  width: 500px;
-  margin: 0 auto 40px;
+  gap: 20px;
 }
 
-.contato input,
-.contato textarea {
-  background: rgb(3, 3, 3);
-  border: 1px solid #333;
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.contato-form input,
+.contato-form textarea {
+  background: #000000;
+  border: 1px solid #ffffff;
   color: #fff;
-  padding: 12px 16px;
-  border-radius: 6px;
-  font-size: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: inherit;
 }
 
-.contato button {
-  background: #4c6fff;
+.contato-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.submit-btn {
+  background: #4B6CF0;
+  color: #fff;
+  padding: 15px 30px;
   border: none;
-  color: #fff;
-  padding: 14px;
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 14px;
+  transition: background 0.3s;
+  width: fit-content;
 }
 
-.contato button:hover {
-  box-shadow: 0 0 20px #4c6fff;
+.submit-btn:hover {
+  background: #3557dd;
+}
+
+.contato-image {
+  background-image: url("https://img.freepik.com/fotos-premium/contato-da-pagina-do-site-da-empresa-empresario-tocando-em-contato-conosco-icones-para-atendimento-ao-cliente-incluem-telefone-endereco-e-e-mail-e-mensagem-por-renderizacao-3d_50039-2828.jpg");
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  box-shadow: 5px 5px 0px #4B6CF0;
+}
+
+.contato-banner {
+  background: #2D323E;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 60px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contato-banner h3 {
+  font-size: 20px;
+}
+
+.contato-banner-btn {
+  background: #4B6CF0;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.contato-banner-btn:hover {
+  background: #3557dd;
 }
 
 /* === FOOTER === */

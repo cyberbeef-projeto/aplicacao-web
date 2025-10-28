@@ -428,7 +428,7 @@
 .back-btn:hover {
   background: #4B6CF0;
   transform: translateY(-2px);
-  box-shadow:  0 0 12px rgba(75, 108, 240, 0.6);
+  box-shadow: 0 8px 20px rgba(46, 229, 157, 0.6);
 }
 
 @media screen and (max-width: 768px) {
