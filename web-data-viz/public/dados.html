@@ -8,6 +8,7 @@
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/paginasCRUD.css">
   <link rel="icon" href="assets/icon/chip.png">
+  <script src="./js/sessao.js"></script>
 </head>
 
 <body>
@@ -84,13 +85,13 @@
       <span style="display: flex; align-items: center; flex-wrap: nowrap; gap: 1%;">
         <h3 id="modalTitle">Novo Registro</h3>
         <i class='bxr bx-help-circle info' data-title="Sobre Níveis de Permissão:
-          1 - Básico  = Visualizar somente os Painéis;
-          2 - Médio = Visualizar a todos os dados;
-          3 - Alto = Visualizar e editar todos os dados.
+          2 - Básico  = Visualizar somente os Painéis;
+          1 - Alto = Visualizar e editar todos os dados.
           Sobre Senhas: 
           Quando um novo usuário é criado ou a senha é editada por um administrador, por segurança, será solicitado ao usuário que teve a senha alterada uma nova senha no momento de login.
 ">
-        </i>
+        </i> 
+        <!-- 2 - Médio = Visualizar a todos os dados; -->
       </span>
       <div class="modal-body" id="modalBody"></div>
       <div style="display:flex;gap:1%;justify-content:flex-end;margin-top:1.5%">
@@ -115,8 +116,7 @@
       user: [
         { key: 'nome', label: 'Nome', type: 'text' },
         { key: 'email', label: 'E-mail', type: 'email' },
-        { key: 'permissao', label: 'Nível de Permissão', type: 'select', options: ['1 - Básico', '2 - Médio', '3 - Alto'] },
-        { key: 'cargo', label: 'Cargo', type: 'email' },
+        { key: 'permissaoUsuario', label: 'Nível de Permissão', type: 'select', options: ['2 - Básico', '1 - Alto'] }, // '2 - Médio'
         { key: 'senha', label: 'Senha', type: 'password' }
       ],
       maquina: [
@@ -179,6 +179,40 @@
       });
     }
 
+    function criarRegistro(registro) {
+      fetch("/crud/criarUsuario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: sessionStorage.TOKEN_EMPRESA,
+          ...registro
+        })
+      }).then(function (resposta) {
+
+        if (resposta.ok) {
+          console.log(resposta);
+
+          resposta.json().then(json => {
+            console.log(json);
+
+          });
+
+        } else {
+
+          console.log("Houve um erro ao tentar exibir os usuários");
+
+          resposta.text().then(texto => {
+            console.error(texto);
+          });
+        }
+
+      }).catch(function (erro) {
+        console.log(erro);
+      })
+    }
+
     function openModal(title, index = -1) {
       editingIndex = index;
       modalTitle.textContent = title;
@@ -205,15 +239,16 @@
       const inputs = modalBody.querySelectorAll('[data-key]');
       const obj = {};
       inputs.forEach(i => obj[i.dataset.key] = i.value);
+      if (obj['permissaoUsuario']) obj['permissaoUsuario'] = parseInt(obj['permissaoUsuario'][0]);
+      console.log(obj);
+      criarRegistro(obj);
+      if (obj['senha']) obj['senha'] = '*********';
       if (editingIndex >= 0) store[editingIndex] = obj; else store.push(obj);
       modalBackdrop.style.display = 'none'; renderTable();
     };
 
     dados = {
-      user: [
-        { nome: 'Ana', email: 'ana@ex.com', permissao: '1 - Básico', cargo: 'Analista de Segurança', senha: '***********' },
-        { nome: 'Marco', email: 'marco@ex.com', permissao: '3 - Alto', cargo: 'Chefe de Segurança', senha: '***********' }
-      ],
+      user: [],
       maquina: [
         { nome: 'Máquina 1', ultimaCap: '16/10/2025' },
         { nome: 'Máquina 2', ultimaCap: '16/10/2025' },
@@ -231,8 +266,49 @@
         { data: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%' }
       ]
     }
-    store = dados[tipoDados]
-    renderTable();
+
+
+    let store = [];
+
+    //fetch temporário com apenas user (mudar)
+    if (tipoDados == "user") {
+      fetch("/crud/usuarios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tokenEmpresa: sessionStorage.TOKEN_EMPRESA
+        })
+      }).then(function (resposta) {
+
+        if (resposta.ok) {
+          console.log(resposta);
+
+          resposta.json().then(json => {
+            console.log(json);
+            dados['user'] = json;
+            store = dados[tipoDados]
+            renderTable();
+          });
+
+        } else {
+
+          console.log("Houve um erro ao tentar exibir os usuários");
+
+          resposta.text().then(texto => {
+            console.error(texto);
+          });
+        }
+
+      }).catch(function (erro) {
+        console.log(erro);
+      })
+    } else {
+      store = dados[tipoDados]
+      renderTable();
+    }
+
   </script>
 </body>
 

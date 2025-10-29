@@ -34,7 +34,7 @@ function entrar(event) {
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.TOKEN_EMPRESA = json.tokenEmpresa;
+                    sessionStorage.TOKEN_EMPRESA = json.token;
                     sessionStorage.PERMISSAO_USUARIO = json.permissaoUsuario;
                     
                     setTimeout(function () {
