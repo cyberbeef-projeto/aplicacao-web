@@ -434,8 +434,8 @@ body::before {
 
 .dados {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8vw 1vw;
+    grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+    gap: 0.4vw 0.5vw;
 }
 
 .dado-item {

@@ -172,9 +172,11 @@
   function montarGrafico({ id, tipo, dados, labels, titulo = "", xylabels = [] }) {
     const ctx = document.getElementById(id).getContext("2d");
 
+
     if (graficosAtivos[id]) {
       graficosAtivos[id].destroy();
     }
+
 
     const ehHistograma = tipo === "histograma";
 
@@ -361,4 +363,5 @@
   botoescomp[0].dispatchEvent(new Event("click"));
   buttons[0].dispatchEvent(new Event("click"));
 </script>
+
 </html>
