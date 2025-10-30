@@ -173,18 +173,18 @@ header {
   transition: 0.3s;
 }
 
-.etapa::before {
+/* .etapa::before {
   content: "";
   position: absolute;
-  right: 1000px;
-  top: 500px;
+  right: 1500px;
+  top: 900px;
   width: 400px;
   height: 400px;
-  background: #4b6cf080;
+  background: #4B6CF0;
   filter: blur(180px);
   opacity: 0.7;
   z-index: 0;
-}
+} */
 
 .etapa:hover {
   box-shadow: 0 0 25px rgba(76, 111, 255, 0.3);
@@ -233,6 +233,8 @@ header {
   font-size: 30px;
 }
 
+
+
 .sobre-content {
   display: flex;
   justify-content: space-between;
@@ -243,22 +245,22 @@ header {
   z-index: 1;
 }
 
-.sobre::before {
+/* .sobre::before {
   content: "";
   position: absolute;
-  right: -150px;
-  top: 100px;
-  width: 400px;
-  height: 400px;
+  right: 1300px;
+  top: 10px;
+  width: 1500px;
+  height: 1500px;
   background: #4B6CF0;
   filter: blur(180px);
   opacity: 0.7;
   z-index: 0;
-}
+} */
 
 .sobre-content .texto {
   width: 60%;
-  font-size: 16px;
+  font-size: 18px;
   color: #cfcfcf;
   line-height: 1.7;
 }
@@ -295,6 +297,19 @@ header {
   width: 450px;
   text-align: left;
   box-shadow: 0 0 10px rgba(76, 111, 255, 0.1);
+}
+
+.clientes::before {
+  content: "";
+  position: absolute;
+  right: 1300px;
+  top: 1500px;
+  width: 1500px;
+  height: 2500px;
+  background: #4B6CF0;
+  filter: blur(180px);
+  opacity: 0.7;
+  z-index: 0;
 }
 
 .cliente blockquote {
