@@ -310,7 +310,7 @@ header {
   right: 1300px;
   top: 1500px;
   width: 1500px;
-  height: 2500px;
+  height: 2700px;
   background: #4B6CF0;
   filter: blur(180px);
   opacity: 0.7;
@@ -346,20 +346,12 @@ header {
   font-size: 16px;
 }
 
-.valores-itens {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-}
-
-.valores-itens div {
-  width: 250px;
-}
 
 .valores-itens img {
   width: 70px;
   margin-bottom: 20px;
   filter: brightness(0) invert(1);
+  color: #4B6CF0;
 }
 
 .valores-itens h4 {
@@ -370,6 +362,26 @@ header {
 .valores-itens p {
   color: #cfcfcf;
   font-size: 15px;
+}
+.valores-itens {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+.valores-itens div {
+  width: 250px;
+  position: relative;
+}
+
+.valores-itens div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -30px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* === CONTATO === */
