@@ -197,14 +197,14 @@ const m1kpi4Disco = [
 const m1kpi1Rede = [
     {
         titulo: "Captura",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "2000MB" }, { nome: "Recebido", valor: "1500MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "2000MB" }, { nome: "Recebido", valor: "1990MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
     }
 ]
 
 const m1kpi2Rede = [
     {
         titulo: "Último Alerta",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "2000MB" }, { nome: "Recebido", valor: "500MB" }, { nome: "Data", valor: "05/10/2025 13:00" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "2000MB" }, { nome: "Recebido", valor: "1500MB" }, { nome: "Data", valor: "05/10/2025 13:00" }]
     }
 ]
 const m1kpi3Rede = m1kpi2Rede
@@ -212,7 +212,7 @@ const m1kpi3Rede = m1kpi2Rede
 const m1kpi4Rede = [
     {
         titulo: "Captura",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "2000MB" }, { nome: "Recebido", valor: "1500MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "2000MB" }, { nome: "Recebido", valor: "1990MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
     }
 ]
 
@@ -326,14 +326,14 @@ const m2kpi4Disco = [
 const m2kpi1Rede = [
     {
         titulo: "Captura",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "1000MB" }, { nome: "Recebido", valor: "900MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "1000MB" }, { nome: "Recebido", valor: "990MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
     }
 ]
 
 const m2kpi2Rede = [
     {
         titulo: "Último Alerta",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "900MB" }, { nome: "Recebido", valor: "50MB" }, { nome: "Data", valor: "05/10/2025 13:00" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "900MB" }, { nome: "Recebido", valor: "800MB" }, { nome: "Data", valor: "05/10/2025 13:00" }]
     }
 ]
 const m2kpi3Rede = m2kpi2Rede
@@ -341,7 +341,7 @@ const m2kpi3Rede = m2kpi2Rede
 const m2kpi4Rede = [
     {
         titulo: "Captura",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "1000MB" }, { nome: "Recebido", valor: "900MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "1000MB" }, { nome: "Recebido", valor: "990MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
     }
 ]
 
@@ -458,14 +458,14 @@ const m3kpi4Disco = [
 const m3kpi1Rede = [
     {
         titulo: "Captura",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "864MB" }, { nome: "Recebido", valor: "800MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "900MB" }, { nome: "Recebido", valor: "890MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
     }
 ]
 
 const m3kpi2Rede = [
     {
         titulo: "Último Alerta",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "902MB" }, { nome: "Recebido", valor: "100MB" }, { nome: "Data", valor: "07/10/2025 14:00" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "900MB" }, { nome: "Recebido", valor: "675MB" }, { nome: "Data", valor: "07/10/2025 14:00" }]
     }
 ]
 const m3kpi3Rede = m3kpi2Rede
@@ -473,12 +473,12 @@ const m3kpi3Rede = m3kpi2Rede
 const m3kpi4Rede = [
     {
         titulo: "Captura",
-        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "864MB" }, { nome: "Recebido", valor: "800MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
+        dados: [{ nome: "Componente", valor: "Rede" }, { nome: "Enviado", valor: "900MB" }, { nome: "Recebido", valor: "890MB" }, { nome: "Data", valor: "16/10/2025 13:12" }]
     }
 ]
 
 
-function gerarListaComSeed(min, max, seed) {
+function gerarListaComSeed(min, max, seed, num) {
   const lista = [];
   let valorSeed = seed;
 
@@ -487,7 +487,7 @@ function gerarListaComSeed(min, max, seed) {
     return valorSeed / 233280; 
   }
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < num; i++) {
     const valor = randomSeeded() * (max - min) + min;
     lista.push(Number(valor.toFixed(2)));
   }
@@ -526,7 +526,7 @@ let dados = [
                 kpi3: [30, "N", m1kpi3Cpu],
                 kpi4: ["5%", -1, m1kpi4Cpu],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 1), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 1, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             ram: {
                 kpi1: ["75%", -10, m1kpi1Ram],
@@ -534,7 +534,7 @@ let dados = [
                 kpi3: [10, "N", m1kpi3Ram],
                 kpi4: ["10%", 0, m1kpi4Ram],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 2), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 2, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             disco: {
                 kpi1: ["89%", 7, m1kpi1Disco],
@@ -542,15 +542,15 @@ let dados = [
                 kpi3: [2, "N", m1kpi3Disco],
                 kpi4: ["1%", 0, m1kpi4Disco],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 3), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 3, 47).concat([90, 91, 91]), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             rede: {
                 kpi1: ["2000MB", "N", m1kpi1Rede],
                 kpi2: [0, 0, m1kpi2Rede],
                 kpi3: [11, "N", m1kpi3Rede],
-                kpi4: ["25%", -5, m1kpi4Rede],
+                kpi4: ["1%", "N", m1kpi4Rede],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 25, 4), titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 1, 4, 50), titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }
             },
         }
     },
@@ -571,7 +571,7 @@ let dados = [
                 kpi3: [2, "N", m2kpi3Cpu],
                 kpi4: ["20%", 10, m2kpi4Cpu],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 1, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 5), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 5, 49).concat([99]), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             ram: {
                 kpi1: ["70%", -10, m2kpi1Ram],
@@ -579,7 +579,7 @@ let dados = [
                 kpi3: [15, "N", m2kpi3Ram],
                 kpi4: ["10%", -3, m2kpi4Ram],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 6), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 6, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             disco: {
                 kpi1: ["80%", -7, m2kpi1Disco],
@@ -587,15 +587,15 @@ let dados = [
                 kpi3: [9, "N", m2kpi3Disco],
                 kpi4: ["1%", 0, m2kpi4Disco],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 7), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 7, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             rede: {
                 kpi1: ["1000MB", "N", m2kpi1Rede],
                 kpi2: [0, 1, m2kpi2Rede],
                 kpi3: [11, "N", m2kpi3Rede],
-                kpi4: ["10%", -1, m2kpi4Rede],
+                kpi4: ["1%", -1, m2kpi4Rede],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 25, 8), titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 1, 8, 50), titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }
             },
         }
     },
@@ -616,7 +616,7 @@ let dados = [
                 kpi3: [1, "N", m3kpi3Cpu],
                 kpi4: ["5%", -1, m3kpi4Cpu],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 1, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 9), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 9, 49).concat([99]), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             ram: {
                 kpi1: ["80%", 10, m3kpi1Ram],
@@ -624,7 +624,7 @@ let dados = [
                 kpi3: [8, "N", m3kpi3Ram],
                 kpi4: ["10%", 0, m3kpi4Ram],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 10), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 84, 10, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             disco: {
                 kpi1: ["79%", -1, m3kpi1Disco],
@@ -632,13 +632,13 @@ let dados = [
                 kpi3: [8, "N", m3kpi3Disco],
                 kpi4: ["1%", 0, m3kpi4Disco],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
-                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 100, 11), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+                grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 1, 11, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             rede: {
                 kpi1: ["864MB", "N", m3kpi1Rede],
                 kpi2: [0, -1, m3kpi2Rede],
                 kpi3: [9, "N", m3kpi3Rede],
-                kpi4: ["20%", -5, m3kpi4Rede],
+                kpi4: ["1%", -5, m3kpi4Rede],
                 grafico1: { id: "grafico1", tipo: "line", dados: [0, 0, 0, 0, 0, 0, 0], labels: ["10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10"], titulo: "Alertas (últimos 7 dias)", xylabels: ["Alertas", "N° Alertas"] },
                 grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 25, 12), titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }
             },

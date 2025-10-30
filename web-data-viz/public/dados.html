@@ -46,27 +46,27 @@
         <h3 style="display: block; align-self: flex-start;">Métricas Alertas</h3>
         <span>
           <h3>CPU</h3>
-          <p>Alerta Critico - &gt;80%</p>
-          <p>Alerta Anormal - 85% ≤ x ≤ 90%</p>
-          <p>Normal - &lt; 60%</p>
+          <p>Alerta Critico: &gt; 90%</p>
+          <p>Alerta Anormal: 85% ≤ x ≤ 90%</p>
+          <p>Normal: &lt; 85%</p>
         </span>
         <span>
           <h3>RAM</h3>
-          <p>Alerta Critico - &gt;90%</p>
-          <p>Alerta Anormal - 60% ≤ x ≤ 80%</p>
-          <p>Normal - &lt; 70%</p>
+          <p>Alerta Critico: &gt; 90%</p>
+          <p>Alerta Anormal: 85% ≤ x ≤ 90%</p>
+          <p>Normal: &lt; 85%</p>
         </span>
         <span>
           <h3>Disco</h3>
-          <p>Alerta Critico - &gt;90%</p>
-          <p>Alerta Anormal - 70% ≤ x ≤ 90%</p>
-          <p>Normal - &lt; 70%</p>
+          <p>Alerta Critico: &gt; 90%</p>
+          <p>Alerta Anormal: 85% ≤ x ≤ 90%</p>
+          <p>Normal: &lt; 85%</p>
         </span>
         <span>
           <h3>Perda de Pacotes</h3>
-          <p>Alerta Critico - &lt; 5%</p>
-          <p>Alerta Anormal - 2% ≤ x ≤ 5%</p>
-          <p>Normal - &gt; 5%</p>
+          <p>Alerta Critico: &gt; 5%</p>
+          <p>Alerta Anormal: 2% ≤ x ≤ 5%</p>
+          <p>Normal: &lt; 2%</p>
         </span>
       </div>
       <h3 style="align-self: flex-start; margin-bottom: 1%;">Registros</h3>
@@ -259,10 +259,10 @@
         { nome: 'Setor 2', numMaq: '1' }
       ],
       alerta: [
-        { data: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '90%' },
+        { data: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Anormal', dado: '90%' },
         { data: '14/10/2025 14:43', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
         { data: '14/10/2025 16:44', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
-        { data: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '91%' },
+        { data: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '99%' },
         { data: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%' }
       ]
     }

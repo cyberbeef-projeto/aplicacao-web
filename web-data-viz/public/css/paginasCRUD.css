@@ -243,6 +243,10 @@ header h1 {
     margin-bottom: 3%;
 }
 
+#metricas span:hover {
+    background: rgba(255, 255, 255, 0.02)
+}
+
 .list-panel span {
     display: flex;
     flex-direction: column;
