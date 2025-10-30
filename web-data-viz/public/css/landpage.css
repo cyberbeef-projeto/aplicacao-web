@@ -85,6 +85,7 @@ header {
   font-size: 18px;
   font-weight: 600;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .btn-hero:hover {
@@ -111,6 +112,7 @@ header {
   justify-content: center;
   gap: 60px;
   flex-wrap: wrap;
+ border: 16px;
 }
 
 .card {
@@ -120,6 +122,7 @@ header {
   padding: 40px 25px;
   width: 280px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 5px 5px 0px #4B6CF0;
 }
 
 .card:hover {
@@ -166,11 +169,13 @@ header {
 }
 
 .etapa {
-  background: rgb(3, 3, 3);
+  background: #030814;
   border-radius: 12px;
   overflow: hidden;
   max-width: 480px;
   transition: 0.3s;
+  box-shadow: 5px 5px 0px #4B6CF0;
+  
 }
 
 /* .etapa::before {
