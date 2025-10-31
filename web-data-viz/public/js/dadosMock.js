@@ -9,7 +9,7 @@ const allKpi1 = [
     },
     {
         titulo: "Máquina 3 - Últimas Capturas",
-        dados: [{ nome: "CPU", valor: "50%" }, { nome: "RAM", valor: "90%" }, { nome: "DISCO", valor: "89%" }, { nome: "Dados Enviados", valor: "864MB" },],
+        dados: [{ nome: "CPU", valor: "50%" }, { nome: "RAM", valor: "90%" }, { nome: "DISCO", valor: "89%" }, { nome: "Dados Enviados", valor: "900MB" },],
     }
 ];
 
@@ -635,7 +635,7 @@ let dados = [
                 grafico2: { id: "grafico2", tipo: "histograma", dados: gerarListaComSeed(0, 1, 11, 50), titulo: "Histograma de dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
             },
             rede: {
-                kpi1: ["864MB", "N", m3kpi1Rede],
+                kpi1: ["900MB", "N", m3kpi1Rede],
                 kpi2: [0, -1, m3kpi2Rede],
                 kpi3: [9, "N", m3kpi3Rede],
                 kpi4: ["1%", -5, m3kpi4Rede],
