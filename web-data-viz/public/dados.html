@@ -8,10 +8,10 @@
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/paginasCRUD.css">
   <link rel="icon" href="assets/icon/chip.png">
-  <script src="./js/sessao.js"></script>
+  <!-- <script src="./js/sessao.js"></script> -->
 </head>
 
-<body>
+<body onload="validarSessao()">
   <header class="">
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
       onclick="atualizarBarraLateral()"></button>
@@ -50,25 +50,25 @@
         <span>
           <h3>CPU</h3>
           <p>Alerta Critico: &gt; 90%</p>
-          <p>Alerta Anormal: 85% ≤ x ≤ 90%</p>
+          <p>Alerta Anormal: 85% ≥ x ≤ 90%</p>
           <p>Normal: &lt; 85%</p>
         </span>
         <span>
           <h3>RAM</h3>
           <p>Alerta Critico: &gt; 90%</p>
-          <p>Alerta Anormal: 85% ≤ x ≤ 90%</p>
+          <p>Alerta Anormal: 85% ≥ x ≤ 90%</p>
           <p>Normal: &lt; 85%</p>
         </span>
         <span>
           <h3>Disco</h3>
           <p>Alerta Critico: &gt; 90%</p>
-          <p>Alerta Anormal: 85% ≤ x ≤ 90%</p>
+          <p>Alerta Anormal: 85% ≥ x ≤ 90%</p>
           <p>Normal: &lt; 85%</p>
         </span>
         <span>
           <h3>Perda de Pacotes</h3>
           <p>Alerta Critico: &gt; 10%</p>
-          <p>Alerta Anormal: 2,5% ≤ x ≤ 5%</p>
+          <p>Alerta Anormal: 2,5% ≥ x ≤ 5%</p>
           <p>Normal: &lt; 2,5%</p>
         </span>
       </div>

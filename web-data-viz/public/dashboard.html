@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/estiloDashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="assets/icon/chip.png">
-  <script src="./js/sessao.js"></script>
+  <!-- <script src="./js/sessao.js"></script> -->
   <script src="./js/dadosMock.js"></script>
   <title>Dados - CyberBeef</title>
 </head>
@@ -21,24 +21,24 @@
       <p>TODAS AS MÁQUINAS</p>
 
       <button id="dash_todas_maquinas" style="display: none;" class="" data-comp="geral"
-        data-kpi1="Máquinas monitoradas" data-kpi2="Alertas (últimos 7 dias)" data-kpi3="Dias sem alertas"
+        data-kpi1="Máquina(s) monitoradas" data-kpi2="Alerta(s) (últimos 7 dias)" data-kpi3="Dia(s) sem alertas"
         data-kpi4="Máquina com mais alertas (últimos 7 dias)">GERAL</button>
 
-      <button data-comp="geral" class="" data-comp="geral" data-kpi1="Setores monitorados"
-        data-kpi2="Alertas (últimos 7 dias)" data-kpi3="Dias sem alertas"
+      <button data-comp="geral" class="" data-comp="geral" data-kpi1="Setore(s) monitorados"
+        data-kpi2="Alerta(s) (últimos 7 dias)" data-kpi3="Dia(s) sem alertas"
         data-kpi4="Componente com mais alertas (últimos 7 dias)">GERAL</button>
 
-      <button data-comp="cpu" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Dias sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">CPU</button>
+      <button data-comp="cpu" data-kpi1="Última medição de uso" data-kpi2="Alerta(s) (últimos 7 dias)"
+        data-kpi3="Dia(s) sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">CPU</button>
 
-      <button data-comp="ram" value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Dias sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">RAM</button>
+      <button data-comp="ram" value="dash_ram" data-kpi1="Última medição de uso" data-kpi2="Alerta(s) (últimos 7 dias)"
+        data-kpi3="Dia(s) sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">RAM</button>
 
-      <button data-comp="disco" data-kpi1="Última medição de uso" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Dias sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">DISCO</button>
+      <button data-comp="disco" data-kpi1="Última medição de uso" data-kpi2="Alerta(s) (últimos 7 dias)"
+        data-kpi3="Dia(s) sem alertas" data-kpi4="Coeficiente de variação de uso (últimos 7 dias)">DISCO</button>
 
-      <button data-comp="rede" data-kpi1="Últimos dados enviados" data-kpi2="Alertas (últimos 7 dias)"
-        data-kpi3="Dias sem alertas" data-kpi4="Perda de pacotes (última captura)">REDE</button>
+      <button data-comp="rede" data-kpi1="Últimos dados enviados" data-kpi2="Alerta(s) (últimos 7 dias)"
+        data-kpi3="Dia(s) sem alertas" data-kpi4="Perda de pacotes (última captura)">REDE</button>
     </span>
     </div>
     <nav id="buts_superiores">
@@ -86,13 +86,13 @@
 
         <button data-aba="2" class="kpi interativo">
           <b id="kpi2" class="dado_card">KPI2</b>
-          <p id="kpi2_desc">Alertas (últimos 7 dias)</p>
+          <p id="kpi2_desc">Alerta(s) (últimos 7 dias)</p>
           <i id="kpi2_result" class="text_longo" onclick="">[...]</i>
         </button>
 
         <button data-aba="3" class="kpi interativo">
           <b id="kpi3" class="dado_card">KPI3</b>
-          <p id="kpi3_desc">Dias sem alertas</p>
+          <p id="kpi3_desc">Dia(s) sem alertas</p>
           <i id="kpi3_result" class="text_longo" id="compKpi3" onclick="">[...]</i>
         </button>
 
@@ -104,7 +104,7 @@
       </span>
 
       <div id="aba_conteudo" class="interativo">
-        <h2 id="titulo-conteudo">[...]</h2>
+        <p id="titulo-conteudo">Mais Detalhes</p>
         <div id="cardsContainer"></div>
       </div>
 
@@ -328,10 +328,27 @@
     });
   });
 
+  //Modificar essa função no futuro 
+  function colorirDado(dado) {
+    let color = "#ffff";
+    const num = dado.valor.replace(/[^0-9]/g, ''); 
+    if (dado.nome == "Perda de Pacotes"){
+      if (num > 5) color = "#E94F37";
+      else if (num >= 2.5) color = "#FFD447";
+      else color = "#6EEB83";
+    } 
+    if (dado.nome == "CPU" || dado.nome == "RAM" || dado.nome == "DISCO" || dado.nome == "Uso") {
+      if (num > 90) color = "#E94F37";
+      else if (num >= 85) color = "#FFD447";
+      else color = "#6EEB83";
+    }
+    // Questão da Data e Hora
+    return `<span class="dado-valor" style="color: ${color};">${dado.valor}</span>`;
+  }
+
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       buttons.forEach(b => b.classList.remove('ativa'));
-      document.getElementById('titulo-conteudo').textContent = btn.querySelector('p').textContent;
       var conteudo = componente[btn.querySelector('b').id][2];
       container.innerHTML = "";
 
@@ -348,7 +365,7 @@
               (d) => `
               <div class="dado-item">
                 <span class="dado-nome">${d.nome}</span>
-                <span class="dado-valor">${d.valor}</span>
+                ${colorirDado(d)}
               </div>
             `
             )

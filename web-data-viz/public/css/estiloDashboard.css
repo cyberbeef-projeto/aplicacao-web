@@ -397,8 +397,8 @@ body::before {
 
 #titulo-conteudo {
     margin: 0 0 1.5vw;
-    font-size: 1.6em;
-    font-weight: 600;
+    font-size: 1.2em;
+    font-weight: 500;
     color: #ffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 0.5vw;
@@ -453,7 +453,7 @@ body::before {
 }
 
 .dado-valor {
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: 600;
     color: #dbe4ff;
 }
