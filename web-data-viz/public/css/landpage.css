@@ -36,7 +36,7 @@ header {
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.041);
   backdrop-filter: blur(10px);
   z-index: 1000;
 }
@@ -348,6 +348,26 @@ body {
   color: #4c6fff;
 }
 
+.clientes .cliente {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform, box-shadow;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.clientes .cliente:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 24px 50px rgba(11, 22, 40, 0.6);
+}
+
+.clientes .cliente img {
+  transition: transform 0.28s ease, filter 0.28s ease;
+}
+.clientes .cliente:hover img {
+  transform: translateY(-4px);
+  filter: drop-shadow(0 6px 14px rgba(76, 111, 240, 0.12));
+}
+
 /* === VALORES === */
 .valores {
   padding: 120px 80px;
@@ -402,6 +422,26 @@ body {
   bottom: 0;
   width: 1px;
   background: rgba(255, 255, 255, 0.2);
+}
+
+.valores-itens > div {
+  transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+  will-change: transform, box-shadow;
+  border-radius: 12px;
+  padding: 18px 14px;
+  background: transparent;
+}
+
+.valores-itens > div:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(11, 22, 40, 0.6);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.valores-itens > div img,
+.valores-itens > div h4,
+.valores-itens > div p {
+  transition: transform 0.28s ease;
 }
 
 /* === CONTATO === */
@@ -670,6 +710,41 @@ footer .redes img:hover {
   .cliente {
     width: 100%;
   }
+
+  .clientes .cliente {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform, box-shadow;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.clientes .cliente:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 24px 50px rgba(11, 22, 40, 0.6);
+}
+
+.clientes .cliente img {
+  transition: transform 0.28s ease, filter 0.28s ease;
+}
+.clientes .cliente:hover img {
+  transform: translateY(-4px);
+  filter: drop-shadow(0 6px 14px rgba(76, 111, 240, 0.12));
+}
+
+@media (hover: none), (pointer: coarse) {
+  .valores-itens > div:hover,
+  .clientes .cliente:hover {
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .clientes .cliente img,
+  .valores-itens > div img {
+    transform: none;
+    filter: none;
+  }
+}
 
   /* Valores */
   .valores {
