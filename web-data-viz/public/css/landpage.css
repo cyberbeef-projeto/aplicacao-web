@@ -27,9 +27,29 @@ header {
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 40px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  margin: 0;
+  padding-top: 80px;
+  font-family: Arial, sans-serif;
 }
 
 .logo img {
@@ -523,12 +543,6 @@ footer .redes img:hover {
   /* Header */
   header {
     padding: 20px 20px;
-  }
-
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
   }
 
   .menu {
