@@ -118,7 +118,7 @@ body {
 .beneficios {
   padding: 120px 80px;
   text-align: center;
-  background: rgb(3, 3, 3);
+  background: rgba(3, 3, 3, 0.363);
 }
 
 .beneficios h2 {
@@ -136,7 +136,7 @@ body {
 }
 
 .card {
-  background: rgb(3, 3, 3);
+  background: rgba(3, 3, 3, 0.308);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 40px 25px;
@@ -189,12 +189,12 @@ body {
 }
 
 .etapa {
-  background: transparent;
+  background: rgba(34, 34, 34, 0.158);
   border-radius: 12px;
   overflow: hidden;
   max-width: 480px;
   transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
-  box-shadow: 5px 5px 0px #4b6cf079;
+  box-shadow: 5px 5px 0px #4B6CF0;
   will-change: transform, box-shadow;
 }
 
@@ -245,7 +245,7 @@ body {
 
 .etapa:hover span {
   transform: translateY(-4px);
-  color: #6f8cff60;
+  color: #6f8cff;
 }
 
 .etapa:hover h4 {
@@ -341,13 +341,13 @@ body {
 .clientes::before {
   content: "";
   position: absolute;
-  right: 1300px;
-  top: 1500px;
-  width: 1500px;
-  height: 2700px;
+  right: 600px;
+  top: 400px;
+  width: 800px;
+  height: 1200px;
   background: #4B6CF0;
-  filter: blur(180px);
-  opacity: 0.7;
+  filter: blur(120px);
+  opacity: 0.3;
   z-index: 0;
 }
 
@@ -816,6 +816,8 @@ footer .redes img:hover {
   }
 }
 
+
+/* === NAVBAR RESPONSIVA === */
 .navbar {
   position: fixed;
   top: 0;
@@ -849,9 +851,10 @@ footer .redes img:hover {
 }
 
 .menu li a:hover {
-  color: #00d09c;
+  color: #0061d0;
 }
 
+/* === MENU HAMBURGUER === */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -869,6 +872,7 @@ footer .redes img:hover {
   transition: all 0.3s ease;
 }
 
+/* === MOBILE === */
 @media (max-width: 900px) {
   .menu {
     position: fixed;
@@ -936,4 +940,15 @@ footer .redes img:hover {
   .menu-toggle.active span:nth-child(3) {
     transform: rotate(-45deg) translate(6px, -6px);
   }
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 5px 5px 0px #4B6CF0, 0 0 25px rgba(76, 111, 255, 0.3);
 }
