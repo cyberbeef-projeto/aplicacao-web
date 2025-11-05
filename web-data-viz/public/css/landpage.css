@@ -189,30 +189,19 @@ body {
 }
 
 .etapa {
-  background: #030814;
+  background: transparent;
   border-radius: 12px;
   overflow: hidden;
   max-width: 480px;
-  transition: 0.3s;
-  box-shadow: 5px 5px 0px #4B6CF0;
-  
+  transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+  box-shadow: 5px 5px 0px #4b6cf079;
+  will-change: transform, box-shadow;
 }
 
-/* .etapa::before {
-  content: "";
-  position: absolute;
-  right: 1500px;
-  top: 900px;
-  width: 400px;
-  height: 400px;
-  background: #4B6CF0;
-  filter: blur(180px);
-  opacity: 0.7;
-  z-index: 0;
-} */
-
 .etapa:hover {
-  box-shadow: 0 0 25px rgba(76, 111, 255, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(11, 22, 40, 0.6);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .etapa img {
@@ -221,6 +210,17 @@ body {
   object-fit: cover;
   position: relative;
   z-index: 1;
+  transition: transform 0.28s ease;
+}
+
+.etapa:hover img {
+  transform: scale(1.03);
+}
+
+.etapa span,
+.etapa h4,
+.etapa p {
+  transition: transform 0.28s ease, color 0.28s ease;
 }
 
 .etapa span {
@@ -234,12 +234,26 @@ body {
 .etapa h4 {
   font-size: 20px;
   margin: 15px 0;
+  color: #ffffff;
 }
 
 .etapa p {
   font-size: 15px;
   padding: 0 20px 30px;
   color: #cfcfcf;
+}
+
+.etapa:hover span {
+  transform: translateY(-4px);
+  color: #6f8cff60;
+}
+
+.etapa:hover h4 {
+  color: #4c6fff;
+}
+
+.etapa:hover p {
+  color: #dcdcdc;
 }
 
 /* === SOBRE === */
@@ -732,6 +746,7 @@ footer .redes img:hover {
 }
 
 @media (hover: none), (pointer: coarse) {
+  
   .valores-itens > div:hover,
   .clientes .cliente:hover {
     transform: none;
@@ -798,5 +813,127 @@ footer .redes img:hover {
   footer .redes img {
     width: 25px;
     margin: 0 5px;
+  }
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+  background-color: transparent;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: 100;
+}
+
+.navbar.scrolled {
+  background-color: #1a1a1a80;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.menu li a:hover {
+  color: #00d09c;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  background: white;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 900px) {
+  .menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(8px);
+    width: 100%;
+    height: 100vh;
+    transition: right 0.4s ease;
+    gap: 40px;
+    padding: 0;
+  }
+
+  .menu.active {
+    right: 0;
+  }
+
+  .menu li {
+    list-style: none;
+    text-align: center;
+  }
+
+  .menu li a {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .menu li a:hover {
+    color: #00d09c;
+  }
+
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 110;
+  }
+
+  .menu-toggle span {
+    background: white;
+    height: 3px;
+    width: 100%;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  .menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
   }
 }
