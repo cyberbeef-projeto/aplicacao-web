@@ -8,7 +8,7 @@
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/paginasCRUD.css">
   <link rel="icon" href="assets/icon/chip.png">
-  <script src="./js/sessao.js"></script>
+  <!-- <script src="./js/sessao.js"></script> -->
 </head>
 
 <body onload="validarSessao()">
@@ -34,7 +34,7 @@
       <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
-      <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Úsuarios">Usuários</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Usuários">Usuários</a></li>
       <span onclick="limparSessao()" style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;" class="clicavel clicado" title="Clique para sair de sua conta">
         <i  class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
         <p>SAIR<p>
@@ -281,7 +281,7 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tokenEmpresa: sessionStorage.TOKEN_EMPRESA
+          id: sessionStorage.TOKEN_EMPRESA
         })
       }).then(function (resposta) {
 
@@ -296,9 +296,7 @@
           });
 
         } else {
-
           console.log("Houve um erro ao tentar exibir os usuários");
-
           resposta.text().then(texto => {
             console.error(texto);
           });

@@ -9,7 +9,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="assets/icon/chip.png">
   <!-- <script src="./js/sessao.js"></script> -->
-  <script src="./js/dadosMock.js"></script>
+  <!-- <script src="./js/dadosMock.js"></script> -->
+  <script src="./js/dados.js"></script>
   <title>Dados - CyberBeef</title>
 </head>
 
@@ -52,7 +53,8 @@
     <hr>
     <div id="usuario">
       <i class='bxr  bxs-user' style='color:#fffafa'></i>
-      <a id="b_usuario" class="texto_perfil" style=" max-width: 100%; overflow: hidden; text-overflow: ellipsis;">User</a>
+      <a id="b_usuario" class="texto_perfil"
+        style=" max-width: 100%; overflow: hidden; text-overflow: ellipsis;">User</a>
     </div>
     <hr>
     <div id="home" class="ops_home">
@@ -62,10 +64,13 @@
       <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
-      <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Úsuarios">Usuários</a></li>
-      <span onclick="limparSessao()" style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;" class="clicavel clicado" title="Clique para sair de sua conta">
-        <i  class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-        <p>SAIR<p>
+      <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Usuários">Usuários</a></li>
+      <span onclick="limparSessao()"
+        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
+        class="clicavel clicado" title="Clique para sair de sua conta">
+        <i class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+        <p>SAIR
+        <p>
       </span>
     </div>
   </div>
@@ -124,7 +129,6 @@
   Chart.defaults.font.size = 12;
 
   // Dados Mockados vindo de "./js/dadosMock.js"
-  let dashAtual = dados[0];
   let componente;
   const graficosAtivos = {};
 
@@ -146,16 +150,97 @@
   const contents = document.getElementById('aba_conteudo');
   const tituloContent = document.getElementById('titulo-conteudo');
 
-  for (let i = 0; i < dados.length; i++) {
-    dash = dados[i];
-    const nome = document.createElement("div");
-    nome.classList.add("item", "clicado");
+  trazerDadosDash().then(() => {
+    let dashAtual = dados[0];
+    console.log(JSON.stringify(dados))
+    for (let i = 0; i < dados.length; i++) {
+      dash = dados[i];
+      const nome = document.createElement("div");
+      nome.classList.add("item", "clicado");
 
-    nome.innerHTML = `<button id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></button>`;
-    nomesDash.appendChild(nome);
-  }
+      nome.innerHTML = `<button id="${i}_dash" class="titulo_dash">${dash.dashboard}</a></button>`;
+      nomesDash.appendChild(nome);
+    }
+    const dashboards = document.querySelectorAll(".titulo_dash");
 
-  const dashboards = document.querySelectorAll(".titulo_dash");
+    dashboards.forEach(dash => {
+      dash.addEventListener('click', e => {
+        indexDash = (parseInt((dash.id).split("_")[0]))
+        dashAtual = dados[indexDash]
+        document.querySelectorAll("#sel_componentes p")[0].textContent = dashAtual.dashboard.toUpperCase();
+        if (indexDash != 0) {
+          botoescomp.forEach(botao => {
+            if (botao.id == "dash_todas_maquinas") botao.classList.remove('aparente');
+            else botao.classList.add('aparente')
+            botoescomp[1].dispatchEvent(new Event("click"));
+          })
+        }
+        else {
+          botoescomp.forEach(botao => {
+            if (botao.id == "dash_todas_maquinas") botao.classList.add('aparente');
+            else botao.classList.remove('aparente')
+            botoescomp[0].dispatchEvent(new Event("click"));
+          })
+        }
+        campo.value = dash.textContent;
+      })
+    });
+
+    botoescomp.forEach(botao => {
+      botao.addEventListener("click", () => {
+        botoescomp.forEach(b => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+        componente = dashAtual.recursos[botao.dataset['comp']];
+        montarGrafico(componente["grafico1"])
+        montarGrafico(componente["grafico2"])
+
+        for (let i = 0; i < 4; i++) {
+          const kpiDado = document.querySelector(`#kpi${i + 1}`)
+          const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
+          const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
+
+          kpiDado.textContent = componente[Object.keys(componente)[i]][0]
+          kpiDesc.textContent = botao.dataset[`kpi${i + 1}`];
+          const [color, text] = textoComparacao(componente[Object.keys(componente)[i]][1]);
+          kpiResult.style.color = color;
+          kpiResult.textContent = text;
+        }
+        buttons[0].dispatchEvent(new Event("click"));
+      });
+    });
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('ativa'));
+        var conteudo = componente[btn.querySelector('b').id][2];
+        container.innerHTML = "";
+
+        conteudo.forEach((bloco) => {
+          const card = document.createElement("div");
+
+          card.classList.add("card");
+
+          card.innerHTML = `
+        <h3>${bloco.titulo}</h3>
+        <div class="dados">
+          ${bloco.dados
+              .map(
+                (d) => `
+              <div class="dado-item">
+                <span class="dado-nome">${d.nome}</span>
+                ${colorirDado(d)}
+              </div>
+            `
+              )
+              .join("")}
+        </div>
+        `;
+          container.appendChild(card);
+        });
+        btn.classList.add('ativa');
+      });
+    });
+  });
 
   function atualizarBarraLateral() {
     barraLateral.classList.toggle('ativa');
@@ -282,61 +367,15 @@
     });
   });
 
-  dashboards.forEach(dash => {
-    dash.addEventListener('click', e => {
-      indexDash = (parseInt((dash.id).split("_")[0]))
-      dashAtual = dados[indexDash]
-      document.querySelectorAll("#sel_componentes p")[0].textContent = dashAtual.dashboard.toUpperCase();
-      if (indexDash != 0) {
-        botoescomp.forEach(botao => {
-          if (botao.id == "dash_todas_maquinas") botao.classList.remove('aparente');
-          else botao.classList.add('aparente')
-          botoescomp[1].dispatchEvent(new Event("click"));
-        })
-      }
-      else {
-        botoescomp.forEach(botao => {
-          if (botao.id == "dash_todas_maquinas") botao.classList.add('aparente');
-          else botao.classList.remove('aparente')
-          botoescomp[0].dispatchEvent(new Event("click"));
-        })
-      }
-      campo.value = dash.textContent;
-    })
-  });
-
-  botoescomp.forEach(botao => {
-    botao.addEventListener("click", () => {
-      botoescomp.forEach(b => b.classList.remove("ativo"));
-      botao.classList.add("ativo");
-      componente = dashAtual.recursos[botao.dataset['comp']];
-      montarGrafico(componente["grafico1"])
-      montarGrafico(componente["grafico2"])
-
-      for (let i = 0; i < 4; i++) {
-        const kpiDado = document.querySelector(`#kpi${i + 1}`)
-        const kpiDesc = document.querySelector(`#kpi${i + 1}_desc`);
-        const kpiResult = document.querySelector(`#kpi${i + 1}_result`);
-
-        kpiDado.textContent = componente[Object.keys(componente)[i]][0]
-        kpiDesc.textContent = botao.dataset[`kpi${i + 1}`];
-        const [color, text] = textoComparacao(componente[Object.keys(componente)[i]][1]);
-        kpiResult.style.color = color;
-        kpiResult.textContent = text;
-      }
-      buttons[0].dispatchEvent(new Event("click"));
-    });
-  });
-
   //Modificar essa função no futuro 
   function colorirDado(dado) {
     let color = "#ffff";
-    const num = dado.valor.replace(/[^0-9]/g, ''); 
-    if (dado.nome == "Perda de Pacotes"){
+    const num = dado.valor.replace(/[^0-9]/g, '');
+    if (dado.nome == "Perda de Pacotes") {
       if (num > 5) color = "#E94F37";
       else if (num >= 2.5) color = "#FFD447";
       else color = "#6EEB83";
-    } 
+    }
     if (dado.nome == "CPU" || dado.nome == "RAM" || dado.nome == "DISCO" || dado.nome == "Uso") {
       if (num > 90) color = "#E94F37";
       else if (num >= 85) color = "#FFD447";
@@ -345,38 +384,6 @@
     // Questão da Data e Hora
     return `<span class="dado-valor" style="color: ${color};">${dado.valor}</span>`;
   }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('ativa'));
-      var conteudo = componente[btn.querySelector('b').id][2];
-      container.innerHTML = "";
-
-      conteudo.forEach((bloco) => {
-        const card = document.createElement("div");
-
-        card.classList.add("card");
-
-        card.innerHTML = `
-        <h3>${bloco.titulo}</h3>
-        <div class="dados">
-          ${bloco.dados
-            .map(
-              (d) => `
-              <div class="dado-item">
-                <span class="dado-nome">${d.nome}</span>
-                ${colorirDado(d)}
-              </div>
-            `
-            )
-            .join("")}
-        </div>
-        `;
-        container.appendChild(card);
-      });
-      btn.classList.add('ativa');
-    });
-  });
 
   // Cliques iniciais 
   botoescomp[0].dispatchEvent(new Event("click"));
