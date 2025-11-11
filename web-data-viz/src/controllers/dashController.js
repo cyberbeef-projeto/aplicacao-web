@@ -8,6 +8,15 @@ function buscarMaquinas(req, res) {
   });
 }
 
+function buscarKpisTodas(req, res) {
+  var id = req.body.tokenEmpresa;
+
+  dashModel.buscarKpisTodas(id).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 module.exports = {
     buscarMaquinas,
+    buscarKpisTodas,
 };

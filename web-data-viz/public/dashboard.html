@@ -240,6 +240,9 @@
         btn.classList.add('ativa');
       });
     });
+    // Cliques iniciais
+    botoescomp[0].dispatchEvent(new Event("click"));
+    buttons[0].dispatchEvent(new Event("click"));
   });
 
   function atualizarBarraLateral() {
@@ -384,10 +387,6 @@
     // Questão da Data e Hora
     return `<span class="dado-valor" style="color: ${color};">${dado.valor}</span>`;
   }
-
-  // Cliques iniciais 
-  botoescomp[0].dispatchEvent(new Event("click"));
-  buttons[0].dispatchEvent(new Event("click"));
 </script>
 
 </html>

@@ -7,4 +7,8 @@ router.post("/maquinas", function (req, res) {
     dashController.buscarMaquinas(req, res);
 });
 
+router.post("/kpisTodas", function (req, res) {
+    dashController.buscarKpisTodas(req, res);
+});
+
 module.exports = router;
