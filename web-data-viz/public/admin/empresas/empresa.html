@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,10 @@
   <link rel="icon" href="/web-data-viz/public/assets/icon/chip.png">
   <title>Cadastro de Empresas - CyberBeef</title>
 </head>
+
 <body>
   <div class="barra_lateral sombreado ativa">
-    
+
     <div id="logo">
       <img src="/web-data-viz/public/assets/imgs/logo.png" alt="">
     </div>
@@ -29,7 +31,8 @@
       <li class="clicado"><a href="#">Alertas</a></li>
       <li class="clicado"><a href="#">Setores</a></li>
       <li class="clicado"><a href="#">Usuários</a></li>
-      <span style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
+      <span
+        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
         <i class='bx bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
         <p>SAIR</p>
       </span>
@@ -37,15 +40,15 @@
   </div>
   <div class="conteudo-principal">
     <header class="navbar">
-    <button id="but_atualizar_bl" class="menu-btn" onclick="atualizarBarraLateral()">
+      <button id="but_atualizar_bl" class="menu-btn" onclick="atualizarBarraLateral()">
         <i class='bx bx-menu'></i>
-         <span id="sel_componentes" name="op_setor" class="sel_dash"></span>
-    </button>
+        <span id="sel_componentes" name="op_setor" class="sel_dash"></span>
+      </button>
 
-    <h1>Cadastro de Empresas</h1>
+      <h1>Cadastro de Empresas</h1>
     </header>
 
-  
+
 
     <div class="container-formulario">
       <div class="tabs">
@@ -116,33 +119,33 @@
             <div class="input-wrapper">
               <select id="uf">
                 <option value="">Selecione</option>
-             <option value="AC">AC</option>
-              <option value="AL">AL</option>
-              <option value="AP">AP</option>
-              <option value="AM">AM</option>
-              <option value="BA">BA</option>
-              <option value="CE">CE</option>
-              <option value="DF">DF</option>
-              <option value="ES">ES</option>
-              <option value="GO">GO</option>
-              <option value="MA">MA</option>
-              <option value="MT">MT</option>
-              <option value="MS">MS</option>
-              <option value="MG">MG</option>
-              <option value="PA">PA</option>
-              <option value="PB">PB</option>
-              <option value="PR">PR</option>
-              <option value="PE">PE</option>
-              <option value="PI">PI</option>
-              <option value="RJ">RJ</option>
-              <option value="RN">RN</option>
-              <option value="RS">RS</option>
-              <option value="RO">RO</option>
-              <option value="RR">RR</option>
-              <option value="SC">SC</option>
-              <option value="SP">SP</option>
-              <option value="SE">SE</option>
-              <option value="TO">TO</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
               </select>
               <i class='bx bx-chevron-down'></i>
             </div>
@@ -195,7 +198,7 @@
               </tr>
             </thead>
             <tbody id="tabelaBody">
-    
+
             </tbody>
           </table>
         </div>
@@ -311,7 +314,8 @@
       </div>
       <div class="modal-actions" style="margin-top: 1.5rem;">
         <button type="button" class="btn-segundo clicado" onclick="fecharModalExcluir()">Cancelar</button>
-        <button type="button" class="btn-primeiro clicado" style="background-color: #dc2626;" onclick="confirmarExclusao()">Excluir</button>
+        <button type="button" class="btn-primeiro clicado" style="background-color: #dc2626;"
+          onclick="confirmarExclusao()">Excluir</button>
       </div>
     </div>
   </div>
@@ -338,25 +342,25 @@
 
 
     function mostrarAba(aba) {
-  const formulario = document.getElementById('formulario');
-  const listagem = document.getElementById('listagem');
-  const tabs = document.querySelectorAll('.tab');
+      const formulario = document.getElementById('formulario');
+      const listagem = document.getElementById('listagem');
+      const tabs = document.querySelectorAll('.tab');
 
-  if (aba === 'formulario') {
-    formulario.classList.remove('hidden');
-    listagem.classList.add('hidden');
-    tabs[0].classList.add('ativa');
-    tabs[1].classList.remove('ativa');
-  } else {
-    formulario.classList.add('hidden');
-    listagem.classList.remove('hidden');
-    tabs[0].classList.remove('ativa');
-    tabs[1].classList.add('ativa');
-  }
-} 
+      if (aba === 'formulario') {
+        formulario.classList.remove('hidden');
+        listagem.classList.add('hidden');
+        tabs[0].classList.add('ativa');
+        tabs[1].classList.remove('ativa');
+      } else {
+        formulario.classList.add('hidden');
+        listagem.classList.remove('hidden');
+        tabs[0].classList.remove('ativa');
+        tabs[1].classList.add('ativa');
+      }
+    }
     function filtrarEmpresas() {
       const busca = document.getElementById('campoBusca').value.toLowerCase();
-      empresasFiltradas = empresas.filter(emp => 
+      empresasFiltradas = empresas.filter(emp =>
         emp.nome.toLowerCase().includes(busca) ||
         emp.nomeFantasia.toLowerCase().includes(busca) ||
         emp.cnpj.includes(busca)
@@ -392,17 +396,17 @@
       atualizarPaginacao();
     }
 
-    // function atualizarPaginacao() {
-    //   const total = empresasFiltradas.length;
-    //   const inicio = (paginaAtual - 1) * registrosPorPagina + 1;
-    //   const fim = Math.min(inicio + registrosPorPagina - 1, total);
-      
-    //   document.getElementById('paginacaoInfo').textContent = `${inicio} a ${fim} de ${total}`;
-      
-    //   const totalPaginas = Math.ceil(total / registrosPorPagina);
-    //   document.getElementById('btnAnterior').disabled = paginaAtual === 1;
-    //   document.getElementById('btnProxima').disabled = paginaAtual === totalPaginas || total === 0;
-    // } testando a mudança de página de empresas cadastradas
+    function atualizarPaginacao() {
+      const total = empresasFiltradas.length;
+      const inicio = (paginaAtual - 1) * registrosPorPagina + 1;
+      const fim = Math.min(inicio + registrosPorPagina - 1, total);
+
+      document.getElementById('paginacaoInfo').textContent = `${inicio} a ${fim} de ${total}`;
+
+      const totalPaginas = Math.ceil(total / registrosPorPagina);
+      document.getElementById('btnAnterior').disabled = paginaAtual === 1;
+      document.getElementById('btnProxima').disabled = paginaAtual === totalPaginas || total === 0;
+    }
 
     function proximaPagina() {
       const totalPaginas = Math.ceil(empresasFiltradas.length / registrosPorPagina);
@@ -435,7 +439,7 @@
       const empresaReal = empresas.indexOf(empresasFiltradas[index]);
       editandoIndex = empresaReal;
       const empresa = empresas[empresaReal];
-      
+
       document.getElementById('modalTitle').textContent = 'Editar Empresa';
       document.getElementById('razaoSocial').value = empresa.nome || '';
       document.getElementById('nomeFantasia').value = empresa.nomeFantasia || '';
@@ -446,7 +450,7 @@
       document.getElementById('cidade').value = empresa.cidade || '';
       document.getElementById('uf').value = empresa.uf || '';
       document.getElementById('numero').value = empresa.numero || '';
-      
+
       document.getElementById('modalBackdrop').style.display = 'flex';
     }
 
@@ -458,7 +462,7 @@
 
     function salvarEmpresa(event) {
       event.preventDefault();
-      
+
       const empresa = {
         nome: document.getElementById('razaoSocial').value,
         nomeFantasia: document.getElementById('nomeFantasia').value,
@@ -485,7 +489,7 @@
       const empresaReal = empresas.indexOf(empresasFiltradas[index]);
       excluindoIndex = empresaReal;
       const empresa = empresas[empresaReal];
-      
+
       document.getElementById('nomeEmpresaExcluir').textContent = empresa.nome;
       document.getElementById('modalExcluir').style.display = 'flex';
     }
@@ -503,8 +507,9 @@
       }
     }
 
-  
+
     renderizarTabela();
   </script>
 </body>
+
 </html>
