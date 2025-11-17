@@ -347,13 +347,13 @@
       const tabs = document.querySelectorAll('.tab');
 
       if (aba === 'formulario') {
-        formulario.classList.remove('hidden');
-        listagem.classList.add('hidden');
+        formulario.classList.remove('oculto');
+        listagem.classList.add('oculto');
         tabs[0].classList.add('ativa');
         tabs[1].classList.remove('ativa');
       } else {
-        formulario.classList.add('hidden');
-        listagem.classList.remove('hidden');
+        formulario.classList.add('oculto');
+        listagem.classList.remove('oculto');
         tabs[0].classList.remove('ativa');
         tabs[1].classList.add('ativa');
       }
