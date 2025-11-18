@@ -15,22 +15,23 @@
       color: #ffffff;
   }
 
-  body {
-      display: flex;
-  }
+
+
 
   body::before {
-    content: "";
-    position: fixed;
-    right: -10vw;
-    top: 70vh;
-    width: 40vw;
-    height: 40vw;
-    background: #4B6CF0;
-    filter: blur(180px);
-    opacity: 0.7;
-    z-index: -5;
-}
+      content: "";
+      position: fixed;
+      right: -10vw;
+      top: 70vh;
+      width: 40vw;
+      height: 40vw;
+      background: #4B6CF0;
+      filter: blur(180px);
+      opacity: 0.7;
+      z-index: 1;
+      
+    }
+
 
 
   .barra_lateral {
@@ -171,23 +172,22 @@
   }
 
   .navbar {
-      position: fixed;
+   position: fixed;
       top: 0;
       left: 0;
-      width: calc(100% - 20vw);
-      height: 10vh;
+      right: 0;
+      height: 60px;
+      background: rgba(13, 17, 40, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      padding: 1vh 1vh 2vh 2vh;
+      padding: 0 20px;
       z-index: 1000;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-      gap: 300px;
   }
 
 
   .navbar h1 {
-      margin-left: 20px;
+      margin-left: 600px;
       font-size: 1.5rem;
       font-weight: 700;
       color: #fff;
