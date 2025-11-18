@@ -5,6 +5,35 @@ let dados = [
   },
 ];
 
+async function descKpi(caminho, info, kpi, maq = null, comp = null) {
+  try {
+    let descricao = (await (await fetch(caminho, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tokenEmpresa: sessionStorage.TOKEN_EMPRESA,
+        maquina: maq,
+        componente: comp
+
+      })
+    })).json())
+    let retorno = [];
+    for (const desc of descricao[kpi - 1]) {
+      let dado = {
+        titulo: info,
+        dados: []
+      }
+      for (const chave in desc) {
+        dado.dados.push({ nome: chave, valor: desc[chave] })
+      }
+      retorno.push(dado);
+    }
+    return retorno;
+  } catch (erro) {
+    console.error("Erro na requisição:", erro);
+  }
+}
+
 async function trazerDadosDash() {
   try {
     (await (await fetch("/dash/maquinas", {
@@ -33,10 +62,10 @@ async function trazerDadosDash() {
         kpiTodas = kpiTodas[0];
         maquina.recursos = {
           geral: {
-            kpi1: [kpiTodas.maquinas, "N", []],
-            kpi2: [kpiTodas.alertasAtuais, kpiTodas.alertasAtuais - kpiTodas.alertasPassados, []],
-            kpi3: [kpiTodas.DiasSemAlertas, "N", []],
-            kpi4: [kpiTodas.MaquinaMaisAlertas, "N", []],
+            kpi1: [kpiTodas.maquinas, "N", await descKpi("/dash/kpisTodasDesc", "", 1)],
+            kpi2: [kpiTodas.alertasAtuais, kpiTodas.alertasAtuais - kpiTodas.alertasPassados, await descKpi("/dash/kpisTodasDesc", "Alerta", 2)],
+            kpi3: [kpiTodas.DiasSemAlertas, "N", await descKpi("/dash/kpisTodasDesc", "Último Alerta", 3)],
+            kpi4: [kpiTodas.MaquinaMaisAlertas, "N", await descKpi("/dash/kpisTodasDesc", "Alerta", 4)],
             grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: [] },
             grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "3 Máquinas com Mais Alertas (últimos 7 dias)", xylabels: [] }
           }
@@ -57,10 +86,10 @@ async function trazerDadosDash() {
         })).json())
         kpiGeral = kpiGeral[0];
         maquina.recursos['geral'] = {
-          kpi1: [kpiGeral.setores, "N", []],
-          kpi2: [kpiGeral.alertasAtuais, kpiGeral.alertasAtuais - kpiGeral.alertasPassados, []],
-          kpi3: [kpiGeral.diasSemAlertas, "N", []],
-          kpi4: [kpiGeral.ComponenteMaisAlertas, "N", []],
+          kpi1: [kpiGeral.setores, "N", await descKpi("/dash/kpisGeralDesc", "", 1, maquina.dashboard)],
+          kpi2: [kpiGeral.alertasAtuais, kpiGeral.alertasAtuais - kpiGeral.alertasPassados, await descKpi("/dash/kpisGeralDesc", "Alerta", 2, maquina.dashboard)],
+          kpi3: [kpiGeral.diasSemAlertas, "N", await descKpi("/dash/kpisGeralDesc", "Último Alerta", 3, maquina.dashboard)],
+          kpi4: [kpiGeral.ComponenteMaisAlertas, "N", await descKpi("/dash/kpisGeralDesc", "Alerta", 4, maquina.dashboard)],
           grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "3 Componentes com Mais Alertas (últimos 7 dias)", xylabels: ["Máquina", "N° Alerta(s)"] }
         }
@@ -147,23 +176,3 @@ async function trazerDadosDash() {
   }
 
 }
-
-
-async function teste() {
-
-try {
-  let teste = (await(await fetch("/dash/kpisTodasDesc", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ tokenEmpresa: sessionStorage.TOKEN_EMPRESA })
-  })).json())
-  console.log(teste);
-  console.log(JSON.stringify(teste));
-
-} catch (erro) {
-  console.error("Erro na requisição:", erro);
-}
-
-
-}
-teste()

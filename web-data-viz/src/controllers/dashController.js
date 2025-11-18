@@ -52,6 +52,16 @@ function buscarKpisTodasDesc(req, res) {
   });
 }
 
+
+function buscarKpisGeralDesc(req, res) {
+  var id = req.body.tokenEmpresa;
+  var maquina = req.body.maquina;
+
+  dashModel.buscarKpisGeralDesc(id, maquina).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 module.exports = {
     buscarMaquinas,
     buscarKpisTodas,
@@ -59,4 +69,5 @@ module.exports = {
     buscarKpisCRD,
     buscarKpisRede,
     buscarKpisTodasDesc,
+    buscarKpisGeralDesc,
 };

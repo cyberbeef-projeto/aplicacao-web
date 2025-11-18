@@ -209,7 +209,12 @@ SELECT
 }
 
 function buscarKpisTodasDesc(id) {
-    var instrucaoSql = `SELECT * FROM maquina; SELECT * FROM setor;`; //Completar...
+    var instrucaoSql = `CALL descKpiTodas('${id}');`; 
+    return database.executar(instrucaoSql);
+}
+
+function buscarKpisGeralDesc(id, maquina) {
+    var instrucaoSql = `CALL descKpiGeral('${id}', '${maquina}');`; 
     return database.executar(instrucaoSql);
 }
 
@@ -220,4 +225,5 @@ module.exports = {
     buscarKpisCRD,
     buscarKpisRede,
     buscarKpisTodasDesc,
+    buscarKpisGeralDesc,
 };

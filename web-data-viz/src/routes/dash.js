@@ -27,4 +27,8 @@ router.post("/kpisTodasDesc", function (req, res) {
     dashController.buscarKpisTodasDesc(req, res);
 });
 
+router.post("/kpisGeralDesc", function (req, res) {
+    dashController.buscarKpisGeralDesc(req, res);
+});
+
 module.exports = router;
