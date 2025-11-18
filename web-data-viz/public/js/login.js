@@ -37,9 +37,15 @@ function entrar(event) {
                     sessionStorage.TOKEN_EMPRESA = json.token;
                     sessionStorage.PERMISSAO_USUARIO = json.permissaoUsuario;
                     
-                    setTimeout(function () {
+                    if (emailVar == "cyber@cyber.com") {
+                       setTimeout(function () {
+                        window.location = "acesso.html";
+                    }, 1000); 
+                    } else {
+                        setTimeout(function () {
                         window.location = "/dashboard.html";
                     }, 1000);
+                    }
                     
 
                 });
