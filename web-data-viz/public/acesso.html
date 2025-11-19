@@ -19,8 +19,7 @@
 
     <span id="sel_componentes" name="op_setor" class="sel_dash">
       <p id="title">Controle de Acesso e Segurança</p>
-
-      <button id="dash_todas_maquinas" style="display: none;" class=""
+      <button id="dash_todas_maquinas" style="display: none;" 
         data-comp="geral"
         data-kpi1="Total de tentativas logins (últimos 7 dias)"
         data-kpi2="Taxa de Sucesso nos Logins (%)"
@@ -29,7 +28,7 @@
     </span>
 
     <nav id="buts_superiores">
-      <a class="clicavel clicado">Exportar <i class='bxr bx-arrow-down-stroke-circle' style="padding: 0.3rem;"></i></a>
+      <a class="clicavel clicado">Exportar <i class='bxr bx-arrow-down-stroke-circle'></i></a>
       <a class="clicavel clicado">Gerar relatório</a>
     </nav>
   </header>
@@ -40,24 +39,20 @@
 
     <div id="usuario">
       <i class='bxr bxs-user' style='color:#fffafa'></i>
-      <a id="b_usuario" class="texto_perfil" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
-        Administrador
-      </a>
+      <a id="b_usuario" class="texto_perfil">Administrador</a>
     </div>
 
     <hr>
 
     <div id="home" class="ops_home">
       <ul></ul>
-      <li class="clicado"><a href="index.html">Controle e Acesso</a></li>
-      <li class="clicado"><a>Cadastro Empresa</a></li>
-      <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Downtime</a></li>
-      <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Chamados Jira</a></li>
+      <li><a href="index.html">Controle e Acesso</a></li>
+      <li><a>Cadastro Empresa</a></li>
+      <li><a href="dados.html?tipoDados=alerta&titulo=Alertas">Downtime</a></li>
+      <li><a href="dados.html?tipoDados=setor&titulo=Setores">Chamados Jira</a></li>
 
-      <span onclick="limparSessao()"
-        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
-        class="clicavel clicado" title="Clique para encerrar sua sessão">
-        <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+      <span onclick="limparSessao()" class="clicavel clicado">
+        <i class='bxr bx-arrow-out-left-square-half'></i>
         <p>ENCERRAR SESSÃO</p>
       </span>
     </div>
@@ -73,27 +68,23 @@
 
       <span class="abas_kpis">
         <button data-aba="1" class="kpi interativo ativa">
-          <b id="kpi1" class="dado_card">KPI1</b>
+          <b id="kpi1" class="dado_card"></b>
           <p id="kpi1_desc">Total de Tentativas de Login (últimos 7 dias)</p>
-          <!-- <i id="kpi1_result" class="text_longo">[...]</i> -->
         </button>
 
         <button data-aba="2" class="kpi interativo">
-          <b id="kpi2" class="dado_card">KPI2</b>
+          <b id="kpi2" class="dado_card"></b>
           <p id="kpi2_desc">Taxa de Sucesso nos Logins (%)</p>
-          <!-- <i id="kpi2_result" class="text_longo">[...]</i> -->
         </button>
 
         <button data-aba="3" class="kpi interativo">
-          <b id="kpi3" class="dado_card">KPI3</b>
+          <b id="kpi3" class="dado_card"></b>
           <p id="kpi3_desc">Contas Administrativas Ativas</p>
-          <!-- <i id="kpi3_result" class="text_longo">[...]</i> -->
         </button>
 
         <button data-aba="4" class="kpi interativo">
-          <b id="kpi4" class="dado_card">KPI4</b>
+          <b id="kpi4" class="dado_card"></b>
           <p id="kpi4_desc">Contas Inativas (7 dias)</p>
-          <!-- <i id="kpi4_result" class="text_longo">[...]</i> -->
         </button>
       </span>
 
@@ -109,34 +100,30 @@
 
     <div id="graficos">
 
-      <!-- Gráfico principal -->
+      <!-- GRÁFICO PRINCIPAL -->
       <span class="grafico sombreado interativo">
         <canvas id="grafico1"></canvas>
       </span>
 
-      <!-- Heatmap -->
-      <span class="grafico sombreado interativo">
-        <canvas id="heatmapCanvas"></canvas>
-      </span>
+      <!-- HEATMAP GITHUB-LIKE -->
+      <div class="grafico sombreado interativo" style="width:100%; padding: 20px;">
+
+
+          <canvas id="heatmapCanvas" style="width:100%; height:180px;"></canvas>
+        </div>
+
+        <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:15px;">
+            <button id="prevMonth" style="cursor:pointer; padding:8px 14px; border:none; border-radius:6px; background:#4B6CF0; color:#fff;">← Mês Anterior</button>
+            <span id="currentMonthLabel" style="color:white; font-size:18px; font-weight:500;"></span>
+            <button id="nextMonth" style="cursor:pointer; padding:8px 14px; border:none; border-radius:6px; background:#4B6CF0; color:#fff;">Próximo Mês →</button>
+        </div>
+
+      </div>
 
     </div>
 
 </body>
 
 <script src="js/acesso.js"></script>
-
-<script>
-  function atualizarBarraLateral() {
-    const barraLateral = document.querySelector('.barra_lateral');
-    const elementos = document.getElementById('elementos');
-    const butAtual = document.getElementById('but_atualizar_bl');
-    if (barraLateral) barraLateral.classList.toggle('ativa');
-    if (elementos) elementos.classList.toggle('bl_ativa');
-    if (butAtual) {
-      butAtual.classList.toggle('bxs-menu-wide');
-      butAtual.classList.toggle('bxs-menu-select');
-    }
-  }
-</script>
 
 </html>

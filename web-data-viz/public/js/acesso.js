@@ -1,16 +1,14 @@
-// acesso.js
-// JavaScript para Dashboard de Acesso (Sucesso vs Falha, Tentativas por dia, Heatmap estilo "commits")
-// Requer Chart.js (já incluído no HTML)
 
 (() => {
-  // -----------------------
-  // Helpers
-  // -----------------------
-  const byId = id => document.getElementById(id);
+  const $ = id => document.getElementById(id);
   const safeNum = v => {
     if (v === null || v === undefined) return 0;
     if (typeof v === 'number') return v;
-    const n = Number(String(v).replace(',', '.'));
+    let s = String(v).trim();
+    s = s.replace('%', '').replace(/\s+/g, '');
+    s = s.replace(/[^0-9\.,-]/g, '');
+    s = s.replace(',', '.');
+    const n = Number(s);
     return isNaN(n) ? 0 : n;
   };
 
@@ -25,363 +23,41 @@
     }
   }
 
-  // Destroy chart safely
   const charts = {};
   function destroyChart(key) {
     if (charts[key]) {
-      try { charts[key].destroy(); } catch (e) {}
+      try { charts[key].destroy(); } catch (e) {  }
       delete charts[key];
     }
   }
 
-  // Texto comparação KPI
-  function textoComparacao(comparacao) {
-    if (comparacao === "N" || isNaN(Number(comparacao))) return ["#FFFF", "Veja mais🔍︎"];
-    const num = Number(comparacao);
-    if (num > 0) return ["#E94F37", `${num} A mais que o período anterior▲`];
-    if (num < 0) return ["#6EEB83", `${Math.abs(num)} A menos que o período anterior▼`];
-    return ["#FFD447", "Número igual ao período anterior"];
-  }
-
-  // Color map para heatmap (tons de azul)
-  function colorForIntensity(value, max) {
-    // value between 0..max
-    if (max <= 0) return 'rgba(230,240,255,0.5)'; // very light
-    const ratio = Math.min(1, Math.max(0, value / max));
-    // from very light to deep blue:
-    // use rgba with alpha scaled so background remains visible
-    const alpha = 0.25 + (0.7 * ratio); // 0.25..0.95
-    const r = 15, g = 60, b = 220;
-    return `rgba(${r},${g},${b},${alpha})`;
-  }
-
-  // Format date yyyy-mm-dd
-  function formatDateYMD(d) {
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${d.getFullYear()}-${mm}-${dd}`;
-  }
-
-  // Parse DB date (returned as ISO string or Date object)
   function parseDbDate(v) {
     if (!v) return null;
     const d = new Date(v);
     if (isNaN(d)) return null;
     return d;
   }
-
-  // -----------------------
-  // Carregar KPIs
-  // -----------------------
-  async function carregarKPIs() {
-    try {
-      // total tentativas
-      const totalResp = await fetchJson('/acesso/kpi/tentativas');
-      const total = Array.isArray(totalResp) && totalResp[0] && totalResp[0].total !== undefined
-        ? safeNum(totalResp[0].total) : 0;
-
-      // taxa sucesso
-      const taxaResp = await fetchJson('/acesso/kpi/taxa-sucesso');
-      const taxaVal = Array.isArray(taxaResp) && taxaResp[0] && (taxaResp[0].taxa !== undefined)
-        ? safeNum(taxaResp[0].taxa) : 0;
-
-      // admins ativos
-      const adminsResp = await fetchJson('/acesso/kpi/admins');
-      const admins = Array.isArray(adminsResp) && adminsResp[0] && adminsResp[0].total !== undefined
-        ? safeNum(adminsResp[0].total) : 0;
-
-      // inativas vs ativas
-      const inativasResp = await fetchJson('/acesso/kpi/inativas');
-      const inativas = Array.isArray(inativasResp) && inativasResp[0] && inativasResp[0].inativas !== undefined
-        ? safeNum(inativasResp[0].inativas) : (inativasResp && inativasResp.inativas ? safeNum(inativasResp.inativas) : 0);
-      const ativas = Array.isArray(inativasResp) && inativasResp[0] && inativasResp[0].ativas !== undefined
-        ? safeNum(inativasResp[0].ativas) : (inativasResp && inativasResp.ativas ? safeNum(inativasResp.ativas) : 0);
-
-      // write into DOM if elements exist
-      const elK1 = byId('kpi1'); if (elK1) elK1.textContent = total;
-      const elK2 = byId('kpi2'); if (elK2) elK2.textContent = `${taxaVal.toFixed(2)}%`;
-      const elK3 = byId('kpi3'); if (elK3) elK3.textContent = admins;
-      const elK4 = byId('kpi4'); if (elK4) elK4.textContent = inativas;
-
-      const r2 = byId('kpi2_result'); if (r2) { r2.style.color = '#FFD447'; r2.textContent = `Taxa atual: ${taxaVal.toFixed(2)}%`; }
-      const r1 = byId('kpi1_result'); if (r1) { r1.style.color = '#FFFF'; r1.textContent = `Últimos 30 dias: ${total}`; }
-      const r3 = byId('kpi3_result'); if (r3) { r3.style.color = '#FFFF'; r3.textContent = `Admins: ${admins}`; }
-      const r4 = byId('kpi4_result'); if (r4) { r4.style.color = '#FFFF'; r4.textContent = `Inativas: ${inativas}`; }
-
-    } catch (err) {
-      console.error("Erro ao carregar KPIs:", err);
-    }
+  function formatDateYMD(d) {
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+  function mesesPt() {
+    return ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
   }
 
-  // -----------------------
-  // Gráfico: Sucesso vs Falha (pie or doughnut)
-  // -----------------------
-  async function carregarGraficoSucessoFalha() {
-    const canvas = byId('grafico1');
-    if (!canvas) { console.warn('canvas grafico1 não encontrado'); return; }
-    try {
-      const data = await fetchJson('/acesso/grafico/sucesso-vs-falha');
-      if (!Array.isArray(data)) {
-        console.warn('grafico/sucesso-vs-falha retornou formato inesperado', data);
-      }
-      // map success=1 and success=0 (DB returns rows for each sucesso value)
-      let sucessoCount = 0, falhaCount = 0;
-      (data || []).forEach(r => {
-        const suc = safeNum(r.sucesso);
-        const tot = safeNum(r.total);
-        if (suc === 1) sucessoCount = tot;
-        else falhaCount = tot;
-      });
-
-      destroyChart('grafico1');
-      const ctx = canvas.getContext('2d');
-
-      charts['grafico1'] = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Sucesso', 'Falha'],
-          datasets: [{
-            data: [sucessoCount, falhaCount],
-            backgroundColor: ['rgba(75,108,240,0.85)', 'rgba(233,79,55,0.85)'],
-            borderColor: ['#ffffff', '#ffffff'],
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: { display: true, text: 'Distribuição: Sucesso vs Falha (últimos 30 dias)' },
-            legend: { position: 'bottom' }
-          }
-        }
-      });
-    } catch (err) {
-      console.error('Erro carregarGraficoSucessoFalha:', err);
+  // Escala de cor azul (tons) para heatmap
+  function colorForIntensity(value, max) {
+    if (!max || max <= 0) {
+      return 'rgba(230,240,255,0.35)';
     }
+    const ratio = Math.min(1, Math.max(0, value / max));
+    const alpha = 0.25 + (0.7 * ratio); // 0.25..0.95
+    const r = 15, g = 60, b = 220;
+    return `rgba(${r},${g},${b},${alpha})`;
   }
 
-  // -----------------------
-  // Gráfico: Tentativas por dia (coluna)
-  // -----------------------
-  async function carregarGraficoTentativasDia() {
-    const canvas = byId('graficoAba');
-    if (!canvas) { console.warn('canvas graficoAba não encontrado'); return; }
-    try {
-      const rows = await fetchJson('/acesso/grafico/tentativas-dia');
-      const labels = [];
-      const dados = [];
-      if (Array.isArray(rows)) {
-        rows.forEach(r => {
-          const d = parseDbDate(r.dia);
-          labels.push(d ? formatDateYMD(d) : String(r.dia));
-          dados.push(safeNum(r.total));
-        });
-      }
-
-      destroyChart('graficoAba');
-      const ctx = canvas.getContext('2d');
-      charts['graficoAba'] = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{
-            label: 'Tentativas',
-            data: dados,
-            backgroundColor: 'rgba(75,108,240,0.8)',
-            borderColor: '#4B6CF0',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: { display: true, text: 'Tentativas de Login por Dia (últimos 30 dias)' },
-            legend: { display: false },
-            tooltip: { mode: 'index', intersect: false }
-          },
-          scales: {
-            x: { title: { display: true, text: 'Data' } },
-            y: { title: { display: true, text: 'Tentativas' }, beginAtZero: true }
-          }
-        }
-      });
-    } catch (err) {
-      console.error('Erro carregarGraficoTentativasDia:', err);
-    }
-  }
-
-  // -----------------------
-  // Gráfico: Cargos (barra) - NOT USED as requested, but we can load in background (kept minimal)
-  // -----------------------
-  async function carregarGraficoCargos() {
-    // Not plotted in the current layout (user asked only for 3 charts).
-    // Keep function for future use if needed.
-    try {
-      const rows = await fetchJson('/acesso/grafico/cargos');
-      return rows;
-    } catch (err) {
-      console.error('Erro carregarGraficoCargos:', err);
-      return null;
-    }
-  }
-
-  // -----------------------
-  // Heatmap (canvas) - estilo "commits" do GitHub
-  // - usa /acesso/grafico/heatmap que retorna [{ dia: date, total: n }, ...]
-  // - desenha os últimos N dias em colunas por semana
-  // -----------------------
-  async function carregarHeatmap() {
-    const canvas = byId('heatmapCanvas');
-    if (!canvas) { console.warn('canvas heatmapCanvas não encontrado'); return; }
-    try {
-      const rows = await fetchJson('/acesso/grafico/heatmap');
-      // Normalizar rows para um mapa dia->total (string yyyy-mm-dd)
-      const map = {};
-      (rows || []).forEach(r => {
-        const d = parseDbDate(r.dia);
-        if (!d) return;
-        const key = formatDateYMD(d);
-        map[key] = safeNum(r.total);
-      });
-
-      // We'll display last 90 days (13 weeks) — adjust as necessary
-      const DAYS = 90;
-      const today = new Date();
-      const start = new Date(today);
-      start.setDate(today.getDate() - (DAYS - 1)); // inclusive
-      // Build an array of dates
-      const dates = [];
-      for (let i = 0; i < DAYS; i++) {
-        const d = new Date(start);
-        d.setDate(start.getDate() + i);
-        dates.push(d);
-      }
-
-      // Group into weeks (columns of 7 days). We'll render vertical weeks
-      const weeks = [];
-      for (let i = 0; i < dates.length; i += 7) {
-        weeks.push(dates.slice(i, i + 7));
-      }
-
-      // compute max value for color scaling
-      const values = Object.values(map);
-      const max = values.length ? Math.max(...values) : 0;
-
-      // Draw on canvas
-      // set sizes: columns = weeks.length, rows = up to 7
-      const cols = weeks.length;
-      const rowsCount = 7;
-      const padding = 8;
-      const cellGap = 4;
-
-      // cell size compute based on canvas parent box for responsiveness
-      const parent = canvas.parentElement;
-      const parentRect = parent ? parent.getBoundingClientRect() : { width: 360, height: 200 };
-      // We'll set canvas width/height explicitly
-      const canvasWidth = Math.max(260, Math.floor(parentRect.width));
-      const canvasHeight = Math.max(140, Math.floor(parentRect.height));
-      canvas.width = canvasWidth * devicePixelRatio;
-      canvas.height = canvasHeight * devicePixelRatio;
-      canvas.style.width = `${canvasWidth}px`;
-      canvas.style.height = `${canvasHeight}px`;
-      const ctx = canvas.getContext('2d');
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-      // Draw title
-      const title = 'Heatmap de Logins (últimos 90 dias)';
-      ctx.font = '14px Inter, sans-serif';
-      ctx.fillStyle = '#ffffff';
-      ctx.textBaseline = 'top';
-      ctx.fillText(title, padding, padding);
-
-      // compute area for grid below title
-      const topArea = padding + 22;
-      const gridHeight = canvasHeight - topArea - padding;
-      const gridWidth = canvasWidth - padding * 2;
-
-      // Determine cell size
-      const usableCols = Math.max(1, cols);
-      const usableRows = rowsCount;
-      // cell width with gaps:
-      const totalGapX = (usableCols - 1) * cellGap;
-      const totalGapY = (usableRows - 1) * cellGap;
-      let cellW = (gridWidth - totalGapX) / usableCols;
-      let cellH = (gridHeight - totalGapY) / usableRows;
-      // Keep square-ish
-      const cellSize = Math.max(8, Math.min(cellW, cellH));
-      // Recompute starting offsets to center grid
-      const gridTotalW = usableCols * cellSize + totalGapX;
-      const gridTotalH = usableRows * cellSize + totalGapY;
-      const offsetX = padding + (gridWidth - gridTotalW) / 2;
-      const offsetY = topArea + (gridHeight - gridTotalH) / 2;
-
-      // Draw each cell
-      for (let c = 0; c < usableCols; c++) {
-        const week = weeks[c] || [];
-        for (let rIdx = 0; rIdx < usableRows; rIdx++) {
-          const day = week[rIdx];
-          const x = offsetX + c * (cellSize + cellGap);
-          const y = offsetY + rIdx * (cellSize + cellGap);
-
-          let key = null;
-          let count = 0;
-          if (day) {
-            key = formatDateYMD(day);
-            count = map[key] || 0;
-          } else {
-            count = 0;
-          }
-
-          const fill = colorForIntensity(count, max);
-          // border/stroke for better separation
-          ctx.fillStyle = fill;
-          roundRect(ctx, x, y, cellSize, cellSize, 3, true, false);
-          // optional small stroke
-          ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-          ctx.lineWidth = 0.6;
-          ctx.strokeRect(x + 0.3, y + 0.3, cellSize - 0.6, cellSize - 0.6);
-
-          // if count > 0, draw small number when space allows
-          if (count > 0 && cellSize >= 18) {
-            ctx.fillStyle = 'rgba(255,255,255,0.9)';
-            ctx.font = `${Math.max(9, Math.floor(cellSize / 3))}px Inter, sans-serif`;
-            ctx.textBaseline = 'middle';
-            ctx.textAlign = 'center';
-            ctx.fillText(String(count), x + cellSize / 2, y + cellSize / 2);
-          }
-        }
-      }
-
-      // legend bottom-right
-      const legendW = 110, legendH = 28;
-      const lx = canvasWidth - padding - legendW;
-      const ly = canvasHeight - padding - legendH;
-      ctx.fillStyle = 'rgba(255,255,255,0.04)';
-      roundRect(ctx, lx, ly, legendW, legendH, 6, true, false);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '11px Inter, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText('Menos', lx + 8, ly + 6);
-      ctx.fillText('Mais', lx + legendW - 36, ly + 6);
-      // draw gradient bar
-      const barX = lx + 36, barY = ly + 10, barW = 52, barH = 10;
-      const grad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
-      grad.addColorStop(0, colorForIntensity(0, max));
-      grad.addColorStop(1, colorForIntensity(max, max));
-      ctx.fillStyle = grad;
-      roundRect(ctx, barX, barY, barW, barH, 3, true, false);
-
-    } catch (err) {
-      console.error('Erro carregarHeatmap:', err);
-    }
-  }
-
-  // rounded rectangle helper
-  function roundRect(ctx, x, y, w, h, r, fill, stroke) {
-    if (typeof r === 'undefined') r = 5;
+  function roundRect(ctx, x, y, w, h, r = 4, fill = true, stroke = false) {
     if (typeof r === 'number') r = { tl: r, tr: r, br: r, bl: r };
     ctx.beginPath();
     ctx.moveTo(x + r.tl, y);
@@ -398,14 +74,390 @@
     if (stroke) ctx.stroke();
   }
 
-  // -----------------------
-  // Inicialização
-  // -----------------------
+  // KPIs
+  async function carregarKPIs() {
+    try {
+      const [tentativasResp, taxaResp, adminsResp, inativasResp] = await Promise.all([
+        fetchJson('/acesso/kpi/tentativas'),
+        fetchJson('/acesso/kpi/taxa-sucesso'),
+        fetchJson('/acesso/kpi/admins'),
+        fetchJson('/acesso/kpi/inativas'),
+      ]);
+
+      const totalTentativas = Array.isArray(tentativasResp) && tentativasResp[0] && tentativasResp[0].total !== undefined
+        ? safeNum(tentativasResp[0].total)
+        : (tentativasResp && tentativasResp.total ? safeNum(tentativasResp.total) : 0);
+
+      const taxa = Array.isArray(taxaResp) && taxaResp[0] && taxaResp[0].taxa !== undefined
+        ? safeNum(taxaResp[0].taxa)
+        : (taxaResp && taxaResp.taxa ? safeNum(taxaResp.taxa) : 0);
+
+      const admins = Array.isArray(adminsResp) && adminsResp[0] && adminsResp[0].total !== undefined
+        ? safeNum(adminsResp[0].total)
+        : (adminsResp && adminsResp.total ? safeNum(adminsResp.total) : 0);
+
+      const inativas = Array.isArray(inativasResp) && inativasResp[0] && inativasResp[0].inativas !== undefined
+        ? safeNum(inativasResp[0].inativas)
+        : (inativasResp && inativasResp.inativas ? safeNum(inativasResp.inativas) : 0);
+
+      const elK1 = $('kpi1'); if (elK1) elK1.textContent = totalTentativas;
+      const elK2 = $('kpi2'); if (elK2) elK2.textContent = `${Number(taxa).toFixed(2)}%`;
+      const elK3 = $('kpi3'); if (elK3) elK3.textContent = admins;
+      const elK4 = $('kpi4'); if (elK4) elK4.textContent = inativas;
+
+    } catch (err) {
+      console.error('Erro carregarKPIs:', err);
+    }
+  }
+
+  async function carregarGraficoSucessoFalha() {
+    const canvas = $('grafico1');
+    if (!canvas) { console.warn('grafico1 canvas not found'); return; }
+
+    try {
+      const resp = await fetchJson('/acesso/grafico/sucesso-vs-falha');
+      const rows = Array.isArray(resp) ? resp : [];
+
+      let sucesso = 0, falha = 0;
+      rows.forEach(r => {
+        const key = safeNum(r.sucesso);
+        const tot = safeNum(r.total);
+        if (key === 1) sucesso = tot;
+        else falha = tot;
+      });
+
+      destroyChart('grafico1');
+      const ctx = canvas.getContext('2d');
+
+      charts['grafico1'] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Sucesso', 'Falha'],
+          datasets: [{
+            data: [sucesso, falha],
+            backgroundColor: ['rgba(75,108,240,0.85)', 'rgba(233,79,55,0.85)'],
+            borderColor: ['#ffffff', '#ffffff'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: { display: true, text: 'Sucesso vs Falha (últimos 30 dias)' },
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+
+    } catch (err) {
+      console.error('Erro carregarGraficoSucessoFalha:', err);
+    }
+  }
+
+  async function carregarGraficoTentativasDia() {
+    const canvas = $('graficoAba');
+    if (!canvas) { console.warn('graficoAba canvas not found'); return; }
+
+    try {
+      const resp = await fetchJson('/acesso/grafico/tentativas-dia');
+      const rows = Array.isArray(resp) ? resp : [];
+
+      const labels = [];
+      const data = [];
+      rows.forEach(r => {
+        const d = parseDbDate(r.dia);
+        if (d) labels.push(d.toLocaleDateString());
+        else labels.push(String(r.dia));
+        data.push(safeNum(r.total));
+      });
+
+      destroyChart('graficoAba');
+      const ctx = canvas.getContext('2d');
+
+      charts['graficoAba'] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Tentativas',
+            data,
+            backgroundColor: 'rgba(75,108,240,0.8)',
+            borderColor: '#4B6CF0',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: { display: true, text: 'Tentativas de Login por Dia (últimos 30 dias)' },
+            legend: { display: false }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Data' } },
+            y: { title: { display: true, text: 'Tentativas' }, beginAtZero: true }
+          }
+        }
+      });
+
+    } catch (err) {
+      console.error('Erro carregarGraficoTentativasDia:', err);
+    }
+  }
+
+  let heatmapRows = []; // { dia: 'YYYY-MM-DD', total: N }
+  let heatmapVisibleMonth = new Date();
+  let heatmapCells = [];
+
+  function ensureTooltip() {
+    let t = $('heatmapTooltip');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'heatmapTooltip';
+      t.style.position = 'absolute';
+      t.style.zIndex = 9999;
+      t.style.padding = '6px 8px';
+      t.style.background = 'rgba(0,0,0,0.85)';
+      t.style.color = '#fff';
+      t.style.borderRadius = '4px';
+      t.style.fontSize = '12px';
+      t.style.pointerEvents = 'none';
+      t.style.display = 'none';
+      document.body.appendChild(t);
+    }
+    return t;
+  }
+
+  async function carregarHeatmapDados() {
+    try {
+      const resp = await fetchJson('/acesso/grafico/heatmap');
+      const rows = Array.isArray(resp) ? resp : [];
+      heatmapRows = rows.map(r => {
+        const d = parseDbDate(r.dia);
+        return {
+          dia: d ? formatDateYMD(d) : String(r.dia).split('T')[0],
+          total: safeNum(r.total)
+        };
+      });
+    } catch (err) {
+      console.error('Erro carregarHeatmapDados:', err);
+      heatmapRows = [];
+    }
+  }
+
+  function atualizarLabelMes() {
+    const label = $('currentMonthLabel');
+    if (!label) return;
+    const m = heatmapVisibleMonth.getMonth();
+    const y = heatmapVisibleMonth.getFullYear();
+    label.textContent = `${mesesPt()[m]} ${y}`;
+    const title = $('heatmapTitle');
+    if (title) title.textContent = `Heatmap de Logins — ${mesesPt()[m]} ${y}`;
+  }
+
+  function drawHeatmap(canvas) {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    const parentRect = parent.getBoundingClientRect();
+    const width = Math.max(300, Math.floor(parentRect.width));
+    const height = Math.max(160, Math.floor(parentRect.height));
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+
+    atualizarLabelMes();
+    const visibleYear = heatmapVisibleMonth.getFullYear();
+    const visibleMonth = heatmapVisibleMonth.getMonth();
+    const map = {};
+    heatmapRows.forEach(r => {
+      const key = r.dia.split('T')[0];
+      const d = parseDbDate(key);
+      if (!d) return;
+      if (d.getFullYear() === visibleYear && d.getMonth() === visibleMonth) {
+        map[ formatDateYMD(d) ] = safeNum(r.total);
+      }
+    });
+
+    // cálculo dias do mês
+    const daysInMonth = new Date(visibleYear, visibleMonth + 1, 0).getDate();
+    const firstWeekday = new Date(visibleYear, visibleMonth, 1).getDay();
+    const totalSlots = firstWeekday + daysInMonth;
+    const weeks = Math.ceil(totalSlots / 7);
+
+    // layout
+    const padding = 14;
+    const titleH = 28;
+    const gap = 6;
+    const cols = 7;
+    const rowsCount = weeks;
+    
+    const gridWidth = width - padding * 2;
+    const gridHeight = height - padding - titleH - 48;
+   
+    const totalGapX = (cols - 1) * gap;
+    const totalGapY = (rowsCount - 1) * gap;
+    let cellW = (gridWidth - totalGapX) / cols;
+    let cellH = (gridHeight - totalGapY) / rowsCount;
+    let cellSize = Math.max(8, Math.floor(Math.min(cellW, cellH)));
+    
+    const gridTotalW = cols * cellSize + totalGapX;
+    const gridTotalH = rowsCount * cellSize + totalGapY;
+    const offsetX = padding + (gridWidth - gridTotalW) / 2;
+    const offsetY = padding + titleH + ( (gridHeight - gridTotalH) / 2 );
+
+    // max para escala
+    const vals = Object.keys(map).map(k => map[k]);
+    const maxVal = vals.length ? Math.max(...vals) : 0;
+
+    // cabeçalho dias da semana (horizontal no topo)
+    const weekdays = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (let c = 0; c < cols; c++) {
+      const x = offsetX + c * (cellSize + gap) + cellSize / 2;
+      const y = padding + (titleH / 2);
+      ctx.fillText(weekdays[c], x, y);
+    }
+
+    heatmapCells = [];
+
+    // desenhar cada dia
+    for (let d = 1; d <= daysInMonth; d++) {
+      const slotIndex = firstWeekday + (d - 1);
+      const col = slotIndex % 7;
+      const row = Math.floor(slotIndex / 7);
+
+      const x = offsetX + col * (cellSize + gap);
+      const y = offsetY + row * (cellSize + gap);
+
+      const dateObj = new Date(visibleYear, visibleMonth, d);
+      const key = formatDateYMD(dateObj);
+      const count = map[key] || 0;
+
+      const fill = colorForIntensity(count, maxVal);
+
+      ctx.fillStyle = fill;
+      roundRect(ctx, x, y, cellSize, cellSize, 4, true, false);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 0.6;
+      ctx.strokeRect(x + 0.3, y + 0.3, cellSize - 0.6, cellSize - 0.6);
+
+      heatmapCells.push({
+        x, y, w: cellSize, h: cellSize,
+        date: dateObj,
+        count
+      });
+
+      if (count > 0 && cellSize >= 18) {
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.font = `${Math.max(10, Math.floor(cellSize / 2.6))}px Inter, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(count), x + cellSize / 2, y + cellSize / 2);
+      }
+    }
+
+    const legendW = 130;
+    const legendH = 32;
+    const lx = width - padding - legendW;
+    const ly = height - padding - legendH;
+    ctx.fillStyle = 'rgba(255,255,255,0.04)';
+    roundRect(ctx, lx, ly, legendW, legendH, 6, true, false);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '11px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Menos', lx + 8, ly + 6);
+    ctx.fillText('Mais', lx + legendW - 36, ly + 6);
+    const barX = lx + 36, barY = ly + 10, barW = 52, barH = 10;
+    const grad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
+    grad.addColorStop(0, colorForIntensity(0, maxVal));
+    grad.addColorStop(1, colorForIntensity(maxVal, maxVal));
+    ctx.fillStyle = grad;
+    roundRect(ctx, barX, barY, barW, barH, 4, true, false);
+  }
+
+  function heatmapHitTest(canvas, evt) {
+    if (!heatmapCells || heatmapCells.length === 0) return null;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mx = (evt.clientX - rect.left) * scaleX / devicePixelRatio;
+    const my = (evt.clientY - rect.top) * scaleY / devicePixelRatio;
+
+    for (const c of heatmapCells) {
+      if (mx >= c.x && mx <= c.x + c.w && my >= c.y && my <= c.y + c.h) return c;
+    }
+    return null;
+  }
+
+  function wireHeatmapEvents(canvas) {
+    if (!canvas) return;
+    const tooltip = ensureTooltip();
+    canvas.addEventListener('mousemove', (e) => {
+      const hit = heatmapHitTest(canvas, e);
+      if (hit) {
+        tooltip.style.display = 'block';
+        tooltip.style.left = `${e.pageX + 12}px`;
+        tooltip.style.top = `${e.pageY + 12}px`;
+        const d = hit.date;
+        const dd = String(d.getDate()).padStart(2, '0');
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const yyyy = d.getFullYear();
+        tooltip.textContent = `${hit.count} login(s) — ${dd}/${mm}/${yyyy}`;
+      } else {
+        tooltip.style.display = 'none';
+      }
+    });
+    canvas.addEventListener('mouseleave', () => {
+      const tooltip = ensureTooltip();
+      tooltip.style.display = 'none';
+    });
+    window.addEventListener('resize', () => {
+      drawHeatmap(canvas);
+    });
+  }
+
+  async function carregarHeatmap() {
+    const canvas = $('heatmapCanvas');
+    if (!canvas) { console.warn('heatmapCanvas not found'); return; }
+
+    // eventos setas
+    const prev = $('prevMonth');
+    const next = $('nextMonth');
+    if (prev) prev.addEventListener('click', () => {
+      heatmapVisibleMonth.setMonth(heatmapVisibleMonth.getMonth() - 1);
+      drawHeatmap(canvas);
+      atualizarLabelMes();
+    });
+    if (next) next.addEventListener('click', () => {
+      heatmapVisibleMonth.setMonth(heatmapVisibleMonth.getMonth() + 1);
+      drawHeatmap(canvas);
+      atualizarLabelMes();
+    });
+
+    try {
+      await carregarHeatmapDados();
+      atualizarLabelMes();
+      drawHeatmap(canvas);
+      wireHeatmapEvents(canvas);
+    } catch (err) {
+      console.error('Erro carregarHeatmap:', err);
+    }
+  }
+
   async function init() {
-    // attempt to load KPIs and charts in parallel
     await carregarKPIs();
 
-    // Load charts (heatmap may be heavier)
     await Promise.all([
       carregarGraficoSucessoFalha(),
       carregarGraficoTentativasDia(),
@@ -413,14 +465,12 @@
     ]);
   }
 
-  // DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-
-  // expose atualizarBarraLateral function (HTML calls it)
+  
   window.atualizarBarraLateral = function () {
     const barraLateral = document.querySelector('.barra_lateral');
     const elementos = document.getElementById('elementos');
