@@ -1,475 +1,436 @@
-let dados = [
-  { dashboard: "Segurança", recursos: {} },
-  { dashboard: "Todas as Máquinas", recursos: {} }
-];
+// acesso.js
+// JavaScript para Dashboard de Acesso (Sucesso vs Falha, Tentativas por dia, Heatmap estilo "commits")
+// Requer Chart.js (já incluído no HTML)
 
-const graficosAtivos = {};
-let componente = null;
+(() => {
+  // -----------------------
+  // Helpers
+  // -----------------------
+  const byId = id => document.getElementById(id);
+  const safeNum = v => {
+    if (v === null || v === undefined) return 0;
+    if (typeof v === 'number') return v;
+    const n = Number(String(v).replace(',', '.'));
+    return isNaN(n) ? 0 : n;
+  };
 
-// Utilitários DOM (referências aos elementos existentes no HTML)
-const el = id => document.getElementById(id);
-const botoescomp = () => document.querySelectorAll("#sel_componentes button");
-const campoBusca = () => document.getElementById('pesquisa');
-const nomesDashEl = () => document.getElementById('nomes_dash');
-const container = () => document.getElementById("cardsContainer");
-const botoesKpi = () => document.querySelectorAll('.abas_kpis button');
-const kpidesc = i => document.querySelector(`#kpi${i}_desc`);
-const kpiresult = i => document.querySelector(`#kpi${i}_result`);
-const kpidisp = i => document.querySelector(`#kpi${i}`);
-
-/* -------------------------
-   Funções que buscam dados
-   ------------------------- */
-
-async function fetchJson(url, opts = {}) {
-  try {
-    const r = await fetch(url, opts);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return await r.json();
-  } catch (e) {
-    console.error("fetchJson erro:", url, e);
-    return null;
-  }
-}
-
-async function trazerDadosDash() {
-  // 1) buscar máquinas
-  try {
-    const maquinas = await fetchJson("/dash/maquinas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tokenEmpresa: sessionStorage.TOKEN_EMPRESA })
-    });
-    if (Array.isArray(maquinas)) {
-      maquinas.forEach(m => dados.push({ dashboard: m.hostname, recursos: {} }));
+  async function fetchJson(url, opts = {}) {
+    try {
+      const r = await fetch(url, opts);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return await r.json();
+    } catch (err) {
+      console.error(`fetchJson error ${url}:`, err);
+      return null;
     }
-  } catch (e) {
-    console.error("Erro na requisição de máquinas:", e);
   }
 
-  // 2) buscar dados de segurança (rota principal)
-  try {
-    const token = encodeURIComponent(sessionStorage.TOKEN_EMPRESA || "");
-    const security = await fetchJson(`/usuarios/security?tokenEmpresa=${token}`, { method: "GET", headers: { "Content-Type": "application/json" } });
+  // Destroy chart safely
+  const charts = {};
+  function destroyChart(key) {
+    if (charts[key]) {
+      try { charts[key].destroy(); } catch (e) {}
+      delete charts[key];
+    }
+  }
 
-    if (security) {
-      const k = security.kpis || {};
-      // grafico1: espera labels + sucesso + falha (ou labels + dados)
-      const g1 = security.grafico1 || {};
-      const g2 = security.grafico2 || {};
-      const g3 = security.grafico3 || {};
+  // Texto comparação KPI
+  function textoComparacao(comparacao) {
+    if (comparacao === "N" || isNaN(Number(comparacao))) return ["#FFFF", "Veja mais🔍︎"];
+    const num = Number(comparacao);
+    if (num > 0) return ["#E94F37", `${num} A mais que o período anterior▲`];
+    if (num < 0) return ["#6EEB83", `${Math.abs(num)} A menos que o período anterior▼`];
+    return ["#FFD447", "Número igual ao período anterior"];
+  }
 
-      // converter entradas possivelmente faltantes
-      const labelsG1 = Array.isArray(g1.labels) ? g1.labels : (Array.isArray(g1.dados) ? g1.dados.map((_,i)=>i) : []);
-      const sucesso = g1.sucesso || g1.datasets?.[0]?.data || [];
-      const falha = g1.falha || g1.datasets?.[1]?.data || [];
+  // Color map para heatmap (tons de azul)
+  function colorForIntensity(value, max) {
+    // value between 0..max
+    if (max <= 0) return 'rgba(230,240,255,0.5)'; // very light
+    const ratio = Math.min(1, Math.max(0, value / max));
+    // from very light to deep blue:
+    // use rgba with alpha scaled so background remains visible
+    const alpha = 0.25 + (0.7 * ratio); // 0.25..0.95
+    const r = 15, g = 60, b = 220;
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
 
-      dados[0].recursos = {
-        geral: {
-          kpi1: [
-          Number(k.tentativas30d ?? 0),
-          Number(k.tentativas30d ?? 0) - Number(k.tentativas30dPrev ?? 0)
-          ],
-          kpi2: [`${Number(k.taxaSucesso ?? 0).toFixed(2)}%`, Number(k.taxaSucesso ?? 0), []],
-          kpi3: [k.contasAdmin ?? 0, "N", []],
-          kpi4: [k.contasInativas ?? 0, "N", []],
-          grafico1: {
-            id: "grafico1",
-            tipo: "line",
-            labels: labelsG1,
-            datasets: [
-              { label: "Sucesso", data: sucesso },
-              { label: "Falha", data: falha }
-            ],
-            titulo: "Tentativas de Login (últimos 30 dias)",
-            xylabels: ["Data", "Tentativas"]
-          },
-          grafico2: {
-            id: "grafico2",
-            tipo: "bar",
-            labels: Array.isArray(g2.labels) ? g2.labels : (g2.map? g2.map(l=>l.cargo): []),
-            dados: Array.isArray(g2.dados) ? g2.dados : (g2.map? g2.map(l=>l.total): []),
-            titulo: "Usuários por cargo",
-            xylabels: ["Cargo", "Usuários"]
+  // Format date yyyy-mm-dd
+  function formatDateYMD(d) {
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  // Parse DB date (returned as ISO string or Date object)
+  function parseDbDate(v) {
+    if (!v) return null;
+    const d = new Date(v);
+    if (isNaN(d)) return null;
+    return d;
+  }
+
+  // -----------------------
+  // Carregar KPIs
+  // -----------------------
+  async function carregarKPIs() {
+    try {
+      // total tentativas
+      const totalResp = await fetchJson('/acesso/kpi/tentativas');
+      const total = Array.isArray(totalResp) && totalResp[0] && totalResp[0].total !== undefined
+        ? safeNum(totalResp[0].total) : 0;
+
+      // taxa sucesso
+      const taxaResp = await fetchJson('/acesso/kpi/taxa-sucesso');
+      const taxaVal = Array.isArray(taxaResp) && taxaResp[0] && (taxaResp[0].taxa !== undefined)
+        ? safeNum(taxaResp[0].taxa) : 0;
+
+      // admins ativos
+      const adminsResp = await fetchJson('/acesso/kpi/admins');
+      const admins = Array.isArray(adminsResp) && adminsResp[0] && adminsResp[0].total !== undefined
+        ? safeNum(adminsResp[0].total) : 0;
+
+      // inativas vs ativas
+      const inativasResp = await fetchJson('/acesso/kpi/inativas');
+      const inativas = Array.isArray(inativasResp) && inativasResp[0] && inativasResp[0].inativas !== undefined
+        ? safeNum(inativasResp[0].inativas) : (inativasResp && inativasResp.inativas ? safeNum(inativasResp.inativas) : 0);
+      const ativas = Array.isArray(inativasResp) && inativasResp[0] && inativasResp[0].ativas !== undefined
+        ? safeNum(inativasResp[0].ativas) : (inativasResp && inativasResp.ativas ? safeNum(inativasResp.ativas) : 0);
+
+      // write into DOM if elements exist
+      const elK1 = byId('kpi1'); if (elK1) elK1.textContent = total;
+      const elK2 = byId('kpi2'); if (elK2) elK2.textContent = `${taxaVal.toFixed(2)}%`;
+      const elK3 = byId('kpi3'); if (elK3) elK3.textContent = admins;
+      const elK4 = byId('kpi4'); if (elK4) elK4.textContent = inativas;
+
+      const r2 = byId('kpi2_result'); if (r2) { r2.style.color = '#FFD447'; r2.textContent = `Taxa atual: ${taxaVal.toFixed(2)}%`; }
+      const r1 = byId('kpi1_result'); if (r1) { r1.style.color = '#FFFF'; r1.textContent = `Últimos 30 dias: ${total}`; }
+      const r3 = byId('kpi3_result'); if (r3) { r3.style.color = '#FFFF'; r3.textContent = `Admins: ${admins}`; }
+      const r4 = byId('kpi4_result'); if (r4) { r4.style.color = '#FFFF'; r4.textContent = `Inativas: ${inativas}`; }
+
+    } catch (err) {
+      console.error("Erro ao carregar KPIs:", err);
+    }
+  }
+
+  // -----------------------
+  // Gráfico: Sucesso vs Falha (pie or doughnut)
+  // -----------------------
+  async function carregarGraficoSucessoFalha() {
+    const canvas = byId('grafico1');
+    if (!canvas) { console.warn('canvas grafico1 não encontrado'); return; }
+    try {
+      const data = await fetchJson('/acesso/grafico/sucesso-vs-falha');
+      if (!Array.isArray(data)) {
+        console.warn('grafico/sucesso-vs-falha retornou formato inesperado', data);
+      }
+      // map success=1 and success=0 (DB returns rows for each sucesso value)
+      let sucessoCount = 0, falhaCount = 0;
+      (data || []).forEach(r => {
+        const suc = safeNum(r.sucesso);
+        const tot = safeNum(r.total);
+        if (suc === 1) sucessoCount = tot;
+        else falhaCount = tot;
+      });
+
+      destroyChart('grafico1');
+      const ctx = canvas.getContext('2d');
+
+      charts['grafico1'] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Sucesso', 'Falha'],
+          datasets: [{
+            data: [sucessoCount, falhaCount],
+            backgroundColor: ['rgba(75,108,240,0.85)', 'rgba(233,79,55,0.85)'],
+            borderColor: ['#ffffff', '#ffffff'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: { display: true, text: 'Distribuição: Sucesso vs Falha (últimos 30 dias)' },
+            legend: { position: 'bottom' }
           }
         }
-      };
-    } else {
-      // fallback: vazios para não quebrar UI
-      dados[0].recursos = {
-        geral: {
-          kpi1: [0, "N", []],
-          kpi2: ["0%", "N", []],
-          kpi3: [0, "N", []],
-          kpi4: [0, "N", []],
-          grafico1: { id: "grafico1", tipo: "line", labels: [], datasets: [] },
-          grafico2: { id: "grafico2", tipo: "bar", labels: [], dados: [] }
-        }
-      };
+      });
+    } catch (err) {
+      console.error('Erro carregarGraficoSucessoFalha:', err);
     }
-  } catch (e) {
-    console.error("Erro na requisição de security:", e);
-    dados[0].recursos = {
-      geral: {
-        kpi1: [0, "N", []],
-        kpi2: ["0%", "N", []],
-        kpi3: [0, "N", []],
-        kpi4: [0, "N", []],
-        grafico1: { id: "grafico1", tipo: "line", labels: [], datasets: [] },
-        grafico2: { id: "grafico2", tipo: "bar", labels: [], dados: [] }
-      }
-    };
   }
 
-  // 3) preencher "Todas as Máquinas"
-  try {
-    const kpiTodasResp = await fetchJson("/usuarios/kpisTodas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tokenEmpresa: sessionStorage.TOKEN_EMPRESA })
-    });
-    const kpiTodas = Array.isArray(kpiTodasResp) ? (kpiTodasResp[0] || {}) : (kpiTodasResp || {});
-    dados[1].recursos = {
-      geral: {
-        kpi1: [kpiTodas.maquinas ?? 0, "N", []],
-        kpi2: [kpiTodas.alertasAtuais ?? 0, (kpiTodas.alertasAtuais ?? 0) - (kpiTodas.alertasPassados ?? 0), []],
-        kpi3: [kpiTodas.DiasSemAlertas ?? 0, "N", []],
-        kpi4: [kpiTodas.MaquinaMaisAlertas ?? 0, "N", []],
-        grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)" },
-        grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "3 Máquinas com Mais Alertas (últimos 7 dias)" }
-      }
-    };
-  } catch (e) {
-    console.error("Erro na requisição kpisTodas:", e);
-  }
-
-  // 4) preencher cada máquina (se existirem)
-  for (const maquina of dados.slice(2)) {
+  // -----------------------
+  // Gráfico: Tentativas por dia (coluna)
+  // -----------------------
+  async function carregarGraficoTentativasDia() {
+    const canvas = byId('graficoAba');
+    if (!canvas) { console.warn('canvas graficoAba não encontrado'); return; }
     try {
-      const resp = await fetchJson("/usuarios/kpisGeral", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tokenEmpresa: sessionStorage.TOKEN_EMPRESA, maquina: maquina.dashboard })
-      });
-      const kpiGeral = Array.isArray(resp) ? (resp[0] || {}) : (resp || {});
-      maquina.recursos['geral'] = {
-        kpi1: [kpiGeral.setores ?? 0, "N", []],
-        kpi2: [kpiGeral.alertasAtuais ?? 0, (kpiGeral.alertasAtuais ?? 0) - (kpiGeral.alertasPassados ?? 0), []],
-        kpi3: [kpiGeral.diasSemAlertas ?? 0, "N", []],
-        kpi4: [kpiGeral.ComponenteMaisAlertas ?? 0, "N", []],
-        grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)" },
-        grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "3 Componentes com Mais Alertas" }
-      };
-    } catch (e) {
-      console.error("Erro ao buscar kpis por máquina:", e);
-    }
-  }
-}
-
-/* -------------------------
-   Funções de plotagem
-   ------------------------- */
-
-function defaultColor(idx, tipo) {
-  const palette = [
-    "rgba(75,108,240,0.6)",
-    "rgba(233,79,55,0.7)",
-    "rgba(110,235,131,0.7)",
-    "rgba(255,193,7,0.7)"
-  ];
-  const color = palette[idx % palette.length];
-  if (tipo === 'line') return color.replace(/0\.6|0\.7|0\.7|0\.7/, '0.22');
-  return color;
-}
-
-function defaultBorder(idx) {
-  const borders = ["#4B6CF0", "#E94F37", "#6EEB83", "#FFC107"];
-  return borders[idx % borders.length];
-}
-
-function gerarBins(dados, binSize = 10) {
-  const min = 0;
-  const max = 100;
-  const nBins = Math.ceil((max - min) / binSize);
-  const bins = Array.from({ length: nBins }, (_, i) => ({ x: min + i * binSize, count: 0 }));
-  (dados || []).forEach(v => {
-    const n = Number(v);
-    if (isNaN(n)) return;
-    const idx = Math.floor((n - min) / binSize);
-    if (bins[idx]) bins[idx].count++;
-  });
-  return bins;
-}
-
-function montarGrafico(cfg) {
-  if (!cfg || !cfg.id) return;
-  const { id, tipo } = cfg;
-  let labels = Array.isArray(cfg.labels) ? cfg.labels.slice() : [];
-  let titulo = cfg.titulo || "";
-  let xylabels = cfg.xylabels || [];
-  let datasets = [];
-
-  if (Array.isArray(cfg.datasets) && cfg.datasets.length > 0) {
-    datasets = cfg.datasets.map((ds, i) => ({
-      label: ds.label || `Série ${i + 1}`,
-      data: ds.data || [],
-      backgroundColor: ds.backgroundColor || defaultColor(i, tipo),
-      borderColor: ds.borderColor || defaultBorder(i),
-      borderWidth: 2,
-      fill: tipo === "line"
-    }));
-  } else if (Array.isArray(cfg.dados) && cfg.dados.length > 0) {
-    datasets = [{
-      label: titulo || "Valores",
-      data: cfg.dados || [],
-      backgroundColor: defaultColor(0, tipo),
-      borderColor: defaultBorder(0),
-      borderWidth: 2,
-      fill: tipo === "line"
-    }];
-  } else {
-    // Try detect success/fail style (grafico1 uses sucesso/falha)
-    if (Array.isArray(cfg.labels) && cfg.datasets === undefined && cfg.sucesso) {
-      datasets = [
-        { label: "Sucesso", data: cfg.sucesso || [], backgroundColor: defaultColor(0, 'line'), borderColor: defaultBorder(0), borderWidth: 2, fill: true },
-        { label: "Falha", data: cfg.falha || [], backgroundColor: defaultColor(1, 'line'), borderColor: defaultBorder(1), borderWidth: 2, fill: true }
-      ];
-    } else {
-      datasets = [{
-        label: titulo || "Sem dados",
-        data: [],
-        backgroundColor: defaultColor(0, tipo),
-        borderColor: defaultBorder(0),
-        borderWidth: 2,
-        fill: tipo === "line"
-      }];
-    }
-  }
-
-  // histograma support
-  let finalType = tipo === "histograma" ? "bar" : tipo;
-  if (tipo === "histograma") {
-    const bins = gerarBins(cfg.dados || [], cfg.binSize || 10);
-    labels = bins.map(b => `${b.x}-${b.x + (cfg.binSize || 10)}`);
-    datasets = [{ label: titulo || "Histograma", data: bins.map(b => b.count), backgroundColor: defaultColor(0, "bar"), borderColor: defaultBorder(0) }];
-    finalType = "bar";
-  }
-
-  const canvas = el(id);
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-
-  if (graficosAtivos[id]) graficosAtivos[id].destroy();
-
-  graficosAtivos[id] = new Chart(ctx, {
-    type: finalType || 'bar',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: true, labels: { boxWidth: 12 } },
-        title: { display: Boolean(titulo), text: titulo }
-      },
-      scales: {
-        x: { title: { display: Boolean(xylabels[0]), text: xylabels[0] || '' } },
-        y: { beginAtZero: true, title: { display: Boolean(xylabels[1]), text: xylabels[1] || '' } }
+      const rows = await fetchJson('/acesso/grafico/tentativas-dia');
+      const labels = [];
+      const dados = [];
+      if (Array.isArray(rows)) {
+        rows.forEach(r => {
+          const d = parseDbDate(r.dia);
+          labels.push(d ? formatDateYMD(d) : String(r.dia));
+          dados.push(safeNum(r.total));
+        });
       }
-    }
-  });
-}
 
-/* -------------------------
-   UI: montar lista e ligações
-   ------------------------- */
-
-function textoComparacao(comparacao) {
-  if (comparacao === "N" || isNaN(Number(comparacao))) return ["#FFFF", "Veja mais🔍︎"];
-  const num = Number(comparacao);
-  if (num > 0) return ["#E94F37", `${num} A mais que o período anterior▲`];
-  if (num < 0) return ["#6EEB83", `${Math.abs(num)} A menos que o período anterior▼`];
-  return ["#FFD447", "Número igual ao período anterior"];
-}
-
-function colorirDado(dado) {
-  let color = "#ffff";
-  const num = (dado.valor + "").replace(/[^0-9.-]/g, '');
-  const n = Number(num) || 0;
-  if (dado.nome == "Perda de Pacotes") {
-    if (n > 5) color = "#E94F37";
-    else if (n >= 2.5) color = "#FFD447";
-    else color = "#6EEB83";
-  }
-  if (["CPU", "RAM", "DISCO", "Uso"].includes(dado.nome)) {
-    if (n > 90) color = "#E94F37";
-    else if (n >= 85) color = "#FFD447";
-    else color = "#6EEB83";
-  }
-  return `<span class="dado-valor" style="color: ${color};">${dado.valor}</span>`;
-}
-
-function montarListaDashboardsENomearBotoes() {
-  const nomesDash = nomesDashEl();
-  nomesDash.innerHTML = '';
-  dados.forEach((d, idx) => {
-    const div = document.createElement('div');
-    div.className = "item clicado";
-    div.innerHTML = `<button id="${idx}_dash" class="titulo_dash">${d.dashboard}</button>`;
-    nomesDash.appendChild(div);
-  });
-
-  // click nos dashboards
-  document.querySelectorAll(".titulo_dash").forEach(btn => {
-    btn.addEventListener('click', () => {
-      const indexDash = parseInt(btn.id.split("_")[0]);
-      const dashAtual = dados[indexDash];
-      // atualizar título
-      document.querySelectorAll("#sel_componentes p")[0].textContent = (dashAtual.dashboard || '').toUpperCase();
-
-      // mostrar/ocultar botões de componente: para segurança usamos apenas 'geral' visível
-      Array.from(botoescomp()).forEach(b => {
-        if (indexDash === 0 || indexDash === 1) {
-          // se for Segurança ou Todas as Máquinas, manter apenas 'geral' visível
-          if (b.dataset && b.dataset.comp === 'geral') b.classList.remove('aparente');
-          else b.classList.add('aparente');
-        } else {
-          b.classList.remove('aparente');
+      destroyChart('graficoAba');
+      const ctx = canvas.getContext('2d');
+      charts['graficoAba'] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Tentativas',
+            data: dados,
+            backgroundColor: 'rgba(75,108,240,0.8)',
+            borderColor: '#4B6CF0',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: { display: true, text: 'Tentativas de Login por Dia (últimos 30 dias)' },
+            legend: { display: false },
+            tooltip: { mode: 'index', intersect: false }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Data' } },
+            y: { title: { display: true, text: 'Tentativas' }, beginAtZero: true }
+          }
         }
       });
+    } catch (err) {
+      console.error('Erro carregarGraficoTentativasDia:', err);
+    }
+  }
 
-      // setar campo de busca
-      campoBusca().value = btn.textContent;
+  // -----------------------
+  // Gráfico: Cargos (barra) - NOT USED as requested, but we can load in background (kept minimal)
+  // -----------------------
+  async function carregarGraficoCargos() {
+    // Not plotted in the current layout (user asked only for 3 charts).
+    // Keep function for future use if needed.
+    try {
+      const rows = await fetchJson('/acesso/grafico/cargos');
+      return rows;
+    } catch (err) {
+      console.error('Erro carregarGraficoCargos:', err);
+      return null;
+    }
+  }
 
-      // dispara clique no botão geral disponível
-      const geralBtn = Array.from(botoescomp()).find(b => b.dataset && b.dataset.comp === 'geral');
-      if (geralBtn) geralBtn.dispatchEvent(new Event('click'));
-    });
-  });
-}
-
-function wireComportamentoBotoesComp() {
-  Array.from(botoescomp()).forEach(botao => {
-    botao.addEventListener('click', () => {
-      // set ativo
-      botoescomp().forEach(b => b.classList.remove('ativo'));
-      botao.classList.add('ativo');
-
-      // descobrir dashAtual pelo título
-      const titleText = (document.querySelectorAll("#sel_componentes p")[0].textContent || '').toUpperCase();
-      const dashAtual = dados.find(d => (d.dashboard || '').toUpperCase() === titleText) || dados[0];
-
-      // componente = recurso escolhido pelo data-comp ou fallback geral
-      componente = (dashAtual.recursos && dashAtual.recursos[botao.dataset.comp]) || (dashAtual.recursos && dashAtual.recursos['geral']) || {};
-
-      // montar gráficos com o que existir
-      try {
-        montarGrafico(componente.grafico1 || { id: "grafico1", tipo: "line", labels: [], datasets: [], titulo: "" });
-        montarGrafico(componente.grafico2 || { id: "grafico2", tipo: "bar", labels: [], dados: [], titulo: "" });
-      } catch (e) {
-        console.error("Erro montarGrafico:", e);
-      }
-
-      // preencher KPIs
-      for (let i = 1; i <= 4; i++) {
-        const key = `kpi${i}`;
-        const val = (componente && componente[key]) || [0, "N", []];
-        // exibição do valor
-        const disp = (val[0] !== undefined && val[0] !== null) ? val[0] : 0;
-        const elDisp = kpidisp(i);
-        if (elDisp) elDisp.textContent = disp;
-        // descrição do KPI vem do data attribute do botão clicado
-        if (botao.dataset && botao.dataset[`kpi${i}`] && kpidesc(i)) kpidesc(i).textContent = botao.dataset[`kpi${i}`];
-        // comparação
-        const comp = val[1];
-        const [color, text] = textoComparacao(comp);
-        if (kpiresult(i)) { kpiresult(i).style.color = color; kpiresult(i).textContent = text; }
-      }
-
-      // dispara o clique da aba kpi (primeira) para preencher cards
-      const firstKpiBtn = document.querySelector('.abas_kpis button');
-      if (firstKpiBtn) firstKpiBtn.dispatchEvent(new Event('click'));
-    });
-  });
-}
-
-function wireAbasKPIs() {
-  Array.from(botoesKpi()).forEach(btn => {
-    btn.addEventListener('click', () => {
-      botoesKpi().forEach(b => b.classList.remove('ativa'));
-      btn.classList.add('ativa');
-
-      const bTag = btn.querySelector('b');
-      if (!bTag) return;
-      const idk = bTag.id; // ex kpi1
-      const blocos = (componente && componente[idk] && componente[idk][2]) || [];
-
-      container().innerHTML = '';
-
-      if (!Array.isArray(blocos) || blocos.length === 0) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<h3>Sem dados</h3><div class="dados"><div class="dado-item">Nenhum dado disponível para este cartão.</div></div>`;
-        container().appendChild(card);
-        return;
-      }
-
-      blocos.forEach(bloco => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <h3>${bloco.titulo}</h3>
-          <div class="dados">
-            ${(bloco.dados || []).map(d => `
-              <div class="dado-item">
-                <span class="dado-nome">${d.nome}</span>
-                ${colorirDado(d)}
-              </div>
-            `).join('')}
-          </div>
-        `;
-        container().appendChild(card);
+  // -----------------------
+  // Heatmap (canvas) - estilo "commits" do GitHub
+  // - usa /acesso/grafico/heatmap que retorna [{ dia: date, total: n }, ...]
+  // - desenha os últimos N dias em colunas por semana
+  // -----------------------
+  async function carregarHeatmap() {
+    const canvas = byId('heatmapCanvas');
+    if (!canvas) { console.warn('canvas heatmapCanvas não encontrado'); return; }
+    try {
+      const rows = await fetchJson('/acesso/grafico/heatmap');
+      // Normalizar rows para um mapa dia->total (string yyyy-mm-dd)
+      const map = {};
+      (rows || []).forEach(r => {
+        const d = parseDbDate(r.dia);
+        if (!d) return;
+        const key = formatDateYMD(d);
+        map[key] = safeNum(r.total);
       });
-    });
-  });
-}
 
-/* -------------------------
-   Inicialização
-   ------------------------- */
+      // We'll display last 90 days (13 weeks) — adjust as necessary
+      const DAYS = 90;
+      const today = new Date();
+      const start = new Date(today);
+      start.setDate(today.getDate() - (DAYS - 1)); // inclusive
+      // Build an array of dates
+      const dates = [];
+      for (let i = 0; i < DAYS; i++) {
+        const d = new Date(start);
+        d.setDate(start.getDate() + i);
+        dates.push(d);
+      }
 
-async function initDashboard() {
-  try {
-    await trazerDadosDash();       // monta dados[]
-    montarListaDashboardsENomearBotoes(); // cria a lista lateral
-    wireComportamentoBotoesComp(); // liga botões de componentes
-    wireAbasKPIs();                // liga abas de KPI
+      // Group into weeks (columns of 7 days). We'll render vertical weeks
+      const weeks = [];
+      for (let i = 0; i < dates.length; i += 7) {
+        weeks.push(dates.slice(i, i + 7));
+      }
 
-    // ativar o primeiro dashboard (Segurança)
-    setTimeout(() => {
-      const first = document.getElementById('0_dash') || document.querySelector('.titulo_dash');
-      if (first) first.click();
-    }, 50);
-  } catch (e) {
-    console.error("Erro initDashboard:", e);
+      // compute max value for color scaling
+      const values = Object.values(map);
+      const max = values.length ? Math.max(...values) : 0;
+
+      // Draw on canvas
+      // set sizes: columns = weeks.length, rows = up to 7
+      const cols = weeks.length;
+      const rowsCount = 7;
+      const padding = 8;
+      const cellGap = 4;
+
+      // cell size compute based on canvas parent box for responsiveness
+      const parent = canvas.parentElement;
+      const parentRect = parent ? parent.getBoundingClientRect() : { width: 360, height: 200 };
+      // We'll set canvas width/height explicitly
+      const canvasWidth = Math.max(260, Math.floor(parentRect.width));
+      const canvasHeight = Math.max(140, Math.floor(parentRect.height));
+      canvas.width = canvasWidth * devicePixelRatio;
+      canvas.height = canvasHeight * devicePixelRatio;
+      canvas.style.width = `${canvasWidth}px`;
+      canvas.style.height = `${canvasHeight}px`;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      // Draw title
+      const title = 'Heatmap de Logins (últimos 90 dias)';
+      ctx.font = '14px Inter, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.textBaseline = 'top';
+      ctx.fillText(title, padding, padding);
+
+      // compute area for grid below title
+      const topArea = padding + 22;
+      const gridHeight = canvasHeight - topArea - padding;
+      const gridWidth = canvasWidth - padding * 2;
+
+      // Determine cell size
+      const usableCols = Math.max(1, cols);
+      const usableRows = rowsCount;
+      // cell width with gaps:
+      const totalGapX = (usableCols - 1) * cellGap;
+      const totalGapY = (usableRows - 1) * cellGap;
+      let cellW = (gridWidth - totalGapX) / usableCols;
+      let cellH = (gridHeight - totalGapY) / usableRows;
+      // Keep square-ish
+      const cellSize = Math.max(8, Math.min(cellW, cellH));
+      // Recompute starting offsets to center grid
+      const gridTotalW = usableCols * cellSize + totalGapX;
+      const gridTotalH = usableRows * cellSize + totalGapY;
+      const offsetX = padding + (gridWidth - gridTotalW) / 2;
+      const offsetY = topArea + (gridHeight - gridTotalH) / 2;
+
+      // Draw each cell
+      for (let c = 0; c < usableCols; c++) {
+        const week = weeks[c] || [];
+        for (let rIdx = 0; rIdx < usableRows; rIdx++) {
+          const day = week[rIdx];
+          const x = offsetX + c * (cellSize + cellGap);
+          const y = offsetY + rIdx * (cellSize + cellGap);
+
+          let key = null;
+          let count = 0;
+          if (day) {
+            key = formatDateYMD(day);
+            count = map[key] || 0;
+          } else {
+            count = 0;
+          }
+
+          const fill = colorForIntensity(count, max);
+          // border/stroke for better separation
+          ctx.fillStyle = fill;
+          roundRect(ctx, x, y, cellSize, cellSize, 3, true, false);
+          // optional small stroke
+          ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+          ctx.lineWidth = 0.6;
+          ctx.strokeRect(x + 0.3, y + 0.3, cellSize - 0.6, cellSize - 0.6);
+
+          // if count > 0, draw small number when space allows
+          if (count > 0 && cellSize >= 18) {
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.font = `${Math.max(9, Math.floor(cellSize / 3))}px Inter, sans-serif`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillText(String(count), x + cellSize / 2, y + cellSize / 2);
+          }
+        }
+      }
+
+      // legend bottom-right
+      const legendW = 110, legendH = 28;
+      const lx = canvasWidth - padding - legendW;
+      const ly = canvasHeight - padding - legendH;
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      roundRect(ctx, lx, ly, legendW, legendH, 6, true, false);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Menos', lx + 8, ly + 6);
+      ctx.fillText('Mais', lx + legendW - 36, ly + 6);
+      // draw gradient bar
+      const barX = lx + 36, barY = ly + 10, barW = 52, barH = 10;
+      const grad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
+      grad.addColorStop(0, colorForIntensity(0, max));
+      grad.addColorStop(1, colorForIntensity(max, max));
+      ctx.fillStyle = grad;
+      roundRect(ctx, barX, barY, barW, barH, 3, true, false);
+
+    } catch (err) {
+      console.error('Erro carregarHeatmap:', err);
+    }
   }
-}
 
-// Expor função atualizarBarraLateral (mantém sua API original)
-function atualizarBarraLateral() {
-  const barraLateral = document.querySelector('.barra_lateral');
-  const elementos = document.getElementById('elementos');
-  const butAtual = document.getElementById('but_atualizar_bl');
-  if (barraLateral) barraLateral.classList.toggle('ativa');
-  if (elementos) elementos.classList.toggle('bl_ativa');
-  if (butAtual) {
-    butAtual.classList.toggle('bxs-menu-wide');
-    butAtual.classList.toggle('bxs-menu-select');
+  // rounded rectangle helper
+  function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+    if (typeof r === 'undefined') r = 5;
+    if (typeof r === 'number') r = { tl: r, tr: r, br: r, bl: r };
+    ctx.beginPath();
+    ctx.moveTo(x + r.tl, y);
+    ctx.lineTo(x + w - r.tr, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r.tr);
+    ctx.lineTo(x + w, y + h - r.br);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r.br, y + h);
+    ctx.lineTo(x + r.bl, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r.bl);
+    ctx.lineTo(x, y + r.tl);
+    ctx.quadraticCurveTo(x, y, x + r.tl, y);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
   }
-}
 
-// inicializa quando DOM pronto
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initDashboard);
-} else {
-  initDashboard();
-}
+  // -----------------------
+  // Inicialização
+  // -----------------------
+  async function init() {
+    // attempt to load KPIs and charts in parallel
+    await carregarKPIs();
+
+    // Load charts (heatmap may be heavier)
+    await Promise.all([
+      carregarGraficoSucessoFalha(),
+      carregarGraficoTentativasDia(),
+      carregarHeatmap()
+    ]);
+  }
+
+  // DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // expose atualizarBarraLateral function (HTML calls it)
+  window.atualizarBarraLateral = function () {
+    const barraLateral = document.querySelector('.barra_lateral');
+    const elementos = document.getElementById('elementos');
+    const butAtual = document.getElementById('but_atualizar_bl');
+    if (barraLateral) barraLateral.classList.toggle('ativa');
+    if (elementos) elementos.classList.toggle('bl_ativa');
+    if (butAtual) {
+      butAtual.classList.toggle('bxs-menu-wide');
+      butAtual.classList.toggle('bxs-menu-select');
+    }
+  };
+
+})();
