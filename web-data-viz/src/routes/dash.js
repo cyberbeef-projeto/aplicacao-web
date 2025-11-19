@@ -31,4 +31,12 @@ router.post("/kpisGeralDesc", function (req, res) {
     dashController.buscarKpisGeralDesc(req, res);
 });
 
+router.post("/kpisCRDDesc", function (req, res) {
+    dashController.buscarKpisCRDDesc(req, res);
+});
+
+router.post("/kpisRedeDesc", function (req, res) {
+    dashController.buscarKpisRedeDesc(req, res);
+});
+
 module.exports = router;

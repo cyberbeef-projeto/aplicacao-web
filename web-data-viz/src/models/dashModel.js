@@ -218,6 +218,16 @@ function buscarKpisGeralDesc(id, maquina) {
     return database.executar(instrucaoSql);
 }
 
+function buscarKpisCRDDesc(id, maquina, componente) {
+    var instrucaoSql = `CALL descKpiCRD('${id}', '${maquina}', '${componente}');`; 
+    return database.executar(instrucaoSql);
+}
+
+function buscarKpisRedeDesc(id, maquina, componente) {
+    var instrucaoSql = `CALL descKpiRede('${id}', '${maquina}', '${componente}');`; 
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarMaquinas,
     buscarKpisTodas,
@@ -226,4 +236,6 @@ module.exports = {
     buscarKpisRede,
     buscarKpisTodasDesc,
     buscarKpisGeralDesc,
+    buscarKpisCRDDesc,
+    buscarKpisRedeDesc,
 };

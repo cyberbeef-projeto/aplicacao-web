@@ -62,6 +62,28 @@ function buscarKpisGeralDesc(req, res) {
   });
 }
 
+function buscarKpisCRDDesc(req, res) {
+  var id = req.body.tokenEmpresa;
+  var maquina = req.body.maquina;
+  var componente = req.body.componente;
+
+
+  dashModel.buscarKpisCRDDesc(id, maquina, componente).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function buscarKpisRedeDesc(req, res) {
+  var id = req.body.tokenEmpresa;
+  var maquina = req.body.maquina;
+  var componente = req.body.componente;
+
+
+  dashModel.buscarKpisRedeDesc(id, maquina, componente).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 module.exports = {
     buscarMaquinas,
     buscarKpisTodas,
@@ -70,4 +92,6 @@ module.exports = {
     buscarKpisRede,
     buscarKpisTodasDesc,
     buscarKpisGeralDesc,
+    buscarKpisCRDDesc,
+    buscarKpisRedeDesc,
 };

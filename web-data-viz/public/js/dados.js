@@ -105,10 +105,10 @@ async function trazerDadosDash() {
         })).json())
         kpiCpu = kpiCpu[0];
         maquina.recursos['cpu'] = {
-          kpi1: [kpiCpu.ultimaCaptura + "%", kpiCpu.ultimaCaptura - kpiCpu.penultimaCaptura, []],
-          kpi2: [kpiCpu.alertasAtuais, kpiCpu.alertasAtuais - kpiCpu.alertasPassados, []],
-          kpi3: [kpiCpu.diasSemAlertas, "N", []],
-          kpi4: [kpiCpu.cvAtual + "%", kpiCpu.cvAtual - kpiCpu.cvPassado, []],
+          kpi1: [kpiCpu.ultimaCaptura + "%", kpiCpu.ultimaCaptura - kpiCpu.penultimaCaptura, descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "CPU")],
+          kpi2: [kpiCpu.alertasAtuais, kpiCpu.alertasAtuais - kpiCpu.alertasPassados, descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "CPU")],
+          kpi3: [kpiCpu.diasSemAlertas, "N", descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "CPU")],
+          kpi4: [kpiCpu.cvAtual + "%", kpiCpu.cvAtual - kpiCpu.cvPassado, descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "CPU")],
           grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
         }
@@ -124,10 +124,10 @@ async function trazerDadosDash() {
         })).json())
         kpiRam = kpiRam[0];
         maquina.recursos['ram'] = {
-          kpi1: [kpiRam.ultimaCaptura + "%", kpiRam.ultimaCaptura - kpiRam.penultimaCaptura, []],
-          kpi2: [kpiRam.alertasAtuais, kpiRam.alertasAtuais - kpiRam.cvPassado, []],
-          kpi3: [kpiRam.diasSemAlertas, "N", []],
-          kpi4: [kpiRam.cvAtual + "%", kpiRam.cvAtual - kpiRam.alertasAtuais, []],
+          kpi1: [kpiRam.ultimaCaptura + "%", kpiRam.ultimaCaptura - kpiRam.penultimaCaptura, descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "RAM")],
+          kpi2: [kpiRam.alertasAtuais, kpiRam.alertasAtuais - kpiRam.cvPassado, descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "RAM")],
+          kpi3: [kpiRam.diasSemAlertas, "N", descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "RAM")],
+          kpi4: [kpiRam.cvAtual + "%", kpiRam.cvAtual - kpiRam.alertasAtuais, descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "RAM")],
           grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
         }
@@ -143,10 +143,10 @@ async function trazerDadosDash() {
         })).json())
         kpiDisco = kpiDisco[0];
         maquina.recursos['disco'] = {
-          kpi1: [kpiDisco.ultimaCaptura + "%", kpiDisco.ultimaCaptura - kpiDisco.penultimaCaptura, []],
-          kpi2: [kpiDisco.alertasAtuais, kpiDisco.alertasAtuais - kpiDisco.alertasPassados, []],
-          kpi3: [kpiDisco.diasSemAlertas, "N", []],
-          kpi4: [kpiDisco.cvAtual + "%", kpiDisco.cvAtual - kpiDisco.cvPassado, []],
+          kpi1: [kpiDisco.ultimaCaptura + "%", kpiDisco.ultimaCaptura - kpiDisco.penultimaCaptura, descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "DISCO")],
+          kpi2: [kpiDisco.alertasAtuais, kpiDisco.alertasAtuais - kpiDisco.alertasPassados, descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "DISCO")],
+          kpi3: [kpiDisco.diasSemAlertas, "N", descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "DISCO")],
+          kpi4: [kpiDisco.cvAtual + "%", kpiDisco.cvAtual - kpiDisco.cvPassado, descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "DISCO")],
           grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
         }
@@ -161,10 +161,10 @@ async function trazerDadosDash() {
         })).json())
         kpiRede = kpiRede[0];
         maquina.recursos['rede'] = {
-          kpi1: [kpiRede.ultimaCaptura + "%", kpiRede.ultimaCaptura - kpiRede.penultimaCaptura, []],
-          kpi2: [kpiRede.alertasAtuais, kpiRede.alertasAtuais - kpiRede.alertasPassados, []],
-          kpi3: [kpiRede.diasSemAlertas, "N", []],
-          kpi4: [kpiRede.plAtual + "%", kpiRede.plkAtual - kpiRede.plPassado, []],
+          kpi1: [kpiRede.ultimaCaptura + "%", kpiRede.ultimaCaptura - kpiRede.penultimaCaptura, descKpi("/dash/kpisRedeDesc", "Captura", 1, maquina.dashboard, "REDE")],
+          kpi2: [kpiRede.alertasAtuais, kpiRede.alertasAtuais - kpiRede.alertasPassados, descKpi("/dash/kpisRedeDesc", "Alerta", 2, maquina.dashboard, "REDE")],
+          kpi3: [kpiRede.diasSemAlertas, "N", descKpi("/dash/kpisRedeDesc", "Último Alerta", 3, maquina.dashboard, "REDE")],
+          kpi4: [kpiRede.plAtual + "%", kpiRede.plkAtual - kpiRede.plPassado, descKpi("/dash/kpisRedeDesc", "Captura", 4, maquina.dashboard, "REDE")],
           grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
         }
