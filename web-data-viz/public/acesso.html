@@ -21,27 +21,8 @@
       <p id="title">Controle de Acesso e Segurança</p>
 
       <button id="dash_todas_maquinas" style="display: none;" class="" data-comp="geral"
-        data-kpi1="Usuários monitorados" data-kpi2="Tentativas de acesso (7 dias)" data-kpi3="Dias sem incidentes"
-        data-kpi4="Usuário com mais ocorrências">GERAL</button>
-
-      <button data-comp="geral" class="" data-kpi1="Setores monitorados"
-        data-kpi2="Tentativas de acesso (7 dias)" data-kpi3="Dias sem incidentes"
-        data-kpi4="Setor com mais ocorrências">GERAL</button>
-
-      <button data-comp="cpu" data-kpi1="Último registro de acesso"
-        data-kpi2="Tentativas (7 dias)" data-kpi3="Dias sem incidentes"
-        data-kpi4="Variação de acessos (7 dias)">ACESSOS</button>
-
-      <button data-comp="ram" data-kpi1="Último login registrado" data-kpi2="Tentativas suspeitas (7 dias)"
-        data-kpi3="Dias sem incidentes" data-kpi4="Variação de login (7 dias)">LOGINS</button>
-
-      <button data-comp="disco" data-kpi1="Última alteração de permissão"
-        data-kpi2="Eventos críticos (7 dias)" data-kpi3="Dias sem alterações"
-        data-kpi4="Setor com mais alterações">PERMISSÕES</button>
-
-      <button data-comp="rede" data-kpi1="Dados enviados (última captura)"
-        data-kpi2="Tentativas bloqueadas (7 dias)" data-kpi3="Dias sem falhas"
-        data-kpi4="Índice de pacotes rejeitados">REDE</button>
+        data-kpi1="Total de tentativas logins (últimos 30 dias)" data-kpi2="Taxa de Sucesso nos Logins (%)" data-kpi3="Contas Administrativas Ativas"
+        data-kpi4="Taxa de Fracasso nos Logins (%)">GERAL</button>
     </span>
 
     <nav id="buts_superiores">
@@ -128,5 +109,22 @@
 
 </body>
 <script src="js/acesso.js"></script>
+
+<script>
+
+function atualizarBarraLateral() {
+  const barraLateral = document.querySelector('.barra_lateral');
+  const elementos = document.getElementById('elementos');
+  const butAtual = document.getElementById('but_atualizar_bl');
+  if (barraLateral) barraLateral.classList.toggle('ativa');
+  if (elementos) elementos.classList.toggle('bl_ativa');
+  if (butAtual) {
+    butAtual.classList.toggle('bxs-menu-wide');
+    butAtual.classList.toggle('bxs-menu-select');
+  }
+}
+
+
+</script>
 
 </html>
