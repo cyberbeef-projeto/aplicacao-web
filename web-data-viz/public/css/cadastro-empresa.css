@@ -1,0 +1,756 @@
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  html,
+  body {
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: #ffffff;
+  }
+
+
+
+
+  body::before {
+      content: "";
+      position: fixed;
+      right: -10vw;
+      top: 70vh;
+      width: 40vw;
+      height: 40vw;
+      background: #4B6CF0;
+      filter: blur(180px);
+      opacity: 0.7;
+      z-index: 1;
+      
+    }
+
+
+
+  .barra_lateral {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 0.4vw;
+      gap: 0.5vw;
+      width: 20vw;
+      height: 100%;
+      margin-top: 8vh;
+      border-style: solid;
+      border-width: 0.1vw 0.1vw 0vw 0vw;
+      border-color: slategrey;
+      border-radius: 0vw 0.5vw 0.5vw 0vw;
+      background-color: transparent;
+      color: #fff;
+      transition: left 0.3s ease;
+      z-index: 5;
+  }
+
+  #logo {
+      display: flex;
+      width: 60%;
+      height: 6%;
+      background-size: cover;
+      background-position: left;
+      border-radius: 0.5vw;
+  }
+
+  #usuario {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1%;
+      width: 100%;
+      height: 15%;
+      color: #fff;
+  }
+
+  #usuario .bxs-user {
+      font-size: 4vw;
+  }
+
+  #usuario a {
+      font-size: 1.5vw;
+      text-decoration: none;
+      color: #fff;
+  }
+
+  #home {
+      display: flex;
+      flex-direction: column;
+      padding-left: 1%;
+      gap: 5%;
+      width: 100%;
+      height: 50%;
+      color: #fff;
+  }
+
+  #home li {
+      display: flex;
+      width: 90%;
+      height: 10%;
+      cursor: pointer;
+      justify-content: center;
+      padding: 0% 0% 0% 10%;
+      border-radius: 0.5vw;
+      list-style: none;
+  }
+
+  #home li:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-left: 0.3vw solid #4B6CF0;
+  }
+
+  #home a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+      font-size: 1.5vw;
+      text-decoration: none;
+      color: #fff;
+  }
+
+  
+#sel_home {
+    width: 100%;
+    height: 2vw;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#home .bx-arrow-out-left-square-half {
+    font-size: 2.5vw;
+    margin-left: 0.9vw;
+}
+
+.barra_lateral.ativa {
+    left: 0;
+}
+
+
+#elementos {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+#elementos.bl_ativa {
+    padding-left: 20vw;
+}
+.navbar nav a {
+    margin-right: 3vh;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 3.5vh;
+}
+
+  .clicado:active {
+      transform: scale(0.98);
+  }
+
+  .conteudo-principal {
+      margin-left: 20vw;
+      width: calc(100% - 20vw);
+      min-height: 100vh;
+      background-color: #000;
+      color: #fff;
+      transition: margin-left 0.3s ease, width 0.3s ease;
+      margin-top: 10vh;
+  }
+
+  .navbar {
+   position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(13, 17, 40, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+  }
+
+
+  .navbar h1 {
+      margin-left: 600px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+  }
+
+  #but_atualizar_bl {
+      width: 40px;
+      height: 40px;
+      font-size: 2rem;
+      border: none;
+      background: none;
+      color: #fff;
+      cursor: pointer;
+  }
+
+  .container-formulario {
+      padding: 2rem;
+  }
+
+  .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #1e232d;
+  }
+
+  .tab {
+      padding: 1rem 1.5rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: #9ca3af;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+  }
+
+  .tab:hover {
+      color: #4B6CF0;
+  }
+
+  .tab.ativa {
+      color: #4B6CF0;
+      border-bottom-color: #4B6CF0;
+  }
+
+  .formulario {
+      background-color: #1e232d;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .form-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+  }
+
+  .form-groupo {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .form-grupo label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 0.5rem;
+  }
+
+  .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+  }
+
+  .input-wrapper input,
+  .input-wrapper select {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #f1f5f9;
+      background-color: #0b0f19;
+      transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .input-wrapper input:focus,
+  .input-wrapper select:focus {
+      outline: none;
+      border-color: #4B6CF0;
+      box-shadow: 0 0 0 3px rgba(75, 108, 240, 0.1);
+  }
+
+  .input-wrapper input::placeholder {
+      color: #9ca3af;
+  }
+
+  .input-wrapper i {
+      position: absolute;
+      right: 0.75rem;
+      color: #6b7280;
+      font-size: 1.1rem;
+      pointer-events: none;
+  }
+
+  .input-wrapper select {
+      appearance: none;
+      cursor: pointer;
+  }
+
+  .form-acao {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #1e232d;
+  }
+
+  .btn-primeiro,
+  .btn-segundo {
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+  }
+
+  .btn-segundo {
+      background-color: #4B6CF0;
+      color: #fff;
+  }
+
+  .btn-primeiro:hover {
+      background-color: #3b5bd0;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(75, 108, 240, 0.3);
+  }
+
+  .btn-segundo:hover {
+      background-color: #1e232d;
+      color: #9ca3af;
+      border: 1px solid #334155;
+  }
+
+  .btn-segundo:hover {
+      background-color: #0b0f19;
+      border-color: #4B6CF0;
+  }
+
+  /* Container de Listagem */
+  .container-listagem {
+      background-color: #1e232d;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .listagem-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+  }
+
+  .listagem-controles {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+  }
+
+  .listagem-controles label {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+  }
+
+  .listagem-controles select {
+      padding: 0.5rem;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      font-size: 0.9rem;
+  }
+
+  .busca-wrapper {
+      position: relative;
+      width: 300px;
+  }
+
+  .busca-wrapper input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      font-size: 0.9rem;
+  }
+
+  .busca-wrapper input:focus {
+      outline: none;
+      border-color: #4B6CF0;
+  }
+
+  .btn-adicionar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.5rem;
+      background-color: #4B6CF0;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+  }
+
+  .btn-adicionar:hover {
+      background-color: #3b5bd0;
+      transform: translateY(-1px);
+  }
+
+  .tabela-wrapper {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid #334155;
+  }
+
+  .tabela-empresas {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #0b0f19;
+  }
+
+  .tabela-empresas thead {
+      background-color: #1e232d;
+      border-bottom: 2px solid #334155;
+  }
+
+  .tabela-empresas th {
+      padding: 1rem;
+      text-align: left;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+  }
+
+  .tabela-empresas th i {
+      margin-left: 0.25rem;
+      font-size: 0.75rem;
+      color: #6b7280;
+  }
+
+  .tabela-empresas tbody tr {
+      border-bottom: 1px solid #334155;
+      transition: background-color 0.2s;
+  }
+
+  .tabela-empresas tbody tr:hover {
+      background-color: #1a1f2e;
+  }
+
+  .tabela-empresas td {
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+  }
+
+  .acoes-td {
+      display: flex;
+      gap: 0.5rem;
+  }
+
+  .btn-acao {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+  }
+
+  .btn-editar {
+      background-color: transparent;
+      color: #60a5fa;
+  }
+
+  .btn-editar:hover {
+      background-color: rgba(96, 165, 250, 0.1);
+  }
+
+  .btn-excluir {
+      background-color: transparent;
+      color: #f87171;
+  }
+
+  .btn-excluir:hover {
+      background-color: rgba(248, 113, 113, 0.1);
+  }
+
+  .paginacao {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #334155;
+  }
+
+  .paginacao-info {
+      color: #9ca3af;
+      font-size: 0.875rem;
+  }
+
+  .paginacao-controles {
+      display: flex;
+      gap: 0.5rem;
+  }
+
+  .btn-pagina {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      background-color: #1e232d;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+  }
+
+  .btn-pagina:hover:not(:disabled) {
+      background-color: #4B6CF0;
+      border-color: #4B6CF0;
+  }
+
+  .btn-pagina:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+  }
+
+  .btn-pagina.ativa {
+      background-color: #4B6CF0;
+      border-color: #4B6CF0;
+      color: #fff;
+  }
+
+  .oculto {
+      display: none;
+  }
+
+  .acoes-td {
+      display: flex;
+      gap: 0.5rem;
+  }
+
+  .btn-acao {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+  }
+
+  .btn-editar {
+      background-color: transparent;
+      color: #60a5fa;
+  }
+
+  .btn-editar:hover {
+      background-color: rgba(96, 165, 250, 0.1);
+  }
+
+  .btn-excluir {
+      background-color: transparent;
+      color: #f87171;
+  }
+
+  .btn-excluir:hover {
+      background-color: rgba(248, 113, 113, 0.1);
+  }
+
+  .paginacao {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #334155;
+  }
+
+  .paginacao-info {
+      color: #9ca3af;
+      font-size: 0.875rem;
+  }
+
+  .paginacao-controles {
+      display: flex;
+      gap: 0.5rem;
+  }
+
+  .btn-pagina {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      background-color: #1e232d;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+  }
+
+  .btn-pagina:hover:not(:disabled) {
+      background-color: #4B6CF0;
+      border-color: #4B6CF0;
+  }
+
+  .btn-pagina:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+  }
+
+  .btn-pagina.ativa {
+      background-color: #4B6CF0;
+      border-color: #4B6CF0;
+      color: #fff;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .modal {
+      background-color: #1e232d;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 1.5rem;
+  }
+
+  .modal-body {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+  }
+
+  .campo-card {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .campo-card.full-width {
+      grid-column: 1 / -1;
+  }
+
+  .campo-card label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 0.5rem;
+  }
+
+  .campo-card input,
+  .campo-card select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #f1f5f9;
+      background-color: #0b0f19;
+      transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .campo-card input:focus,
+  .campo-card select:focus {
+      outline: none;
+      border-color: #4B6CF0;
+      box-shadow: 0 0 0 3px rgba(75, 108, 240, 0.1);
+  }
+
+  .campo-card input::placeholder {
+      color: #9ca3af;
+  }
+
+  .campo-card select {
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.5rem;
+  }
+
+  .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #334155;
+  }
+
+  .oculto {
+      display: none;
+  }
+
+
+  @media (max-width: 1200px) {
+      .form-row {
+          grid-template-columns: repeat(2, 1fr);
+      }
+  }
+
+  @media (max-width: 768px) {
+      .conteudo-principal {
+          margin-left: 0;
+          width: 100%;
+      }
+
+      .form-row {
+          grid-template-columns: 1fr;
+      }
+
+      .listagem-header {
+          flex-direction: column;
+          gap: 1rem;
+      }
+
+      .busca-wrapper {
+          width: 100%;
+      }
+  }
