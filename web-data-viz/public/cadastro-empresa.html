@@ -180,14 +180,15 @@
           <table class="tabela-empresas">
             <thead>
               <tr>
-                <th>Id <i class='bx bx-up-arrow-alt'></i></th>
+               
+              </tr>
+            </thead>
+            <tbody id="tabelaBody">
+               <th>Id <i class='bx bx-up-arrow-alt'></i></th>
                 <th>Nome Fantasia <i class='bx bx-up-arrow-alt'></i></th>
                 <th>CNPJ <i class='bx bx-up-arrow-alt'></i></th>
                 <th>Data do Cadastro<i class='bx bx-up-arrow-alt'></i></th>
                 <th style="text-align: center;">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaBody">
 
             </tbody>
           </table>
@@ -215,35 +216,35 @@
         <div class="modal-body">
           <div class="campo-card">
             <label>Razão Social *</label>
-            <input type="text" id="razaoSocial" placeholder="Digite a razão social" required>
+            <input type="text" id="modal_razaoSocial" placeholder="Digite a razão social" required>
           </div>
           <div class="campo-card">
             <label>Nome Fantasia *</label>
-            <input type="text" id="nomeFantasia" placeholder="Digite o nome fantasia" required>
+            <input type="text" id="modal_nomeFantasia" placeholder="Digite o nome fantasia" required>
           </div>
           <div class="campo-card">
             <label>CNPJ *</label>
-            <input type="text" id="cnpj" placeholder="00.000.000/0000-00" required>
+            <input type="text" id="modal_cnpj" placeholder="00.000.000/0000-00" required>
           </div>
           <div class="campo-card">
             <label>CEP</label>
-            <input type="text" id="cep" placeholder="00000-000">
+            <input type="text" id="modal_cep" placeholder="00000-000">
           </div>
           <div class="campo-card">
             <label>Logradouro</label>
-            <input type="text" id="logradouro" placeholder="Digite o endereço">
+            <input type="text" id="modal_logradouro" placeholder="Digite o endereço">
           </div>
           <div class="campo-card">
             <label>Bairro</label>
-            <input type="text" id="bairro" placeholder="Digite o bairro">
+            <input type="text" id="modal_bairro" placeholder="Digite o bairro">
           </div>
           <div class="campo-card">
             <label>Cidade</label>
-            <input type="text" id="cidade" placeholder="Digite a cidade">
+            <input type="text" id="modal_cidade" placeholder="Digite a cidade">
           </div>
           <div class="campo-card">
             <label>UF</label>
-            <select id="uf">
+            <select id="modal_uf">
               <option value="">Selecione</option>
               <option value="AC">AC</option>
               <option value="AL">AL</option>
@@ -276,7 +277,7 @@
           </div>
           <div class="campo-card">
             <label>Número</label>
-            <input type="text" id="numero" placeholder="Nº">
+            <input type="text" id="modal_numero" placeholder="Nº">
           </div>
         </div>
         <div class="modal-actions">
@@ -313,10 +314,8 @@
   <script>
 
     /* Aruumar de acordo com o BD*/ /*Script de simulação*/
-    let empresas = [
-      { nome: "Testes", nomeFantasia: "Testes", cnpj: "15743265000157", cep: "", logradouro: "", bairro: "", cidade: "", uf: "", numero: "" },
-      { nome: "Testes2", nomeFantasia: "Testes2", cnpj: "30884974000146", cep: "", logradouro: "", bairro: "", cidade: "", uf: "", numero: "" }
-    ];
+   let empresas = [];
+
 
     let paginaAtual = 1;
     let registrosPorPagina = 10;
@@ -332,7 +331,7 @@
 
 
     function mostrarAba(aba) {
-      const formulario = document.getElementById('formulario');
+      const formulario = document.getElementById('formCadastroEmpresa');
       const listagem = document.getElementById('listagem');
       const tabs = document.querySelectorAll('.tab');
 
@@ -349,15 +348,35 @@
       }
     }
     function filtrarEmpresas() {
-      const busca = document.getElementById('campoBusca').value.toLowerCase();
-      empresasFiltradas = empresas.filter(emp =>
-        emp.nome.toLowerCase().includes(busca) ||
-        emp.nomeFantasia.toLowerCase().includes(busca) ||
-        emp.cnpj.includes(busca)
-      );
-      paginaAtual = 1;
+  const busca = document.getElementById('campoBusca').value.toLowerCase();
+
+  empresasFiltradas = empresas.filter(emp =>
+    emp.razaoSocial?.toLowerCase().includes(busca) ||
+    emp.nomeFantasia?.toLowerCase().includes(busca) ||
+    emp.cnpj?.includes(busca)
+  );
+
+  paginaAtual = 1;
+  renderizarTabela();
+}
+
+
+    function carregarEmpresas() {
+  fetch("/cadastroempresa/listar")
+    .then(res => res.json())
+    .then(dados => {
+      console.log("EMPRESAS DO BANCO:", dados);
+
+      empresas = dados;
+      empresasFiltradas = [...empresas];
+
       renderizarTabela();
-    }
+    })
+    .catch(err => {
+      console.error("Erro ao carregar empresas:", err);
+    });
+}
+
 
     function renderizarTabela() {
       const tbody = document.getElementById('tabelaBody');
@@ -365,23 +384,25 @@
       const fim = inicio + registrosPorPagina;
       const empresasPagina = empresasFiltradas.slice(inicio, fim);
 
-      tbody.innerHTML = empresasPagina.map((emp, index) => `
-        <tr>
-          <td>${emp.nome}</td>
-          <td>${emp.nomeFantasia}</td>
-          <td>${emp.cnpj}</td>
-          <td>
-            <div class="acoes-td">
-              <button class="btn-acao btn-editar clicado" onclick="editarEmpresa(${inicio + index})" title="Editar">
-                <i class='bx bx-edit'></i>
-              </button>
-              <button class="btn-acao btn-excluir clicado" onclick="excluirEmpresa(${inicio + index})" title="Excluir">
-                <i class='bx bx-trash'></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+     tbody.innerHTML = empresasPagina.map((emp, index) => `
+  <tr>
+    <td>${emp.tokenEmpresa}</td>
+    <td>${emp.nomeFantasia}</td>
+    <td>${emp.cnpj}</td>
+    <td>-</td>
+    <td>
+      <div class="acoes-td">
+        <button class="btn-acao btn-editar clicado" onclick="editarEmpresa(${inicio + index})">
+          <i class='bx bx-edit'></i>
+        </button>
+        <button class="btn-acao btn-excluir clicado" onclick="abrirModalExcluir(${inicio + index})">
+          <i class='bx bx-trash'></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+`).join('');
+
 
       atualizarPaginacao();
     }
@@ -431,7 +452,7 @@
       const empresa = empresas[empresaReal];
 
       document.getElementById('modalTitle').textContent = 'Editar Empresa';
-      document.getElementById('razaoSocial').value = empresa.nome || '';
+      document.getElementById('razaoSocial').value = empresa.razaoSocial || '';
       document.getElementById('nomeFantasia').value = empresa.nomeFantasia || '';
       document.getElementById('cnpj').value = empresa.cnpj || '';
       document.getElementById('cep').value = empresa.cep || '';
@@ -515,9 +536,47 @@
         filtrarEmpresas();
       }
     }
+function abrirModalExcluir(index) {
+    const empresaReal = empresas.indexOf(empresasFiltradas[index]);
+    excluindoIndex = empresaReal;
+
+    const empresa = empresas[empresaReal];
+
+    document.getElementById("nomeEmpresaExcluir").textContent =
+        empresa.nomeFantasia || empresa.razaoSocial;
+
+    document.getElementById('modalExcluir').style.display = 'flex';
+}
+
+function confirmarExclusao() {
+    if (excluindoIndex < 0) return;
+
+    const empresa = empresas[excluindoIndex];
+
+    fetch(`/cadastroempresa/excluir/${empresa.tokenEmpresa}`, {
+        method: "DELETE"
+    })
+    .then(res => {
+        if (!res.ok) throw "Erro no backend ao excluir";
+
+        alert("Excluída com sucesso!");
+
+        empresas.splice(excluindoIndex, 1);
+        empresasFiltradas = [...empresas];
+
+        fecharModalExcluir();
+        renderizarTabela();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao excluir.");
+    });
+}
+
 
 
     renderizarTabela();
+    carregarEmpresas();
   </script>
 </body>
 

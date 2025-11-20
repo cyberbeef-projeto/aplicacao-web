@@ -36,4 +36,34 @@ function cadastrar(req, res) {
     });
 }
 
-module.exports = { cadastrar };
+
+function listar(req, res) {
+    cadastroEmpresaModel.listarEmpresas()
+        .then(resultado => {
+            res.status(200).json(resultado);
+        })
+        .catch(erro => {
+            console.error("Erro ao listar empresas:", erro);
+            res.status(500).json(erro);
+        });
+}
+
+
+function excluir(req, res) {
+    var tokenEmpresa = req.params.tokenEmpresa;
+
+    cadastroEmpresaModel.excluirEmpresa(tokenEmpresa)
+        .then(() => {
+            res.status(200).json({ mensagem: "Empresa excluída com sucesso!" });
+        })
+        .catch(erro => {
+            console.error("Erro ao excluir empresa:", erro);
+            res.status(500).json(erro);
+        });
+}
+
+module.exports = {
+    cadastrar,
+    listar,
+    excluir
+};
