@@ -57,113 +57,103 @@
       </div>
 
       <!-- Formulário -->
-      <form class="formulario oculto" id="formulario">
-        <div class="form-row">
-          <div class="form-grupo">
+      <form class="formulario" id="formCadastroEmpresa" onsubmit="cadastrarEmpresa(event)">
+    <div class="form-row">
+        <div class="form-grupo">
             <label>Razão Social</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Nome" id="razaoSocial">
-              <i class='bx bx-user'></i>
+                <input type="text" placeholder="Nome" id="razaoSocial" required>
+                <i class='bx bx-user'></i>
             </div>
-          </div>
-          <div class="form-grupo">
+        </div>
+        <div class="form-grupo">
             <label>Nome Fantasia</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Fantasia" id="nomeFantasia">
-              <i class='bx bx-edit'></i>
+                <input type="text" placeholder="Fantasia" id="nomeFantasia" required>
+                <i class='bx bx-edit'></i>
             </div>
-          </div>
-          <div class="form-grupo">
+        </div>
+        <div class="form-grupo">
             <label>CNPJ</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="CNPJ" id="cnpj">
-              <i class='bx bx-edit'></i>
+                <input type="text" placeholder="CNPJ" id="cnpj" required>
+                <i class='bx bx-edit'></i>
             </div>
-          </div>
         </div>
+    </div>
 
-        <div class="form-row">
-          <div class="form-gruop">
+    <div class="form-row">
+        <div class="form-grupo">
             <label>CEP</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="CEP" id="cep">
-              <i class='bx bx-bookmark'></i>
+                <input type="text" placeholder="CEP" id="cep">
+                <i class='bx bx-bookmark'></i>
             </div>
-          </div>
-          <div class="form-grupo">
+        </div>
+        <div class="form-grupo">
             <label>Logradouro</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Endereço" id="logradouro">
-              <i class='bx bx-map'></i>
+                <input type="text" placeholder="Endereço" id="logradouro">
+                <i class='bx bx-map'></i>
             </div>
-          </div>
-          <div class="form-grupo">
+        </div>
+        <div class="form-grupo">
             <label>Bairro</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Bairro" id="bairro">
-              <i class='bx bx-map'></i>
+                <input type="text" placeholder="Bairro" id="bairro">
+                <i class='bx bx-map'></i>
             </div>
-          </div>
         </div>
+    </div>
 
-        <div class="form-row">
-          <div class="form-grupo">
+    <div class="form-row">
+        <div class="form-grupo">
             <label>Cidade</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Cidade" id="cidade">
-              <i class='bx bx-map'></i>
+                <input type="text" placeholder="Cidade" id="cidade">
+                <i class='bx bx-map'></i>
             </div>
-          </div>
-          <div class="form-grupo">
+        </div>
+        <div class="form-grupo">
             <label>UF</label>
             <div class="input-wrapper">
-              <select id="uf">
-                <option value="">Selecione</option>
-                <option value="AC">AC</option>
-                <option value="AL">AL</option>
-                <option value="AP">AP</option>
-                <option value="AM">AM</option>
-                <option value="BA">BA</option>
-                <option value="CE">CE</option>
-                <option value="DF">DF</option>
-                <option value="ES">ES</option>
-                <option value="GO">GO</option>
-                <option value="MA">MA</option>
-                <option value="MT">MT</option>
-                <option value="MS">MS</option>
-                <option value="MG">MG</option>
-                <option value="PA">PA</option>
-                <option value="PB">PB</option>
-                <option value="PR">PR</option>
-                <option value="PE">PE</option>
-                <option value="PI">PI</option>
-                <option value="RJ">RJ</option>
-                <option value="RN">RN</option>
-                <option value="RS">RS</option>
-                <option value="RO">RO</option>
-                <option value="RR">RR</option>
-                <option value="SC">SC</option>
-                <option value="SP">SP</option>
-                <option value="SE">SE</option>
-                <option value="TO">TO</option>
-              </select>
-              <i class='bx bx-chevron-down'></i>
+                <select id="estado">
+                    <option value="">Selecione</option>
+                    <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+                    <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+                    <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+                    <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                    <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+                    <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+                    <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                    <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                    <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                </select>
+                <i class='bx bx-chevron-down'></i>
             </div>
-          </div>
-          <div class="form-grupo">
+        </div>
+        <div class="form-grupo">
             <label>Número</label>
             <div class="input-wrapper">
-              <input type="text" placeholder="Número" id="numero">
-              <i class='bx bx-chevron-down'></i>
+                <input type="text" placeholder="Número" id="numero">
+                <i class='bx bx-chevron-down'></i>
             </div>
-          </div>
         </div>
+        <div class="form-grupo">
+            <label>Token Empresa</label>
+            <div class="input-wrapper">
+                <input type="number" placeholder="ID único" id="tokenEmpresa" required>
+                <i class='bx bx-chevron-down'></i>
+            </div>
+        </div>
+    </div>
 
-        <div class="form-acao">
-          <button type="button" class="btn-primeiro" onclick="limparFormulario()">Cancelar</button>
-          <button type="submit" class="btn-segundo">Salvar</button>
-        </div>
-      </form>
+    <div class="form-acao">
+        <button type="button" class="btn-primeiro" onclick="formCadastroEmpresa.reset()">Cancelar</button>
+        <button type="submit" class="btn-segundo">Salvar</button>
+    </div>
+</form>
+
 
       <!-- Listagem -->
       <div class="container-listagem" id="listagem">
@@ -460,30 +450,49 @@
       editandoIndex = -1;
     }
 
-    function salvarEmpresa(event) {
-      event.preventDefault();
+   function cadastrarEmpresa(event) {
+    event.preventDefault(); // impedir reload da página
 
-      const empresa = {
-        nome: document.getElementById('razaoSocial').value,
-        nomeFantasia: document.getElementById('nomeFantasia').value,
-        cnpj: document.getElementById('cnpj').value,
-        cep: document.getElementById('cep').value,
-        logradouro: document.getElementById('logradouro').value,
-        bairro: document.getElementById('bairro').value,
-        cidade: document.getElementById('cidade').value,
-        uf: document.getElementById('uf').value,
-        numero: document.getElementById('numero').value
-      };
+    let dados = {
+        tokenEmpresa: document.getElementById("tokenEmpresa").value,
+        razaoSocial: document.getElementById("razaoSocial").value,
+        nomeFantasia: document.getElementById("nomeFantasia").value,
+        cnpj: document.getElementById("cnpj").value,
+        logradouro: document.getElementById("logradouro").value,
+        numero: document.getElementById("numero").value,
+        bairro: document.getElementById("bairro").value,
+        cidade: document.getElementById("cidade").value,
+        estado: document.getElementById("estado").value,
+        cep: document.getElementById("cep").value
+    };
 
-      if (editandoIndex >= 0) {
-        empresas[editandoIndex] = empresa;
-      } else {
-        empresas.push(empresa);
-      }
+    console.log("ENVIANDO AO BACKEND:", dados);
 
-      fecharModal();
-      filtrarEmpresas();
-    }
+    fetch("/cadastroempresa/cadastrar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(res => {
+        if (res.ok) {
+            alert("Empresa cadastrada com sucesso!");
+            formCadastroEmpresa.reset();
+            return res.json();
+        } else {
+            throw "Erro ao cadastrar empresa.";
+        }
+    })
+    .then(json => console.log(json))
+    .catch(err => {
+        console.error(err);
+        alert("Falha ao cadastrar.");
+    });
+}
+
+
+
 
     function excluirEmpresa(index) {
       const empresaReal = empresas.indexOf(empresasFiltradas[index]);

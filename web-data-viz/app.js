@@ -21,6 +21,7 @@ var empresasRouter = require("./src/routes/empresas");
 var crudRouter = require("./src/routes/crud");
 var dashRouter = require("./src/routes/dash");
 var acessoRouter = require("./src/routes/acesso");
+var cadastroempresaRouter = require("./src/routes/cadastroempresa");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,6 +35,8 @@ app.use("/empresas", empresasRouter);
 app.use("/crud", crudRouter);
 app.use("/dash", dashRouter);
 app.use("/acesso", acessoRouter);
+app.use("/cadastroempresa", cadastroempresaRouter);
+
 
 app.listen(PORTA_APP, function () {
     console.log(`
