@@ -228,6 +228,25 @@ function buscarKpisRedeDesc(id, maquina, componente) {
     return database.executar(instrucaoSql);
 }
 
+function buscarGraficosTodas(id) {
+    var instrucaoSql = `CALL graficosTodas('${id}');`; 
+    return database.executar(instrucaoSql);
+}
+
+function buscarGraficosGeral(id, maquina) {
+    var instrucaoSql = `CALL graficosGeral('${id}', '${maquina}');`; 
+    return database.executar(instrucaoSql);
+}
+
+function buscarGraficosCRD(id, maquina, componente) {
+    var instrucaoSql = `CALL graficosCRD('${id}', '${maquina}', '${componente}');`; 
+    return database.executar(instrucaoSql);
+}
+
+function buscarGraficosRede(id, maquina, componente) {
+    var instrucaoSql = `CALL graficosRede('${id}', '${maquina}', '${componente}');`; 
+    return database.executar(instrucaoSql);
+}
 module.exports = {
     buscarMaquinas,
     buscarKpisTodas,
@@ -238,4 +257,8 @@ module.exports = {
     buscarKpisGeralDesc,
     buscarKpisCRDDesc,
     buscarKpisRedeDesc,
+    buscarGraficosTodas,
+    buscarGraficosGeral,
+    buscarGraficosCRD,
+    buscarGraficosRede,
 };

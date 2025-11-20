@@ -84,6 +84,45 @@ function buscarKpisRedeDesc(req, res) {
   });
 }
 
+function buscarGraficosTodas(req, res) {
+  var id = req.body.tokenEmpresa;
+
+  dashModel.buscarGraficosTodas(id).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function buscarGraficosGeral(req, res) {
+  var id = req.body.tokenEmpresa;
+  var maquina = req.body.maquina;
+
+  dashModel.buscarGraficosGeral(id, maquina).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function buscarGraficosCRD(req, res) {
+  var id = req.body.tokenEmpresa;
+  var maquina = req.body.maquina;
+  var componente = req.body.componente;
+
+
+  dashModel.buscarGraficosCRD(id, maquina, componente).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function buscarGraficosRede(req, res) {
+  var id = req.body.tokenEmpresa;
+  var maquina = req.body.maquina;
+  var componente = req.body.componente;
+
+
+  dashModel.buscarGraficosRede(id, maquina, componente).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 module.exports = {
     buscarMaquinas,
     buscarKpisTodas,
@@ -94,4 +133,8 @@ module.exports = {
     buscarKpisGeralDesc,
     buscarKpisCRDDesc,
     buscarKpisRedeDesc,
+    buscarGraficosTodas,
+    buscarGraficosGeral,
+    buscarGraficosCRD,
+    buscarGraficosRede,
 };

@@ -39,4 +39,20 @@ router.post("/kpisRedeDesc", function (req, res) {
     dashController.buscarKpisRedeDesc(req, res);
 });
 
+router.post("/graficosTodas", function (req, res) {
+    dashController.buscarGraficosTodas(req, res);
+});
+
+router.post("/graficosGeral", function (req, res) {
+    dashController.buscarGraficosGeral(req, res);
+});
+
+router.post("/graficosCRD", function (req, res) {
+    dashController.buscarGraficosCRD(req, res);
+});
+
+router.post("/graficosRede", function (req, res) {
+    dashController.buscarGraficosRede(req, res);
+});
+
 module.exports = router;

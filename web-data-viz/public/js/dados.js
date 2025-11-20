@@ -34,6 +34,47 @@ async function descKpi(caminho, info, kpi, maq = null, comp = null) {
   }
 }
 
+async function dadosGraficos(caminho, maq = null, comp = null) {
+  try {
+    let dados = (await (await fetch(caminho, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tokenEmpresa: sessionStorage.TOKEN_EMPRESA,
+        maquina: maq,
+        componente: comp
+
+      })
+    })).json())
+    let grafico1 = [[], []];
+    let grafico2 = [[], []];
+    for (const dado of dados[0]) {
+      for (const chave in dado) {
+        if (chave == Object.keys(dados[0])[0]) {
+          grafico1[0].push(dado[chave])
+        } else {
+          grafico1[1].push(dado[chave])
+        }
+      }
+    }
+    for (const dado of dados[1]) {
+      for (const chave in dado) {
+        if (chave == Object.keys(dados[0])[0]) {
+          grafico2[0].push(dado[chave])
+        } else {
+          grafico2[1].push(dado[chave])
+        }
+      }
+    }
+    return {
+      graficoUm: grafico1,
+      graficoDois: grafico2,
+    };
+  } catch (erro) {
+    console.error("Erro na requisição:", erro);
+  }
+}
+
 async function trazerDadosDash() {
   try {
     (await (await fetch("/dash/maquinas", {
@@ -66,8 +107,10 @@ async function trazerDadosDash() {
             kpi2: [kpiTodas.alertasAtuais, kpiTodas.alertasAtuais - kpiTodas.alertasPassados, await descKpi("/dash/kpisTodasDesc", "Alerta", 2)],
             kpi3: [kpiTodas.DiasSemAlertas, "N", await descKpi("/dash/kpisTodasDesc", "Último Alerta", 3)],
             kpi4: [kpiTodas.MaquinaMaisAlertas, "N", await descKpi("/dash/kpisTodasDesc", "Alerta", 4)],
-            grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: [] },
-            grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "3 Máquinas com Mais Alertas (últimos 7 dias)", xylabels: [] }
+            grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosTodas")).graficoUm[0], 
+              labels: (await dadosGraficos("/dash/graficosTodas")).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"]},
+            grafico2: { id: "grafico2", tipo: "bar", dados: (await dadosGraficos("/dash/graficosTodas")).graficoDois[0]
+              , labels: (await dadosGraficos("/dash/graficosTodas")).graficoDois[1], titulo: "3 Máquinas com Mais Alertas (últimos 7 dias)", xylabels: ["Máquina", "N° Alerta"]}
           }
         }
       } catch (erro) {
@@ -90,8 +133,10 @@ async function trazerDadosDash() {
           kpi2: [kpiGeral.alertasAtuais, kpiGeral.alertasAtuais - kpiGeral.alertasPassados, await descKpi("/dash/kpisGeralDesc", "Alerta", 2, maquina.dashboard)],
           kpi3: [kpiGeral.diasSemAlertas, "N", await descKpi("/dash/kpisGeralDesc", "Último Alerta", 3, maquina.dashboard)],
           kpi4: [kpiGeral.ComponenteMaisAlertas, "N", await descKpi("/dash/kpisGeralDesc", "Alerta", 4, maquina.dashboard)],
-          grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
-          grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "3 Componentes com Mais Alertas (últimos 7 dias)", xylabels: ["Máquina", "N° Alerta(s)"] }
+          grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosGeral", maquina.dashboard)).graficoUm[0], 
+            labels: (await dadosGraficos("/dash/graficosGeral", maquina.dashboard)).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
+          grafico2: { id: "grafico2", tipo: "bar", dados: (await dadosGraficos("/dash/graficosGeral", maquina.dashboard)).graficoDois[0],
+            labels: (await dadosGraficos("/dash/graficosGeral", maquina.dashboard)).graficoDois[1], titulo: "3 Componentes com Mais Alertas (últimos 7 dias)", xylabels: ["Máquina", "N° Alerta(s)"] }
         }
 
         let kpiCpu = (await (await fetch("/dash/kpisGeral", {
@@ -109,8 +154,9 @@ async function trazerDadosDash() {
           kpi2: [kpiCpu.alertasAtuais, kpiCpu.alertasAtuais - kpiCpu.alertasPassados, descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "CPU")],
           kpi3: [kpiCpu.diasSemAlertas, "N", descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "CPU")],
           kpi4: [kpiCpu.cvAtual + "%", kpiCpu.cvAtual - kpiCpu.cvPassado, descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "CPU")],
-          grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
-          grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+          grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'CPU')).graficoUm[0], 
+            labels: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'CPU')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
+          grafico2: { id: "grafico2", tipo: "histograma", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'CPU')).graficoDois[0], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
         }
 
         let kpiRam = (await (await fetch("/dash/kpisGeral", {
@@ -128,8 +174,10 @@ async function trazerDadosDash() {
           kpi2: [kpiRam.alertasAtuais, kpiRam.alertasAtuais - kpiRam.cvPassado, descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "RAM")],
           kpi3: [kpiRam.diasSemAlertas, "N", descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "RAM")],
           kpi4: [kpiRam.cvAtual + "%", kpiRam.cvAtual - kpiRam.alertasAtuais, descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "RAM")],
-          grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
-          grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+          grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'RAM')).graficoUm[0], 
+            labels: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'RAM')).graficoUm[0], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
+          grafico2: { id: "grafico2", tipo: "histograma", dados:  (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'RAM')).graficoDois[0], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+            
         }
 
         let kpiDisco = (await (await fetch("/dash/kpisGeral", {
@@ -147,8 +195,10 @@ async function trazerDadosDash() {
           kpi2: [kpiDisco.alertasAtuais, kpiDisco.alertasAtuais - kpiDisco.alertasPassados, descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "DISCO")],
           kpi3: [kpiDisco.diasSemAlertas, "N", descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "DISCO")],
           kpi4: [kpiDisco.cvAtual + "%", kpiDisco.cvAtual - kpiDisco.cvPassado, descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "DISCO")],
-          grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
-          grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+          grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'DISCO')).graficoUm[0],
+             labels: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'DISCO')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
+          grafico2: { id: "grafico2", tipo: "histograma", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'DISCO')).graficoDois[0], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+        
         }
 
         let kpiRede = (await (await fetch("/dash/kpisGeral", {
@@ -165,14 +215,14 @@ async function trazerDadosDash() {
           kpi2: [kpiRede.alertasAtuais, kpiRede.alertasAtuais - kpiRede.alertasPassados, descKpi("/dash/kpisRedeDesc", "Alerta", 2, maquina.dashboard, "REDE")],
           kpi3: [kpiRede.diasSemAlertas, "N", descKpi("/dash/kpisRedeDesc", "Último Alerta", 3, maquina.dashboard, "REDE")],
           kpi4: [kpiRede.plAtual + "%", kpiRede.plkAtual - kpiRede.plPassado, descKpi("/dash/kpisRedeDesc", "Captura", 4, maquina.dashboard, "REDE")],
-          grafico1: { id: "grafico1", tipo: "line", dados: [], labels: [], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
-          grafico2: { id: "grafico2", tipo: "bar", dados: [], labels: [], titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
+          grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosRede", maquina.dashboard, 'REDE')).graficoUm[0],
+             labels: (await dadosGraficos("/dash/graficosRede", maquina.dashboard, 'REDE')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
+          grafico2: { id: "grafico2", tipo: "histograma", dados: (await dadosGraficos("/dash/graficosRede", maquina.dashboard, 'REDE')).graficoDois[0], titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }
+
         }
       } catch (erro) {
         console.error("Erro na requisição:", erro);
       }
-
     }
   }
-
 }
