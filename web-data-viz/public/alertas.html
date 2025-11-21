@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/alertas.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="assets/icon/chip.png">
+    <!-- <script src="./js/sessao.js"></script> -->
+    <!-- <script src="./js/dadosMock.js"></script> -->
+    <title>Dados - CyberBeef</title>
+</head>
+
+<body onload="validarSessao()">
+    <header class="navbar">
+        <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
+            onclick="atualizarBarraLateral()"></button>
+        <span id="sel_componentes" name="op_setor" class="sel_dash">
+            <p>Alertas</p>
+        </span>
+        <nav id="buts_superiores">
+            <a class="clicavel clicado">Gerar Relatório</a>
+        </nav>
+    </header>
+
+    <div class="barra_lateral sombreado ativa">
+        <div id="logo"></div>
+        <hr>
+        <div id="usuario">
+            <i class='bxr  bxs-user' style='color:#fffafa'></i>
+            <a id="b_usuario" class="texto_perfil"
+                style=" max-width: 100%; overflow: hidden; text-overflow: ellipsis;">User</a>
+        </div>
+        <hr>
+        <div id="home" class="ops_home">
+            <ul></ul>
+            <li class="clicado"><a href="index.html">Home</a></li>
+            <li class="clicado"><a href="dashboard.html">Painéis</a></li>
+            <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
+            <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
+            <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
+            <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Usuários">Usuários</a></li>
+            <span onclick="limparSessao()"
+                style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
+                class="clicavel clicado" title="Clique para sair de sua conta">
+                <i class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+                <p>SAIR</p>
+            </span>
+        </div>
+    </div>
+
+    <div id="elementos" class="bl_ativa">
+        <div class="cards">
+            <span class="abas_kpis">
+                <button data-aba="1" class="kpi interativo">
+                    <b id="kpi1" class="dado_card">10</b>
+                    <p id="kpi1_desc" class="text_longo">Alerta(s)</p>
+                </button>
+
+                <button data-aba="2" class="kpi interativo">
+                    <b id="kpi2" class="dado_card">2</b>
+                    <p id="kpi2_desc" class="text_longo">Alerta(s) Crítico(s)</p>
+                </button>
+
+                <button data-aba="3" class="kpi interativo">
+                    <b id="kpi3" class="dado_card">8</b>
+                    <p id="kpi3_desc" class="text_longo">Alerta(s) Anormal(is)</p>
+                </button>
+
+                <button data-aba="4" class="kpi interativo">
+                    <b id="kpi4" class="dado_card">Normalidade</b>
+                    <p id="kpi4_desc" class="text_longo">Situação</p>
+                </button>
+            </span>
+
+            <div id="aba_conteudo" class="interativo">
+                <p id="titulo-conteudo">Mais Detalhes</p>
+                <div id="cardsContainer"></div>
+            </div>
+
+        </div>
+        <div id="graficos">
+            <span class="grafico sombreado interativo"><canvas id="grafico1"></canvas> </span>
+            <span class="grafico sombreado interativo"><canvas id="grafico2"></canvas> </span>
+        </div>
+    </div>
+
+</body>
+<script>
+    Chart.defaults.color = "rgba(255,255,255,0.8)";
+    Chart.defaults.font.family = "Inter, sans-serif";
+    Chart.defaults.plugins.tooltip.bodyColor = "#fff";
+    Chart.defaults.font.size = 12;
+
+    const barraLateral = document.querySelector('.barra_lateral');
+    const butAtualizarBl = document.getElementById('but_atualizar_bl');
+
+    const elementos = document.getElementById('elementos');
+
+    const dadosCard = document.querySelectorAll('.dado_card')
+    const buttons = document.querySelectorAll('.abas_kpis button');
+
+    const container = document.getElementById("cardsContainer");
+    const contents = document.getElementById('aba_conteudo');
+    const tituloContent = document.getElementById('titulo-conteudo');
+
+    function atualizarBarraLateral() {
+        barraLateral.classList.toggle('ativa');
+        elementos.classList.toggle('bl_ativa');
+        butAtualizarBl.classList.toggle('bxs-menu-wide');
+        butAtualizarBl.classList.toggle('bxs-menu-select');
+    }
+</script>
+
+</html>
