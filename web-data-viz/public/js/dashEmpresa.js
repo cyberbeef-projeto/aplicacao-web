@@ -74,7 +74,11 @@ function atualizarGraficoCidades(cidades) {
                     text: "Top 5 Cidades por Número de Cadastros - Último Semestre",
                     color: "#fff",
                     font: { size: 14, weight: "bold" }
-                }
+                },
+                 padding: {
+                top: 10,
+                bottom: 30   
+            }
             },
             scales: {
                 x: {
@@ -145,7 +149,11 @@ function atualizarGraficoLinha(ativos, inativos) {
                     text: "Desempenho de Contratação - Último Semestre",
                     color: "#fff",
                     font: { size: 14, weight: "bold" }
-                }
+                },
+                 padding: {
+                top: 10,
+                bottom: 50   
+            }
             },
             scales: {
                 x: {
