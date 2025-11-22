@@ -309,57 +309,50 @@
     </div>
   </div>
 
-  <script>
+ <script>
+let empresas = [];
+let empresasFiltradas = [];
 
-    /* Aruumar de acordo com o BD*/ /*Script de simulação*/
-   let empresas = [];
+let paginaAtual = 1;
+let registrosPorPagina = 10;
 
+let excluindoIndex = -1;
 
-    let paginaAtual = 1;
-    let registrosPorPagina = 10;
-    let empresasFiltradas = [...empresas];
-    let editandoIndex = -1;
-    let excluindoIndex = -1;
+/* TROCA ENTRE ABAS */
+function mostrarAba(aba) {
+  const formulario = document.getElementById("formCadastroEmpresa");
+  const listagem = document.getElementById("listagem");
+  const tabs = document.querySelectorAll(".tab");
 
-    function atualizarTabela() {
-      registrosPorPagina = parseInt(document.getElementById('registrosPorPagina').value);
-      paginaAtual = 1;
-      renderizarTabela();
-    }
+  if (aba === "formulario") {
+    formulario.classList.remove("oculto");
+    listagem.classList.add("oculto");
+    tabs[0].classList.add("ativa");
+    tabs[1].classList.remove("ativa");
+  } else {
+    formulario.classList.add("oculto");
+    listagem.classList.remove("oculto");
+    tabs[0].classList.remove("ativa");
+    tabs[1].classList.add("ativa");
+  }
+}
 
-
-    function mostrarAba(aba) {
-      const formulario = document.getElementById('formCadastroEmpresa');
-      const listagem = document.getElementById('listagem');
-      const tabs = document.querySelectorAll('.tab');
-
-      if (aba === 'formulario') {
-        formulario.classList.remove('oculto');
-        listagem.classList.add('oculto');
-        tabs[0].classList.add('ativa');
-        tabs[1].classList.remove('ativa');
-      } else {
-        formulario.classList.add('oculto');
-        listagem.classList.remove('oculto');
-        tabs[0].classList.remove('ativa');
-        tabs[1].classList.add('ativa');
-      }
-    }
-    function filtrarEmpresas() {
-  const busca = document.getElementById('campoBusca').value.toLowerCase();
+/* BUSCA */
+function filtrarEmpresas() {
+  const busca = document.getElementById("campoBusca").value.toLowerCase();
 
   empresasFiltradas = empresas.filter(emp =>
-    emp.razaoSocial?.toLowerCase().includes(busca) ||
-    emp.nomeFantasia?.toLowerCase().includes(busca) ||
-    emp.cnpj?.includes(busca)
+    emp.nomeFantasia.toLowerCase().includes(busca) ||
+    emp.razaoSocial.toLowerCase().includes(busca) ||
+    emp.cnpj.includes(busca)
   );
 
   paginaAtual = 1;
   renderizarTabela();
 }
 
-
-    function carregarEmpresas() {
+/* CARREGAR EMPRESAS DO BANCO*/
+function carregarEmpresas() {
   fetch("/cadastroempresa/listar")
     .then(res => res.json())
     .then(dados => {
@@ -367,217 +360,163 @@
 
       empresas = dados;
       empresasFiltradas = [...empresas];
-
       renderizarTabela();
     })
-    .catch(err => {
-      console.error("Erro ao carregar empresas:", err);
-    });
+    .catch(err => console.error("Erro ao carregar:", err));
 }
 
+/*RENDERIZAR TABELA*/
+function renderizarTabela() {
+  const tbody = document.getElementById("tabelaBody");
 
-    function renderizarTabela() {
-      const tbody = document.getElementById('tabelaBody');
-      const inicio = (paginaAtual - 1) * registrosPorPagina;
-      const fim = inicio + registrosPorPagina;
-      const empresasPagina = empresasFiltradas.slice(inicio, fim);
+  const inicio = (paginaAtual - 1) * registrosPorPagina;
+  const fim = inicio + registrosPorPagina;
 
-     tbody.innerHTML = empresasPagina.map((emp, index) => `
-  <tr>
-    <td>${emp.tokenEmpresa}</td>
-    <td>${emp.nomeFantasia}</td>
-    <td>${emp.cnpj}</td>
-    <td>-</td>
-    <td>
-      <div class="acoes-td">
-        <button class="btn-acao btn-editar clicado" onclick="editarEmpresa(${inicio + index})">
-          <i class='bx bx-edit'></i>
-        </button>
-        <button class="btn-acao btn-excluir clicado" onclick="abrirModalExcluir(${inicio + index})">
-          <i class='bx bx-trash'></i>
-        </button>
-      </div>
-    </td>
-  </tr>
-`).join('');
+  const pagina = empresasFiltradas.slice(inicio, fim);
 
+  tbody.innerHTML = pagina
+    .map((emp, index) => `
+      <tr>
+        <td>${emp.tokenEmpresa}</td>
+        <td>${emp.nomeFantasia}</td>
+        <td>${emp.cnpj}</td>
+        <td>${emp.dataCadastro || "-"}</td>
+        <td style="text-align: center;">
+          <button class="btn-acao btn-excluir"
+                  onclick="abrirModalExcluir(${inicio + index})">
+            <i class='bx bx-block'></i>
+          </button>
+        </td>
+      </tr>
+    `)
+    .join("");
 
-      atualizarPaginacao();
-    }
+  atualizarPaginacao();
+}
 
-    function atualizarPaginacao() {
-      const total = empresasFiltradas.length;
-      const inicio = (paginaAtual - 1) * registrosPorPagina + 1;
-      const fim = Math.min(inicio + registrosPorPagina - 1, total);
+/*PAGINAÇÃO */
+function atualizarTabela() {
+  registrosPorPagina = Number(document.getElementById("registrosPorPagina").value);
+  paginaAtual = 1;
+  renderizarTabela();
+}
 
-      document.getElementById('paginacaoInfo').textContent = `${inicio} a ${fim} de ${total}`;
+function atualizarPaginacao() {
+  const total = empresasFiltradas.length;
+  const inicio = (paginaAtual - 1) * registrosPorPagina + 1;
+  const fim = Math.min(paginaAtual * registrosPorPagina, total);
 
-      const totalPaginas = Math.ceil(total / registrosPorPagina);
-      document.getElementById('btnAnterior').disabled = paginaAtual === 1;
-      document.getElementById('btnProxima').disabled = paginaAtual === totalPaginas || total === 0;
-    }
+  document.getElementById("paginacaoInfo").innerText = `${inicio} a ${fim} de ${total}`;
 
-    function proximaPagina() {
-      const totalPaginas = Math.ceil(empresasFiltradas.length / registrosPorPagina);
-      if (paginaAtual < totalPaginas) {
-        paginaAtual++;
-        renderizarTabela();
-      }
-    }
+  const totalPaginas = Math.ceil(total / registrosPorPagina);
 
-    function paginaAnterior() {
-      if (paginaAtual > 1) {
-        paginaAtual--;
-        renderizarTabela();
-      }
-    }
+  document.getElementById("btnAnterior").disabled = paginaAtual === 1;
+  document.getElementById("btnProxima").disabled = paginaAtual === totalPaginas || total === 0;
+}
 
-    function irParaPagina(pagina) {
-      paginaAtual = pagina;
-      renderizarTabela();
-    }
+function proximaPagina() {
+  const totalPaginas = Math.ceil(empresasFiltradas.length / registrosPorPagina);
+  if (paginaAtual < totalPaginas) {
+    paginaAtual++;
+    renderizarTabela();
+  }
+}
 
-    function abrirModal() {
-      editandoIndex = -1;
-      document.getElementById('modalTitle').textContent = 'Nova Empresa';
-      document.getElementById('formulario').reset();
-      document.getElementById('modalBackdrop').style.display = 'flex';
-    }
+function paginaAnterior() {
+  if (paginaAtual > 1) {
+    paginaAtual--;
+    renderizarTabela();
+  }
+}
 
-    function editarEmpresa(index) {
-      const empresaReal = empresas.indexOf(empresasFiltradas[index]);
-      editandoIndex = empresaReal;
-      const empresa = empresas[empresaReal];
+/* ADASTRAR EMPRESA */
+function cadastrarEmpresa(event) {
+  event.preventDefault();
 
-      document.getElementById('modalTitle').textContent = 'Editar Empresa';
-      document.getElementById('razaoSocial').value = empresa.razaoSocial || '';
-      document.getElementById('nomeFantasia').value = empresa.nomeFantasia || '';
-      document.getElementById('cnpj').value = empresa.cnpj || '';
-      document.getElementById('cep').value = empresa.cep || '';
-      document.getElementById('logradouro').value = empresa.logradouro || '';
-      document.getElementById('bairro').value = empresa.bairro || '';
-      document.getElementById('cidade').value = empresa.cidade || '';
-      document.getElementById('uf').value = empresa.uf || '';
-      document.getElementById('numero').value = empresa.numero || '';
+  let dados = {
+    tokenEmpresa: tokenEmpresa.value,
+    razaoSocial: razaoSocial.value,
+    nomeFantasia: nomeFantasia.value,
+    cnpj: cnpj.value,
+    logradouro: logradouro.value,
+    numero: numero.value,
+    bairro: bairro.value,
+    cidade: cidade.value,
+    estado: estado.value,
+    cep: cep.value
+  };
 
-      document.getElementById('modalBackdrop').style.display = 'flex';
-    }
+  console.log("ENVIANDO AO BACKEND:", dados);
 
-    function fecharModal() {
-      document.getElementById('modalBackdrop').style.display = 'none';
-      document.getElementById('formulario').reset();
-      editandoIndex = -1;
-    }
-
-   function cadastrarEmpresa(event) {
-    event.preventDefault(); // impedir reload da página
-
-    let dados = {
-        tokenEmpresa: document.getElementById("tokenEmpresa").value,
-        razaoSocial: document.getElementById("razaoSocial").value,
-        nomeFantasia: document.getElementById("nomeFantasia").value,
-        cnpj: document.getElementById("cnpj").value,
-        logradouro: document.getElementById("logradouro").value,
-        numero: document.getElementById("numero").value,
-        bairro: document.getElementById("bairro").value,
-        cidade: document.getElementById("cidade").value,
-        estado: document.getElementById("estado").value,
-        cep: document.getElementById("cep").value
-    };
-
-    console.log("ENVIANDO AO BACKEND:", dados);
-
-    fetch("/cadastroempresa/cadastrar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
+  fetch("/cadastroempresa/cadastrar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dados)
+  })
     .then(res => {
-        if (res.ok) {
-            alert("Empresa cadastrada com sucesso!");
-            formCadastroEmpresa.reset();
-            return res.json();
-        } else {
-            throw "Erro ao cadastrar empresa.";
-        }
+      if (!res.ok) throw "Erro ao cadastrar";
+      alert("Empresa cadastrada com sucesso!");
+      formCadastroEmpresa.reset();
+      carregarEmpresas();
     })
-    .then(json => console.log(json))
     .catch(err => {
-        console.error(err);
-        alert("Falha ao cadastrar.");
+      console.error(err);
+      alert("Falha ao cadastrar empresa");
     });
 }
 
-
-
-
-    function excluirEmpresa(index) {
-      const empresaReal = empresas.indexOf(empresasFiltradas[index]);
-      excluindoIndex = empresaReal;
-      const empresa = empresas[empresaReal];
-
-      document.getElementById('nomeEmpresaExcluir').textContent = empresa.nome;
-      document.getElementById('modalExcluir').style.display = 'flex';
-    }
-
-    function fecharModalExcluir() {
-      document.getElementById('modalExcluir').style.display = 'none';
-      excluindoIndex = -1;
-    }
-
-    function confirmarExclusao() {
-      if (excluindoIndex >= 0) {
-        empresas.splice(excluindoIndex, 1);
-        fecharModalExcluir();
-        filtrarEmpresas();
-      }
-    }
+/* DESATIVAR EMPRESA */
 function abrirModalExcluir(index) {
-    const empresaReal = empresas.indexOf(empresasFiltradas[index]);
-    excluindoIndex = empresaReal;
+  excluindoIndex = index;
 
-    const empresa = empresas[empresaReal];
+  const emp = empresasFiltradas[index];
+  document.getElementById("nomeEmpresaExcluir").innerText =
+    emp.nomeFantasia || emp.razaoSocial;
 
-    document.getElementById("nomeEmpresaExcluir").textContent =
-        empresa.nomeFantasia || empresa.razaoSocial;
+  document.getElementById("modalExcluir").style.display = "flex";
+}
 
-    document.getElementById('modalExcluir').style.display = 'flex';
+function fecharModalExcluir() {
+  document.getElementById("modalExcluir").style.display = "none";
+  excluindoIndex = -1;
 }
 
 function confirmarExclusao() {
-    if (excluindoIndex < 0) return;
+  if (excluindoIndex < 0) return;
 
-    const empresa = empresas[excluindoIndex];
+  const empresa = empresasFiltradas[excluindoIndex];
 
-    fetch(`/cadastroempresa/excluir/${empresa.tokenEmpresa}`, {
-        method: "DELETE"
-    })
+  fetch(`/cadastroempresa/desativar/${empresa.tokenEmpresa}`, {
+    method: "PUT"
+  })
     .then(res => {
-        if (!res.ok) throw "Erro no backend ao excluir";
+      if (!res.ok) throw "Erro ao desativar";
 
-        alert("Excluída com sucesso!");
+      alert("Empresa desativada!");
 
-        empresas.splice(excluindoIndex, 1);
-        empresasFiltradas = [...empresas];
+      carregarEmpresas();  
 
-        fecharModalExcluir();
-        renderizarTabela();
+      
+      if (window.carregarDashboard) {
+        carregarDashboard();
+      }
+
+      fecharModalExcluir();
     })
     .catch(err => {
-        console.error(err);
-        alert("Erro ao excluir.");
+      console.error(err);
+      alert("Erro ao desativar empresa");
     });
 }
 
 
+/* INICIALIZAÇÃO*/
+carregarEmpresas();
+mostrarAba("formulario");
+</script>
 
-    renderizarTabela();
-    carregarEmpresas();
-    mostrarAba('formulario');
-
-  </script>
 </body>
 
 </html>

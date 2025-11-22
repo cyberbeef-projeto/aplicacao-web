@@ -1,21 +1,9 @@
 var express = require("express");
 var router = express.Router();
+var controller = require("../controllers/cadastroempresaController");
 
-var cadastroempresaController = require("../controllers/cadastroempresaController");
-
-
-router.post("/cadastrar", function (req, res) {
-    cadastroempresaController.cadastrar(req, res);
-});
-
-
-router.get("/listar", function (req, res) {
-    cadastroempresaController.listar(req, res);
-});
-
-
-router.delete("/excluir/:tokenEmpresa", function (req, res) {
-    cadastroempresaController.excluir(req, res);
-});
+router.post("/cadastrar", controller.cadastrar);
+router.get("/listar", controller.listar);
+router.put("/desativar/:tokenEmpresa", controller.desativar);
 
 module.exports = router;

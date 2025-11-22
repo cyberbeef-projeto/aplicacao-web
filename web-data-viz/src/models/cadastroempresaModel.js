@@ -15,8 +15,8 @@ function cadastrarEmpresaCompleta(
 ) {
 
   var sqlEmpresa = `
-      INSERT INTO empresa (tokenEmpresa, razaoSocial, nomeFantasia, cnpj)
-      VALUES ('${tokenEmpresa}', '${razaoSocial}', '${nomeFantasia}', '${cnpj}');
+      INSERT INTO empresa (tokenEmpresa, razaoSocial, nomeFantasia, cnpj, statusEmpresa)
+      VALUES ('${tokenEmpresa}', '${razaoSocial}', '${nomeFantasia}', '${cnpj}', 1);
   `;
 
   console.log("SQL EMPRESA:", sqlEmpresa);
@@ -40,35 +40,43 @@ function cadastrarEmpresaCompleta(
 }
 
 
-function listarEmpresas() {
+function listarEmpresasAtivas() {
   var sql = `
-      SELECT 
-        tokenEmpresa,
-        nomeFantasia,
-        cnpj,
-        DATE_FORMAT(dataCadastro, '%d/%m/%Y') AS dataCadastro
-      FROM empresa
-      ORDER BY tokenEmpresa;
+    SELECT 
+      e.tokenEmpresa,
+      e.razaoSocial,
+      e.nomeFantasia,
+      e.cnpj,
+      e.statusEmpresa,
+      e.dataCadastro,
+      en.logradouro,
+      en.numero,
+      en.bairro,
+      en.cidade,
+      en.estado,
+      en.cep
+    FROM empresa e
+    JOIN endereco en
+      ON e.tokenEmpresa = en.tokenEmpresa
+    WHERE e.statusEmpresa = 1; 
   `;
 
-  console.log("Executando SELECT de empresas...");
   return database.executar(sql);
 }
 
 
-function excluirEmpresa(tokenEmpresa) {
+
+function desativarEmpresa(tokenEmpresa) {
   var sql = `
-      DELETE FROM empresa 
-      WHERE tokenEmpresa = '${tokenEmpresa}';
+    UPDATE empresa
+    SET statusEmpresa = 0
+    WHERE tokenEmpresa = ${tokenEmpresa};
   `;
-
-  console.log("SQL EXCLUSÃO:", sql);
-
   return database.executar(sql);
 }
 
 module.exports = {
   cadastrarEmpresaCompleta,
-  listarEmpresas,
-  excluirEmpresa
+  listarEmpresasAtivas,
+  desativarEmpresa
 };
