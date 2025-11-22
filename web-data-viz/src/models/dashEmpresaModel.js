@@ -7,8 +7,8 @@ function obterMetricas() {
             (SELECT COUNT(*) FROM empresa) AS totalEmpresas,
 
             (SELECT COUNT(*)  
- FROM empresa  
- WHERE statusEmpresa = 0) AS canceladas,
+             FROM empresa  
+             WHERE statusEmpresa = 0) AS canceladas,
 
 
             (SELECT COUNT(*) 
@@ -44,10 +44,9 @@ function obterEmpresasPorCidade() {
         SELECT en.cidade, COUNT(*) AS quantidade
         FROM endereco en
         JOIN empresa e ON e.tokenEmpresa = en.tokenEmpresa
-        WHERE e.statusEmpresa = 1
         GROUP BY en.cidade
         ORDER BY quantidade DESC
-        LIMIT 6;
+        LIMIT 5;
     `;
     return database.executar(sql);
 }
@@ -55,19 +54,22 @@ function obterEmpresasPorCidade() {
 function obterQtdCidadesEstados() {
     const sql = `
         SELECT 
-            (SELECT COUNT(DISTINCT cidade) 
-             FROM endereco 
-             JOIN empresa ON empresa.tokenEmpresa = endereco.tokenEmpresa
-             WHERE empresa.statusEmpresa = 1) AS cidades,
+            (SELECT COUNT(DISTINCT en.cidade)
+             FROM endereco en
+             JOIN empresa e ON e.tokenEmpresa = en.tokenEmpresa
+            ) AS cidades,
 
-            (SELECT COUNT(DISTINCT estado)
-             FROM endereco
-             JOIN empresa ON empresa.tokenEmpresa = endereco.tokenEmpresa
-             WHERE empresa.statusEmpresa = 1) AS estados;
+            (SELECT COUNT(DISTINCT en.estado)
+             FROM endereco en
+             JOIN empresa e ON e.tokenEmpresa = en.tokenEmpresa
+            ) AS estados;
     `;
 
     return database.executar(sql);
 }
+
+
+
 
 
 module.exports = {

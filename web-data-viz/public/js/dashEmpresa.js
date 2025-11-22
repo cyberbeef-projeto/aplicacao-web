@@ -65,7 +65,7 @@ function atualizarGraficoCidades(cidades) {
                 legend: { display: false },
                 title: {
                     display: true,
-                    text: "Top 5 Cidades por Número de Contratos - Último Semestre",
+                    text: "Top 5 Cidades por Número de Cadastros - Último Semestre",
                     color: "#fff",
                     font: { size: 14, weight: "bold" }
                 }
