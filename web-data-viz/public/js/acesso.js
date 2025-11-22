@@ -217,7 +217,7 @@
       t.id = 'heatmapTooltip';
       t.style.position = 'absolute';
       t.style.zIndex = 9999;
-      t.style.padding = '6px 8px';
+      t.style.padding = '6px 14px';
       t.style.background = 'rgba(0,0,0,0.85)';
       t.style.color = '#fff';
       t.style.borderRadius = '4px';
@@ -292,7 +292,7 @@
     const weeks = Math.ceil(totalSlots / 7);
 
     // layout
-    const padding = 14;
+    const padding = 6;
     const titleH = 28;
     const gap = 6;
     const cols = 7;
@@ -367,7 +367,7 @@
       }
     }
 
-    const legendW = 130;
+    const legendW = 100;
     const legendH = 32;
     const lx = width - padding - legendW;
     const ly = height - padding - legendH;
