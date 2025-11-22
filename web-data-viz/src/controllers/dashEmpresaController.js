@@ -39,10 +39,10 @@ function dashboard(req, res) {
 
 function obterQtdCidadesEstados(req, res) {
     empresaModel.obterQtdCidadesEstados()
-        .then(resultado => res.json(resultado[0]))
-        .catch(err => {
-            console.error("Erro ao buscar dados:", err);
-            res.status(500).json(err);
+        .then(resultado => res.json(resultado))
+        .catch(erro => {
+            console.error("Erro ao obter qtd cidades/estados", erro);
+            res.status(500).json(erro);
         });
 }
 
