@@ -5,6 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 
 html {
@@ -53,6 +54,8 @@ body::before {
     color: white;
     background-color: transparent;
     z-index: 10;
+    
+    
 }
 
 .sel_dash {
@@ -65,13 +68,12 @@ body::before {
 }
 
 .sel_dash p {
-    font-size: 1.3vw;
+    font-size: 3vw;
     max-width: 40%;
     margin-right: 5%;
     align-self: flex-start;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    
     font-weight: bold;
 }
 
