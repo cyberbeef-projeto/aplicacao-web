@@ -11,10 +11,10 @@ function dashboard(req, res) {
         const m = metricas[0];
 
         // Churn Rate
-        const churn = m.totalInicio === 0 ? 0 : ((m.canceladas / m.totalInicio) * 100).toFixed(2);
+        const churn = m.totalEmpresas === 0 ? 0 : ((m.canceladas / m.totalEmpresas) * 100).toFixed(0);
 
         // Growth Rate
-        const growth = m.anterior === 0 ? 100 : (((m.atual - m.anterior) / m.anterior) * 100).toFixed(2);
+        const growth = m.anterior === 0 ? 100 : (((m.atual - m.anterior) / m.anterior) * 100).toFixed(0);
 
         res.json({
             kpis: {
