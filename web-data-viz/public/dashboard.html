@@ -254,8 +254,8 @@
 
     function textoComparacao(comparacao) {
       if (isNaN(comparacao)) return ["#FFFF", "Veja mais🔍︎"]
-      else if (comparacao > 0) return ["#E94F37", comparacao + " A mais que o período anterior▲"]
-      else if (comparacao < 0) return ["#6EEB83", comparacao * (-1) + " A menos que o período anterior▼"]
+      else if (comparacao > 0) return ["#E94F37", comparacao.toFixed(1).replaceAll(".", ",") + " A mais que o período anterior▲"]
+      else if (comparacao < 0) return ["#6EEB83", (comparacao * (-1)).toFixed(1).replaceAll(".", ",") + " A menos que o período anterior▼"]
       else return ["#FFD447", "Número igual ao período anterior"]
     }
 
@@ -373,18 +373,24 @@
     //Modificar essa função no futuro 
     function colorirDado(dado) {
       let color = "#ffff";
-      const num = dado.valor.replace(/[^0-9]/g, '');
+      const num = dado.valor;
       if (dado.nome == "Perda de Pacotes") {
         if (num > 5) color = "#E94F37";
         else if (num >= 2.5) color = "#FFD447";
         else color = "#6EEB83";
       }
-      if (dado.nome == "CPU" || dado.nome == "RAM" || dado.nome == "DISCO" || dado.nome == "Uso") {
+      if (dado.nome == "Dado") {
         if (num > 90) color = "#E94F37";
         else if (num >= 85) color = "#FFD447";
         else color = "#6EEB83";
+        dado.valor = ((dado.valor).toString()).replaceAll(".", ",");
+        return `<span class="dado-valor" style="color: ${color};">${dado.valor}%</span>`;
       }
-      // Questão da Data e Hora
+      if (dado.nome == "Upload" || dado.nome == "Download") {
+        dado.valor = ((dado.valor).toString()).replaceAll(".", ",");
+        return `<span class="dado-valor" style="color: ${color};">${dado.valor}MB/s</span>`;
+      }
+
       return `<span class="dado-valor" style="color: ${color};">${dado.valor}</span>`;
     }
   </script>

@@ -131,8 +131,8 @@ SELECT
     JOIN maquina m ON m.idmaquina = a.idmaquina
     JOIN componente c ON l.idComponente = c.idComponente
     JOIN setorMaquina sm ON sm.idMaquina = m.idMaquina
-    WHERE sm.tokenEmpresa = '${id}' AND m.hostname = '${maquina} AND c.tipoComponente = '${componente}') as diasSemAlertas,
-(SELECT ROUND((STDDEV_SAMP(l.dado) / NULLIF(AVG(l.dado), 0)) * 100,0)
+    WHERE sm.tokenEmpresa = '${id}' AND m.hostname = '${maquina}' AND c.tipoComponente = '${componente}') as diasSemAlertas,
+(SELECT ROUND((STDDEV_SAMP(l.dado) / NULLIF(AVG(l.dado), 0)) * 100)
 	FROM leitura l 
 	JOIN maquina m ON l.idMaquina = m.idMaquina
     JOIN setorMaquina sm ON sm.idMaquina = m.idMaquina
@@ -140,7 +140,7 @@ SELECT
     WHERE l.dthCaptura >= NOW() - INTERVAL 7 DAY 
     AND sm.tokenEmpresa = '${id}' AND m.hostname = '${maquina}' AND c.tipoComponente = '${componente}'
 	) AS cvAtual,
-(SELECT ROUND((STDDEV_SAMP(l.dado) / NULLIF(AVG(l.dado), 0)) * 100,0)
+(SELECT ROUND((STDDEV_SAMP(l.dado) / NULLIF(AVG(l.dado), 0)) * 100)
 	FROM leitura l 
 	JOIN maquina m ON l.idMaquina = m.idMaquina
     JOIN setorMaquina sm ON sm.idMaquina = m.idMaquina
