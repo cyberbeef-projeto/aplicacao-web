@@ -61,10 +61,10 @@
   <div id="elementos" class="bl_ativa">
     <div class="cards">
 
-      <div id="barra_pesquisa">
+      <!-- <div id="barra_pesquisa">
         <input type="text" placeholder="Pesquisar por usuários ou dispositivos..." id="pesquisa" class="interativo">
         <div id="nomes_dash" class="accordion"></div>
-      </div>
+      </div> -->
 
       <span class="abas_kpis">
         <button data-aba="1" class="kpi interativo ativa">
@@ -106,16 +106,11 @@
       </span>
 
       <!-- HEATMAP GITHUB-LIKE -->
-      <div class="grafico sombreado interativo" style="width:100%; padding: 20px;">
+      <div class="graficoHeat" id="heatmap" style="width:100%; padding: 20px;">
 
-
+          <p id="titulo-conteudo">Histórico de tentativas de logins (ultimos 30 dias)</p>
           <canvas id="heatmapCanvas" style="width:100%; height:180px;"></canvas>
-        </div>
 
-        <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:15px;">
-            <button id="prevMonth" style="cursor:pointer; padding:8px 14px; border:none; border-radius:6px; background:#4B6CF0; color:#fff;">← Mês Anterior</button>
-            <span id="currentMonthLabel" style="color:white; font-size:18px; font-weight:500;"></span>
-            <button id="nextMonth" style="cursor:pointer; padding:8px 14px; border:none; border-radius:6px; background:#4B6CF0; color:#fff;">Próximo Mês →</button>
         </div>
 
       </div>

@@ -223,6 +223,8 @@ function atualizarBarraLateral() {
         barraLateral.classList.add('ativa');
         elementos.classList.add('bl_ativa');
     }
+    
+
 }
 
 function limparSessao() {

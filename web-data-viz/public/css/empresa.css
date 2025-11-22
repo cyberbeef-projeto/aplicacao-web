@@ -165,7 +165,7 @@ body::before {
     border-radius: 0vw 0.5vw 0.5vw 0vw;
     background-color: transparent;
     color: #fff;
-    transition: left 0.3s ease;
+    transition: none;
     z-index: 5;
 }
 
@@ -652,7 +652,7 @@ body::before {
     position: relative;
 }
 
-/* Ícone de informação */
+
 .info-icon {
     position: absolute;
     top: 6px;
@@ -673,7 +673,7 @@ body::before {
     color: #4B6CF0;
 }
 
-/* Tooltip estilizado */
+
 .tooltip {
     visibility: hidden;
     opacity: 0;
@@ -694,7 +694,7 @@ body::before {
     transition: opacity 0.25s ease-in-out;
 }
 
-/* Setinha do tooltip */
+
 .tooltip::after {
     content: "";
     position: absolute;
@@ -705,7 +705,7 @@ body::before {
     border-color: transparent transparent transparent rgba(11, 15, 25, 0.95);
 }
 
-/* Mostrar tooltip ao passar o mouse */
+
 .info-icon:hover .tooltip {
     visibility: visible;
     opacity: 1;
