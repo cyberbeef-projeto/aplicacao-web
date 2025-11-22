@@ -37,4 +37,14 @@ function dashboard(req, res) {
     });
 }
 
-module.exports = { dashboard };
+function obterQtdCidadesEstados(req, res) {
+    empresaModel.obterQtdCidadesEstados()
+        .then(resultado => res.json(resultado[0]))
+        .catch(err => {
+            console.error("Erro ao buscar dados:", err);
+            res.status(500).json(err);
+        });
+}
+
+
+module.exports = { dashboard, obterQtdCidadesEstados };

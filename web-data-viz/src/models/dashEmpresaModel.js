@@ -52,9 +52,27 @@ function obterEmpresasPorCidade() {
     return database.executar(sql);
 }
 
+function obterQtdCidadesEstados() {
+    const sql = `
+        SELECT 
+            (SELECT COUNT(DISTINCT cidade) 
+             FROM endereco 
+             JOIN empresa ON empresa.tokenEmpresa = endereco.tokenEmpresa
+             WHERE empresa.statusEmpresa = 1) AS cidades,
+
+            (SELECT COUNT(DISTINCT estado)
+             FROM endereco
+             JOIN empresa ON empresa.tokenEmpresa = endereco.tokenEmpresa
+             WHERE empresa.statusEmpresa = 1) AS estados;
+    `;
+
+    return database.executar(sql);
+}
+
 
 module.exports = {
     obterMetricas,
     obterEmpresasPorEstado,
-    obterEmpresasPorCidade
+    obterEmpresasPorCidade,
+    obterQtdCidadesEstados
 };

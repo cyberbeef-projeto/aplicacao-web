@@ -189,6 +189,23 @@ function atualizarMapaBrasil(estados) {
     });
 }
 
+
+function obterQtdCidadesEstados() {
+    fetch("/dashEmpresa/obterQtdCidadesEstados")
+        .then(res => res.json())
+        .then(dados => {
+            document.getElementById("qtd-cidades").innerText = dados[0].cidades;
+            document.getElementById("qtd-estados").innerText = dados[0].estados;
+        })
+        .catch(err => console.error("Erro ao carregar cidades/estados:", err));
+}
+
+
+obterQtdCidadesEstados();
+
+
+
+
 function atualizarBarraLateral() {
     const barraLateral = document.querySelector('.barra_lateral');
     const elementos = document.getElementById('elementos');
@@ -205,4 +222,5 @@ function atualizarBarraLateral() {
 function limparSessao() {
     alert('Sessão encerrada com sucesso!');
 }
+
 

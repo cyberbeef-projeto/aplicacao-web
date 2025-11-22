@@ -6,4 +6,7 @@ router.get("/dashboard", (req, res) => {
     dashEmpresaController.dashboard(req, res);
 });
 
+ router.get("/obterQtdCidadesEstados", controller.obterQtdCidadeEstados);
+
+
 module.exports = router;
