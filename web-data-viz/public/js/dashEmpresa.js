@@ -24,7 +24,7 @@ carregarDashboard();
 setInterval(() => {
     carregarDashboard();
     obterQtdCidadesEstados();
-    atualizarKPIs(); 
+    // atualizarKPIs(); 
 }, 30000);
 
 
