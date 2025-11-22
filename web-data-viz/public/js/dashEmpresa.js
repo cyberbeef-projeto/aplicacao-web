@@ -21,6 +21,12 @@ async function carregarDashboard() {
 
 carregarDashboard();
 
+setInterval(() => {
+    carregarDashboard();
+    obterQtdCidadesEstados();
+    atualizarKPIs(); 
+}, 30000);
+
 
 function atualizarKPIs(kpi) {
     document.getElementById("kpi1").innerText = kpi.totalEmpresas;

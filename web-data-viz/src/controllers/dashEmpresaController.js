@@ -14,7 +14,16 @@ function dashboard(req, res) {
         const churn = m.totalEmpresas === 0 ? 0 : ((m.canceladas / m.totalEmpresas) * 100).toFixed(0);
 
         // Growth Rate
-        const growth = m.anterior === 0 ? 100 : (((m.atual - m.anterior) / m.anterior) * 100).toFixed(0);
+      let growth;
+        if (m.anterior === 0 && m.atual === 0) {
+            growth = 0;
+        } else if (m.anterior === 0) {
+            growth = 100; 
+        } else {
+            growth = (((m.atual - m.anterior) / m.anterior) * 100).toFixed(0);
+            if (growth > 100) growth = 100; 
+        }
+
 
         res.json({
             kpis: {
