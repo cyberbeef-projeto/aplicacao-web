@@ -60,21 +60,21 @@
         <div class="form-grupo">
             <label>Razão Social</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Nome" id="razaoSocial" required>
-                <i class='bx bx-user'></i>
+                <input type="text" placeholder="Digite a razão social" id="razaoSocial" required>
+                 <i class='bx  bx-enterprise'></i> 
             </div>
         </div>
         <div class="form-grupo">
             <label>Nome Fantasia</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Fantasia" id="nomeFantasia" required>
-                <i class='bx bx-edit'></i>
+                <input type="text" placeholder="Digite o nome fantasia" id="nomeFantasia" required>
+                <i class='bx  bx-enterprise'></i> 
             </div>
         </div>
         <div class="form-grupo">
             <label>CNPJ</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="CNPJ" id="cnpj" required>
+                <input type="text" placeholder="Digite o CNPJ" id="cnpj" required>
                 <i class='bx bx-edit'></i>
             </div>
         </div>
@@ -84,21 +84,21 @@
         <div class="form-grupo">
             <label>CEP</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="CEP" id="cep">
-                <i class='bx bx-bookmark'></i>
+                <input type="text" placeholder="Digite  o CEP" id="cep">
+                <i class='bx bx-map'></i>
             </div>
         </div>
         <div class="form-grupo">
             <label>Logradouro</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Endereço" id="logradouro">
+                <input type="text" placeholder="Digite o logradouro" id="logradouro">
                 <i class='bx bx-map'></i>
             </div>
         </div>
         <div class="form-grupo">
             <label>Bairro</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Bairro" id="bairro">
+                <input type="text" placeholder="Digite o bairro" id="bairro">
                 <i class='bx bx-map'></i>
             </div>
         </div>
@@ -108,7 +108,7 @@
         <div class="form-grupo">
             <label>Cidade</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Cidade" id="cidade">
+                <input type="text" placeholder="Digite a cidade" id="cidade">
                 <i class='bx bx-map'></i>
             </div>
         </div>
@@ -133,8 +133,8 @@
         <div class="form-grupo">
             <label>Número</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Número" id="numero">
-                <i class='bx bx-chevron-down'></i>
+                <input type="text" placeholder="Digite o número" id="numero">
+                <i class='bx bx-map'></i>
             </div>
         </div>
         <div class="form-grupo">
@@ -176,19 +176,20 @@
 
         <div class="tabela-wrapper">
           <table class="tabela-empresas">
-            <thead>
-              <tr>
-               
-              </tr>
-            </thead>
-            <tbody id="tabelaBody">
-               <th>Id <i class='bx bx-up-arrow-alt'></i></th>
-                <th>Nome Fantasia <i class='bx bx-up-arrow-alt'></i></th>
-                <th>CNPJ <i class='bx bx-up-arrow-alt'></i></th>
-                <th>Data do Cadastro<i class='bx bx-up-arrow-alt'></i></th>
-                <th style="text-align: center;">Ações</th>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome Fantasia</th>
+      <th>CNPJ</th>
+      <th>Data do Cadastro</th>
+      <th style="text-align: center;">Ações</th>
+    </tr>
+  </thead>
+  <tbody id="tabelaBody">
+    <!-- Os dados serão inseridos aqui via JS -->
+  </tbody>
+</table>
 
-            </tbody>
           </table>
         </div>
 
