@@ -21,7 +21,7 @@ function kpiTotalTentativas() {
     return database.executar(`
         SELECT COUNT(*) AS total
         FROM loginHistorico
-        WHERE dataHora >= NOW() - INTERVAL 30 DAY;
+        WHERE dataHora >= NOW() - INTERVAL 7 DAY;
     `);
 }
 
@@ -30,7 +30,7 @@ function kpiTaxaSucesso() {
         SELECT 
             (SUM(CASE WHEN sucesso = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS taxa
         FROM loginHistorico
-        WHERE dataHora >= NOW() - INTERVAL 30 DAY;
+        WHERE dataHora >= NOW() - INTERVAL 7 DAY;
     `);
 }
 
@@ -47,7 +47,7 @@ function graficoTentativasDia() {
     return database.executar(`
         SELECT DATE(dataHora) AS dia, COUNT(*) AS total
         FROM loginHistorico
-        WHERE dataHora >= NOW() - INTERVAL 30 DAY
+        WHERE dataHora >= NOW() - INTERVAL 7 DAY
         GROUP BY DATE(dataHora)
         ORDER BY dia;
     `);
@@ -57,7 +57,7 @@ function graficoSucessoFalha() {
     return database.executar(`
         SELECT sucesso, COUNT(*) AS total
         FROM loginHistorico
-        WHERE dataHora >= NOW() - INTERVAL 30 DAY
+        WHERE dataHora >= NOW() - INTERVAL 7 DAY
         GROUP BY sucesso;
     `);
 }
