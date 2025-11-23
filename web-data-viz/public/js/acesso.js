@@ -60,8 +60,7 @@
     ];
   }
 
-  // Escala de cor azul (tons) para heatmap
-  function colorForIntensity(value, max) {
+  function intensidadeCor(value, max) {
     if (!max || max <= 0) {
       return "rgba(230,240,255,0.35)";
     }
@@ -90,7 +89,6 @@
     if (stroke) ctx.stroke();
   }
 
-  // KPIs
   async function carregarKPIs() {
     try {
       const [tentativasResp, taxaResp, adminsResp, inativasResp] =
@@ -255,11 +253,10 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            // Título do gráfico
             title: {
               display: true,
               // text: "Tentativas de Login por Dia (últimos 30 dias)",
-              color: "#1a1a1a", // cor do título
+              color: "#1a1a1a",
               font: {
                 size: 18,
                 weight: "bold",
@@ -269,7 +266,7 @@
             legend: {
               display: false,
               labels: {
-                color: "#fff", // cor das labels da legenda (caso ative no futuro)
+                color: "#fff",
               },
             },
           },
@@ -394,13 +391,11 @@
       }
     });
 
-    // cálculo dias do mês
     const daysInMonth = new Date(visibleYear, visibleMonth + 1, 0).getDate();
     const firstWeekday = new Date(visibleYear, visibleMonth, 1).getDay();
     const totalSlots = firstWeekday + daysInMonth;
     const weeks = Math.ceil(totalSlots / 7);
 
-    // layout
     const padding = 6;
     const titleH = 28;
     const gap = 6;
@@ -421,11 +416,9 @@
     const offsetX = padding + (gridWidth - gridTotalW) / 2;
     const offsetY = padding + titleH + (gridHeight - gridTotalH) / 2;
 
-    // max para escala
     const vals = Object.keys(map).map((k) => map[k]);
     const maxVal = vals.length ? Math.max(...vals) : 0;
 
-    // cabeçalho dias da semana (horizontal no topo)
     const weekdays = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
     ctx.fillStyle = "rgba(255,255,255,0.9)";
     ctx.font = "12px Inter, sans-serif";
@@ -439,7 +432,7 @@
 
     heatmapCells = [];
 
-    // desenhar cada dia
+
     for (let d = 1; d <= daysInMonth; d++) {
       const slotIndex = firstWeekday + (d - 1);
       const col = slotIndex % 7;
@@ -452,7 +445,7 @@
       const key = formatDateYMD(dateObj);
       const count = map[key] || 0;
 
-      const fill = colorForIntensity(count, maxVal);
+      const fill = intensidadeCor(count, maxVal);
 
       ctx.fillStyle = fill;
       roundRect(ctx, x, y, cellSize, cellSize, 4, true, false);
@@ -498,8 +491,8 @@
       barW = 52,
       barH = 10;
     const grad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
-    grad.addColorStop(0, colorForIntensity(0, maxVal));
-    grad.addColorStop(1, colorForIntensity(maxVal, maxVal));
+    grad.addColorStop(0, intensidadeCor(0, maxVal));
+    grad.addColorStop(1, intensidadeCor(maxVal, maxVal));
     ctx.fillStyle = grad;
     roundRect(ctx, barX, barY, barW, barH, 4, true, false);
   }
@@ -553,7 +546,6 @@
       return;
     }
 
-    // eventos setas
     const prev = $("prevMonth");
     const next = $("nextMonth");
     if (prev)
