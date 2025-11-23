@@ -557,6 +557,7 @@ body::before {
 .heatmap-controls {
     width: 100%;
     text-align: center;
+    gap: 1rem;
 }
 
 #currentMonthLabel {
