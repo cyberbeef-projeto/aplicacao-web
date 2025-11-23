@@ -17,12 +17,8 @@
     <header class="navbar">
         <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
             onclick="atualizarBarraLateral()"></button>
-        <span id="sel_componentes" name="op_setor" class="sel_dash">
-            <p>Alertas</p>
-        </span>
-        <nav id="buts_superiores">
-            <a class="clicavel clicado">Gerar Relatório</a>
-        </nav>
+        <p>Alertas</p>
+        <a class="clicavel clicado">Gerar Relatório</a>
     </header>
 
     <div class="barra_lateral sombreado ativa">
@@ -55,29 +51,54 @@
         <div class="cards">
             <span class="abas_kpis">
                 <button data-aba="1" class="kpi interativo">
-                    <b id="kpi1" class="dado_card">10</b>
-                    <p id="kpi1_desc" class="text_longo">Alerta(s)</p>
+                    <b id="kpi1" class="dado_card">Todas as Máquinas</b>
                 </button>
 
                 <button data-aba="2" class="kpi interativo">
-                    <b id="kpi2" class="dado_card">2</b>
-                    <p id="kpi2_desc" class="text_longo">Alerta(s) Crítico(s)</p>
+                    <b id="kpi2" class="dado_card">10</b>
+                    <p id="kpi2_desc" class="text_longo">Alertas</p>
                 </button>
 
                 <button data-aba="3" class="kpi interativo">
-                    <b id="kpi3" class="dado_card">8</b>
-                    <p id="kpi3_desc" class="text_longo">Alerta(s) Anormal(is)</p>
+                    <b id="kpi3" class="dado_card critico">2</b>
+                    <p id="kpi3_desc" class="text_longo">Alerta(s) Crítico(s)</p>
                 </button>
 
                 <button data-aba="4" class="kpi interativo">
-                    <b id="kpi4" class="dado_card">Normalidade</b>
-                    <p id="kpi4_desc" class="text_longo">Situação</p>
+                    <b id="kpi4" class="dado_card anormal">8</b>
+                    <p id="kpi4_desc" class="text_longo">Alerta(s) Anormal(is)</p>
                 </button>
             </span>
 
             <div id="aba_conteudo" class="interativo">
-                <p id="titulo-conteudo">Mais Detalhes</p>
-                <div id="cardsContainer"></div>
+                <div class="filtros">
+                    <div class="periods" role="tablist" aria-label="Períodos">
+                        <button data-period="all" class="active">Todos</button>
+                        <button data-period="today">Hoje</button>
+                        <button data-period="7">Últimos 7 dias</button>
+                        <button data-period="30">Últimos 30 dias</button>
+                        <button data-period="180">Último semestre</button>
+                    </div>
+
+                    <div style="flex:1"></div> <!-- espaçador -->
+
+                    <div class="sector-block" aria-hidden="false">
+                        <input id="sectorSearch" type="text" placeholder="Buscar máquina..." aria-label="Buscar máquina">
+                        <select id="sectorFilter" aria-label="Selecionar setor">
+                            <!-- options serão populadas pelo JS -->
+                        </select>
+                    </div>
+                </div>
+                <main class="list-panel">
+                    <h3 style="align-self: flex-start; margin-bottom: 1%;">Registros</h3>
+                    <table aria-label="lista de registros">
+                        <thead>
+                            <tr id="tableHead"></tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    <div id="emptyState" class="empty">Nenhum Alerta.</div>
+                </main>
             </div>
 
         </div>
@@ -112,6 +133,156 @@
         butAtualizarBl.classList.toggle('bxs-menu-wide');
         butAtualizarBl.classList.toggle('bxs-menu-select');
     }
+
+    const grafico1 = document.getElementById('grafico1');
+
+    new Chart(grafico1, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+            datasets: [
+                {
+                    label: 'Crítico',
+                    data: [15, 12, 28, 20, 32, 35],
+                    borderColor: '#E94F37',
+                    backgroundColor: '#E94F37' + '33',
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#E94F37',
+                },
+                {
+                    label: 'Anormal',
+                    data: [10, 22, 18, 30, 25, 40],
+                    borderColor: '#FFD447',
+                    backgroundColor: '#FFD447' + '33',
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#FFD447',
+                }
+
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Alertas ao Longo do Período',
+                    color: '#e5e7eb',
+                    font: { size: 18, weight: 'bold' },
+                    padding: 14
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#e5e7eb', usePointStyle: true, padding: 16 }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#e5e7eb' },
+                    grid: { color: '#374151' }
+                },
+                y: {
+                    ticks: { color: '#e5e7eb' },
+                    grid: { color: '#374151' }
+                }
+            }
+        }
+    });
+
+    const grafico2 = document.getElementById('grafico2');
+
+    new Chart(grafico2, {
+        type: 'pie',
+        data: {
+            labels: ['Crítico', 'Anormal'],
+            datasets: [{
+                data: [2, 8],
+                backgroundColor: ['#E94F37', '#FFD447'],
+                borderWidth: 2,
+                borderColor: '#fff',
+                hoverOffset: 12
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Distribuição de Alertas',
+                    color: '#fff',
+                    font: { size: 18, weight: 'bold' },
+                    padding: 14
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: { usePointStyle: true, padding: 16 }
+                }
+            }
+        }
+    });
+
+
+    const tipoDados = "alerta";
+    const tableHead = document.getElementById('tableHead');
+    const tableBody = document.getElementById('tableBody');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+
+
+    const campos = {
+        alerta: [
+            { key: 'dataHora', label: 'Data/Hora', type: 'text'},
+            { key: 'maquina', label: 'Máquina', type: 'text' },
+            { key: 'componente', label: 'Componente', type: 'text' },
+            { key: 'tipo', label: 'Tipo', type: 'text' },
+            { key: 'dado', label: 'Dado', type: 'text' },
+        ]
+    };
+
+    dados = {
+        alerta: [
+            { dataHora: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Anormal', dado: '90%' },
+            { dataHora: '14/10/2025 14:43', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
+            { dataHora: '14/10/2025 16:44', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
+            { dataHora: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '99%' },
+            { dataHora: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%' },
+        ]
+    }
+
+
+    function renderTable() {
+        tableHead.innerHTML = '';
+        campos[tipoDados].forEach(f => {
+            const th = document.createElement('th');
+            th.textContent = f.label;
+            tableHead.appendChild(th);
+        });
+        tableBody.innerHTML = '';
+        if (store.length === 0) {
+            document.getElementById('emptyState').style.display = 'block';
+            return;
+        }
+        document.getElementById('emptyState').style.display = 'none';
+        store.forEach((row, i) => {
+            const tr = document.createElement('tr');
+            campos[tipoDados].forEach(f => {
+                const td = document.createElement('td');
+                td.textContent = row[f.key] || '-';
+                if (td.textContent == 'Anormal') td.classList.add('anormal');
+                if (td.textContent == 'Crítico') td.classList.add('critico');
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    }
+
+    store = dados[tipoDados]
+    renderTable();
+
 </script>
 
 </html>

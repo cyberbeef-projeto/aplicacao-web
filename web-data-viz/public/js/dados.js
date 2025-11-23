@@ -59,7 +59,6 @@ async function dadosGraficos(caminho, maq = null, comp = null) {
     }
     for (const dado of dados[1]) {
       for (const chave in dado) {
-      console.log(chave)
         if (chave == "numAlertas" || chave == "dado") {
           grafico2[0].push(dado[chave])
         } else {

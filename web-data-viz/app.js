@@ -23,6 +23,7 @@ var dashRouter = require("./src/routes/dash");
 var acessoRouter = require("./src/routes/acesso");
 var cadastroempresaRouter = require("./src/routes/cadastroempresa");
 var dashEmpresaRouter = require("./src/routes/dashEmpresa");
+var alertasRouter = require("./src/routes/alertas");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,6 +39,7 @@ app.use("/dash", dashRouter);
 app.use("/acesso", acessoRouter);
 app.use("/cadastroempresa", cadastroempresaRouter);
 app.use("/dashEmpresa", dashEmpresaRouter);
+app.use("/alertas", alertasRouter);
 
 
 app.listen(PORTA_APP, function () {

@@ -1,5 +1,16 @@
 @import url('https://fonts.cdnfonts.com/css/codec-pro');
 
+:root {
+    --bg: #0b0f14;
+    --panel: #0f1620;
+    --muted: #95a1b3;
+    --accent: #4B6CF0;
+    --danger: #ff6b6b;
+    --glass: rgba(255, 255, 255, 0.03);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color-scheme: dark;
+}
+
 * {
     font-family: "Segoe UI", sans-serif;
     margin: 0;
@@ -54,24 +65,18 @@ body::before {
     z-index: 10;
 }
 
-.sel_dash {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 41.5%;
-    gap: 3%;
-
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: medium
 }
 
-.sel_dash p {
-    font-size: 1.3vw;
-    max-width: 40%;
-    margin-right: 5%;
-    align-self: flex-start;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: bold;
+thead th {
+    font-size: small;
+    text-align: left;
+    padding: 0.6% 0.6%;
+    color: var(--muted);
+    border-bottom: 1% solid rgba(255, 255, 255, 0.03)
 }
 
 
@@ -85,26 +90,22 @@ body::before {
     color: #fff;
 }
 
-#buts_superiores {
-    display: flex;
-    flex-direction: row;
-    align-items: right;
-    justify-content: center;
-    height: 100%;
-    width: 22%;
+header p {
+    font-size: x-large;
 }
 
-#buts_superiores a {
+header a {
     display: flex;
     box-sizing: border-box;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 50%;
+    width: 10%;
     height: 100%;
     user-select: none;
     color: #fff;
     font-size: 1.1vw;
+    margin-right: 1vw;
     text-align: center;
     font-weight: normal;
     background-color: #4B6CF0;
@@ -290,6 +291,72 @@ body::before {
     border-bottom: 0.2vw solid rgb(75, 108, 240, 0.7);
 }
 
+.controls{
+    display:flex;
+    gap:1vw;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+
+  /* bloco inline: busca + select lado a lado */
+  .sector-block{
+    display:flex;
+    gap:1vw;
+    align-items:center;
+    background:transparent;
+  }
+
+  input[type="text"], select {
+    background:#071127;
+    color:#E6EDF3;
+    border:0.1vw solid rgba(255,255,255,0.04);
+    padding:0.3vw 0.3vw;
+    border-radius:0.1vw;
+    font-size:small;
+    outline:none;
+    min-height:5vh;
+  }
+
+  input[type="text"]{
+    width:15vw;
+  }
+
+  select{
+    min-width:10vw;
+  }
+
+  select:hover{
+    cursor: pointer;
+  }
+
+  select:focus, input[type="text"]:focus{
+    box-shadow:0 0 0 0.05vw rgba(75,108,240,0.12);
+    border-color:var(--accent);
+  }
+
+  
+  .periods{
+    display:flex;
+    gap:0.5vw;
+  }
+
+  .periods button{
+    background:transparent;
+    color:var(--muted);
+    border:0.1vw solid transparent;
+    padding:0.5vw 0.5vw;
+    border-radius:0.5vw;
+    cursor:pointer;
+    font-size:small;
+  }
+
+  .periods button.active{
+    color:#071127;
+    background:var(--accent);
+    border-color:rgba(75,108,240,0.2);
+  }
+
 #aba_conteudo {
     display: flex;
     flex-direction: column;
@@ -298,14 +365,36 @@ body::before {
     height: 82.5%;
     max-height: 75%;
     margin: 1.5% 0% 0% 0.5%;
-    padding: 2vw;
-    gap: 2vw;
+    gap: 0.1vw;
     border-radius: 2vh;
     color: aliceblue;
     background-color: rgb(11, 15, 25, 80%);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #4B6CF0 #1a1a1a;
+}
+
+.filtros {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+    align-items: center;
+    width: 100%;
+    height: 14%;
+    background-color: rgb(11, 15, 25, 80%);
+}
+
+.list-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(11, 15, 25, 80%);
+    border-radius: 1vw;
+    padding: 1vw;
+    width: 99%;
+    min-height: 80%;
+    margin-left: 0.5%;
 }
 
 #titulo-conteudo {
@@ -322,6 +411,34 @@ body::before {
     grid-template-columns: repeat(auto-fit, minmax(32%, 1fr));
     gap: 1.2vw;
     width: 100%;
+}
+
+thead th {
+    font-size: small;
+    text-align: left;
+    padding: 0.6% 0.6%;
+    color: var(--muted);
+    border-bottom: 1% solid rgba(255, 255, 255, 0.03)
+}
+
+tbody td {
+    max-width: 15vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1% 1%;
+    border-bottom: 1% dashed rgba(255, 255, 255, 0.02)
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02)
+}
+
+.empty {
+    padding: 20%;
+    text-align: center;
+    color: var(--muted);
+    border: 1% dashed rgba(255, 255, 255, 0.03);
+    border-radius: 1vh
 }
 
 .card {
@@ -378,7 +495,7 @@ body::before {
 .text_longo {
     width: 100%;
     font-size: 1vw;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -424,4 +541,10 @@ body::before {
     box-shadow: 0 0 16px rgba(0, 198, 255, 0.15);
 }
 
+.critico {
+    color: #E94F37
+}
 
+.anormal {
+    color: #FFD447
+}
