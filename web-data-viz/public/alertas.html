@@ -55,17 +55,17 @@
                 </button>
 
                 <button data-aba="2" class="kpi interativo">
-                    <b id="kpi2" class="dado_card">10</b>
+                    <b id="kpi2" class="dado_card">CARREGANDO...</b>
                     <p id="kpi2_desc" class="text_longo">Alertas</p>
                 </button>
 
                 <button data-aba="3" class="kpi interativo">
-                    <b id="kpi3" class="dado_card critico">2</b>
+                    <b id="kpi3" class="dado_card critico">CARREGANDO...</b>
                     <p id="kpi3_desc" class="text_longo">Alerta(s) Crítico(s)</p>
                 </button>
 
                 <button data-aba="4" class="kpi interativo">
-                    <b id="kpi4" class="dado_card anormal">8</b>
+                    <b id="kpi4" class="dado_card anormal">CARREGANDO...</b>
                     <p id="kpi4_desc" class="text_longo">Alerta(s) Anormal(is)</p>
                 </button>
             </span>
@@ -73,21 +73,18 @@
             <div id="aba_conteudo" class="interativo">
                 <div class="filtros">
                     <div class="periods" role="tablist" aria-label="Períodos">
-                        <button data-period="all" class="active">Todos</button>
-                        <button data-period="today">Hoje</button>
-                        <button data-period="7">Últimos 7 dias</button>
-                        <button data-period="30">Últimos 30 dias</button>
-                        <button data-period="180">Último semestre</button>
+                        <button data-period="" class="active">Todos</button>
+                        <button data-period=" AND DATE(l.dthCaptura) = CURDATE()">Hoje</button>
+                        <button data-period=" AND l.dthCaptura >= NOW() - INTERVAL 7 DAY">Últimos 7 dias</button>
+                        <button data-period=" AND l.dthCaptura >= NOW() - INTERVAL 30 DAY">Últimos 30 dias</button>
+                        <button data-period=" AND l.dthCaptura >= NOW() - INTERVAL 6 MONTH">Último semestre</button>
                     </div>
-
-                    <div style="flex:1"></div> <!-- espaçador -->
-
-                    <div class="sector-block" aria-hidden="false">
-                        <input id="sectorSearch" type="text" placeholder="Buscar máquina..." aria-label="Buscar máquina">
-                        <select id="sectorFilter" aria-label="Selecionar setor">
-                            <!-- options serão populadas pelo JS -->
-                        </select>
+                    <div id="barra_pesquisa">
+                        <input type="text" placeholder="Pesquisar por máquinas..." id="pesquisa" class="">
+                        <div id="nomes_dash" class="accordion"></div>
                     </div>
+                    <a id="but_export" class="clicavel clicado" onclick="baixarCSV()">Exportar dados <i
+                            class='bxr  bx-arrow-down-stroke-circle'></i></a>
                 </div>
                 <main class="list-panel">
                     <h3 style="align-self: flex-start; margin-bottom: 1%;">Registros</h3>
@@ -123,108 +120,6 @@
     const dadosCard = document.querySelectorAll('.dado_card')
     const buttons = document.querySelectorAll('.abas_kpis button');
 
-    const container = document.getElementById("cardsContainer");
-    const contents = document.getElementById('aba_conteudo');
-    const tituloContent = document.getElementById('titulo-conteudo');
-
-    function atualizarBarraLateral() {
-        barraLateral.classList.toggle('ativa');
-        elementos.classList.toggle('bl_ativa');
-        butAtualizarBl.classList.toggle('bxs-menu-wide');
-        butAtualizarBl.classList.toggle('bxs-menu-select');
-    }
-
-    const grafico1 = document.getElementById('grafico1');
-
-    new Chart(grafico1, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-            datasets: [
-                {
-                    label: 'Crítico',
-                    data: [15, 12, 28, 20, 32, 35],
-                    borderColor: '#E94F37',
-                    backgroundColor: '#E94F37' + '33',
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#E94F37',
-                },
-                {
-                    label: 'Anormal',
-                    data: [10, 22, 18, 30, 25, 40],
-                    borderColor: '#FFD447',
-                    backgroundColor: '#FFD447' + '33',
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#FFD447',
-                }
-
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Alertas ao Longo do Período',
-                    color: '#e5e7eb',
-                    font: { size: 18, weight: 'bold' },
-                    padding: 14
-                },
-                legend: {
-                    position: 'bottom',
-                    labels: { color: '#e5e7eb', usePointStyle: true, padding: 16 }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: { color: '#e5e7eb' },
-                    grid: { color: '#374151' }
-                },
-                y: {
-                    ticks: { color: '#e5e7eb' },
-                    grid: { color: '#374151' }
-                }
-            }
-        }
-    });
-
-    const grafico2 = document.getElementById('grafico2');
-
-    new Chart(grafico2, {
-        type: 'pie',
-        data: {
-            labels: ['Crítico', 'Anormal'],
-            datasets: [{
-                data: [2, 8],
-                backgroundColor: ['#E94F37', '#FFD447'],
-                borderWidth: 2,
-                borderColor: '#fff',
-                hoverOffset: 12
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Distribuição de Alertas',
-                    color: '#fff',
-                    font: { size: 18, weight: 'bold' },
-                    padding: 14
-                },
-                legend: {
-                    position: 'bottom',
-                    labels: { usePointStyle: true, padding: 16 }
-                }
-            }
-        }
-    });
-
-
     const tipoDados = "alerta";
     const tableHead = document.getElementById('tableHead');
     const tableBody = document.getElementById('tableBody');
@@ -232,10 +127,35 @@
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
 
+    const kpi1 = document.getElementById('kpi1');
+    const kpi2 = document.getElementById('kpi2');
+    const kpi3 = document.getElementById('kpi3');
+    const kpi4 = document.getElementById('kpi4');
+
+    const localGrafico1 = document.getElementById('grafico1');
+    const localGrafico2 = document.getElementById('grafico2');
+    let grafico1 = null;
+    let grafico2 = null;
+
+    const popup = document.getElementById('barra_pesquisa');
+    const campo = document.getElementById('pesquisa');
+    const nomesDash = document.getElementById('nomes_dash');
+
+    campo.addEventListener('input', e => {
+        const termo = e.target.value.toLowerCase();
+        document.querySelectorAll('.item').forEach(item => {
+            const texto = item.querySelector('.titulo_dash').textContent.toLowerCase();
+            item.style.display = texto.includes(termo) ? 'block' : 'none';
+        });
+    });
+
+    const butsFiltro = document.querySelectorAll('.periods button')
+    let filtroData = ''
+    let filtroMaquina = ''
 
     const campos = {
         alerta: [
-            { key: 'dataHora', label: 'Data/Hora', type: 'text'},
+            { key: 'dataHora', label: 'Data/Hora', type: 'text' },
             { key: 'maquina', label: 'Máquina', type: 'text' },
             { key: 'componente', label: 'Componente', type: 'text' },
             { key: 'tipo', label: 'Tipo', type: 'text' },
@@ -244,13 +164,50 @@
     };
 
     dados = {
-        alerta: [
-            { dataHora: '13/10/2025 13:00', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Anormal', dado: '90%' },
-            { dataHora: '14/10/2025 14:43', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
-            { dataHora: '14/10/2025 16:44', maquina: 'Máquina 1', componente: 'Disco', tipo: 'Crítico', dado: '91%' },
-            { dataHora: '14/10/2025 16:00', maquina: 'Máquina 2', componente: 'CPU', tipo: 'Crítico', dado: '99%' },
-            { dataHora: '15/10/2025 16:00', maquina: 'Máquina 3', componente: 'CPU', tipo: 'Crítico', dado: '99%' },
-        ]
+        alerta: []
+    }
+
+    butsFiltro.forEach(but => {
+        but.addEventListener('click', () => {
+            butsFiltro.forEach(b => b.classList.remove('active'));
+            but.classList.add('active');
+            filtroData = but.dataset['period'];
+            trazerDados();
+        })
+    });
+
+    function atualizarBarraLateral() {
+        barraLateral.classList.toggle('ativa');
+        elementos.classList.toggle('bl_ativa');
+        butAtualizarBl.classList.toggle('bxs-menu-wide');
+        butAtualizarBl.classList.toggle('bxs-menu-select');
+    }
+
+    function jsonToCSV(jsonArray) {
+        if (!jsonArray.length) return "";
+
+        const headers = Object.keys(jsonArray[0]);
+
+        const linhas = jsonArray.map(obj =>
+            headers.map(h =>
+                JSON.stringify(obj[h] ?? "")
+            ).join(";")
+        );
+
+        return [headers.join(";"), ...linhas].join("\n");
+    }
+
+    function baixarCSV() {
+        const csv = jsonToCSV(dados['alerta']);
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "dados.csv";
+        link.click();
+
+        URL.revokeObjectURL(url);
     }
 
 
@@ -282,6 +239,145 @@
 
     store = dados[tipoDados]
     renderTable();
+
+    async function trazerDados() {
+        filtroCompleto = `WHERE sm.tokenEmpresa = '${sessionStorage.TOKEN_EMPRESA}'`;
+        filtroCompleto = filtroCompleto + filtroData + filtroMaquina;
+
+        try {
+            nomesDash.innerHTML = '<button class="titulo_dash clicado">Todas as Máquinas</button>';
+            (await (await fetch("/dash/maquinas", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ tokenEmpresa: sessionStorage.TOKEN_EMPRESA })
+            })).json()).forEach(maquina => {
+                const nome = document.createElement("div");
+                nome.classList.add("item", "clicado");
+                nome.innerHTML = `<button class="titulo_dash">${maquina.hostname}</button>`;
+                nomesDash.appendChild(nome);
+
+                nomesDash.querySelectorAll('button').forEach(but => {
+                    but.addEventListener('click', () => {
+                        if (but.textContent == "Todas as Máquinas") filtroMaquina = '';
+                        else filtroMaquina = ` AND m.hostname = '${but.textContent}'`
+                        kpi1.textContent = but.textContent;
+                        trazerDados();
+                    })
+                });
+            });
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+
+        try {
+            let kpiTodas = (await (await fetch("/alertas/kpis", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filtro: filtroCompleto })
+            })).json())
+            kpiTodas = kpiTodas[0];
+            kpi2.textContent = kpiTodas.alertasGerais;
+            kpi3.textContent = kpiTodas.alertasCriticos;
+            kpi4.textContent = kpiTodas.alertasAnormais;
+
+            if (!grafico1) {
+                grafico1 = new Chart(localGrafico1, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Crítico', 'Anormal'],
+                        datasets: [{
+                            data: [kpiTodas.alertasCriticos, kpiTodas.alertasAnormais], backgroundColor: ['#E94F37', '#FFD447'], borderWidth: 2,
+                            borderColor: '#fff', hoverOffset: 12
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true, text: 'Distribuição de Alertas', color: '#fff', font: { size: 16, weight: 'bold' }, padding: 14
+                            },
+                            legend: {
+                                position: 'bottom', labels: { usePointStyle: true, padding: 16 }
+                            }
+                        }
+                    }
+                });
+            } else {
+                grafico1.data.datasets[0].data = [kpiTodas.alertasCriticos, kpiTodas.alertasAnormais];
+                grafico1.update();
+            }
+
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+
+        try {
+            let dadosTabela = (await (await fetch("/alertas/tabela", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filtro: filtroCompleto })
+            })).json())
+            dados = { alerta: dadosTabela }
+            store = dados[tipoDados];
+            renderTable();
+
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+
+        try {
+            let dadosGraficoBarras = (await (await fetch("/alertas/graficoBarras", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filtro: filtroCompleto })
+            })).json())
+            labels = [];
+            data = [];
+            for (dado of dadosGraficoBarras) {
+                data.push(dado['numAlertas']);
+                labels.push(dado['maquina']);
+            }
+
+            if (!grafico2) {
+                grafico2 = new Chart(localGrafico2, {
+                    type: "bar",
+                    data: {
+                        labels: labels,
+                        datasets: [{ label: "N° Alerta(s)", data: data, backgroundColor: "#4B6CF0" }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { display: true, color: "rgba(255,255,255, 0.05)" },
+                                ticks: { stepSize: 1, callback: function (value) { return Number.isInteger(value) ? value : null; } }
+                            },
+                            x: { title: { display: true, text: 'Máquina' }, }
+                        },
+                        plugins: {
+                            title: { display: true, text: '5 Máquinas com Mais Alertas', color: '#fff', font: { size: 16, weight: 'bold' }, padding: 14 },
+                            legend: { labels: { color: "#fff" } }
+                        }
+                    }
+                });
+            } else {
+                grafico2.data.labels = labels;
+                grafico2.data.datasets[0].data = data;
+                grafico2.update();
+            }
+
+
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+    }
+
+    //Primeira leva de dados
+    trazerDados();
+
+    //Loop dos dados
+    const loopDosDados = setInterval(trazerDados, 10000);
 
 </script>
 
