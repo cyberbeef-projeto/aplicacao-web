@@ -18,13 +18,10 @@
       onclick="atualizarBarraLateral()"></button>
 
     <span id="sel_componentes" name="op_setor" class="sel_dash">
-      <p id="title">Controle de Acesso</p>
-      <button id="dash_todas_maquinas" style="display: none;" 
-        data-comp="geral"
-        data-kpi1="Total de tentativas logins (últimos 7 dias)"
-        data-kpi2="Taxa de Sucesso nos Logins (%)"
-        data-kpi3="Contas Administrativas Ativas"
-        data-kpi4="Contas Inativas (30 dias)">GERAL</button>
+      <p id="title">Controle e Acesso</p>
+      <button id="dash_todas_maquinas" style="display: none;" data-comp="geral"
+        data-kpi1="Total de tentativas logins (últimos 7 dias)" data-kpi2="Taxa de Sucesso nos Logins (%)"
+        data-kpi3="Contas Administrativas Ativas" data-kpi4="Contas Inativas (30 dias)">GERAL</button>
     </span>
 
     <nav id="buts_superiores">
@@ -69,21 +66,52 @@
 
       <span class="abas_kpis">
         <button data-aba="1" class="kpi interativo ativa">
+
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">
+              Total de tentativas de login registradas nos últimos 7 dias
+            </span>
+          </span>
+
           <b id="kpi1" class="dado_card"></b>
+
           <p id="kpi1_desc">Total de Tentativas login (últimos 07 dias)</p>
+
         </button>
 
         <button data-aba="2" class="kpi interativo">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">
+              Percentual de logins bem-sucedidos em relação ao total de tentativas nos últimos 7 dias.
+            </span>
+          </span>
+
           <b id="kpi2" class="dado_card"></b>
           <p id="kpi2_desc">Taxa de Sucesso nos Logins (%)</p>
         </button>
 
         <button data-aba="3" class="kpi interativo">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">
+              Quantidade de contas administrativas atualmente ativas no sistema.
+            </span>
+          </span>
+
           <b id="kpi3" class="dado_card"></b>
           <p id="kpi3_desc">Contas Administrativas Ativas</p>
         </button>
 
         <button data-aba="4" class="kpi interativo">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">
+              Número de contas que não realizaram nenhuma tentativa de login nos últimos 7 dias.
+            </span>
+          </span>
+
           <b id="kpi4" class="dado_card"></b>
           <p id="kpi4_desc">Contas Inativas (07 dias)</p>
         </button>
@@ -123,9 +151,9 @@
         </div>
       </div>
 
-      </div>
-
     </div>
+
+  </div>
 
 </body>
 

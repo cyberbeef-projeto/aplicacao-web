@@ -355,6 +355,7 @@ body::before {
     display: flex;
     flex-direction: row;
     height: 20%;
+    position: relative;
 }
 
 .abas_kpis button {
@@ -570,4 +571,68 @@ body::before {
     color: white;
     border: none;
     font-family: sans-serif;
+}
+
+.tooltip {
+    visibility: hidden;
+    opacity: 0;
+    width: 14vw;
+
+    background-color: rgba(11, 15, 25, 0.95);
+    color: #fff;
+    
+    text-align: left;
+    padding: 0.6vw;
+    border-radius: 0.5vw;
+    
+    position: absolute;
+    top: -0.5vw;     /* ajusta vertical */
+    right: 2vw;      /* cola ao ícone, mas dentro do card */
+
+    z-index: 99;
+    font-size: 0.8vw;
+    line-height: 1.2vw;
+
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: opacity 0.25s ease-in-out;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 0.8vw;
+    right: -0.6vw; /* seta agora fica correta */
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent rgba(11, 15, 25, 0.95);
+}
+
+.info-icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.kpi {
+    position: relative;
+}
+
+
+.info-icon {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.info-icon i {
+    font-size: 1.2vw;
+    color: rgba(255,255,255,0.9);
+    transition: 0.2s;
+}
+
+.info-icon:hover i {
+    color: #4B6CF0;
 }
