@@ -1,13 +1,12 @@
-
 (() => {
-  const $ = id => document.getElementById(id);
-  const safeNum = v => {
+  const $ = (id) => document.getElementById(id);
+  const safeNum = (v) => {
     if (v === null || v === undefined) return 0;
-    if (typeof v === 'number') return v;
+    if (typeof v === "number") return v;
     let s = String(v).trim();
-    s = s.replace('%', '').replace(/\s+/g, '');
-    s = s.replace(/[^0-9\.,-]/g, '');
-    s = s.replace(',', '.');
+    s = s.replace("%", "").replace(/\s+/g, "");
+    s = s.replace(/[^0-9\.,-]/g, "");
+    s = s.replace(",", ".");
     const n = Number(s);
     return isNaN(n) ? 0 : n;
   };
@@ -26,7 +25,9 @@
   const charts = {};
   function destroyChart(key) {
     if (charts[key]) {
-      try { charts[key].destroy(); } catch (e) {  }
+      try {
+        charts[key].destroy();
+      } catch (e) {}
       delete charts[key];
     }
   }
@@ -38,27 +39,42 @@
     return d;
   }
   function formatDateYMD(d) {
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
     return `${d.getFullYear()}-${mm}-${dd}`;
   }
   function mesesPt() {
-    return ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    return [
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+    ];
   }
 
   // Escala de cor azul (tons) para heatmap
   function colorForIntensity(value, max) {
     if (!max || max <= 0) {
-      return 'rgba(230,240,255,0.35)';
+      return "rgba(230,240,255,0.35)";
     }
     const ratio = Math.min(1, Math.max(0, value / max));
-    const alpha = 0.25 + (0.7 * ratio); // 0.25..0.95
-    const r = 15, g = 60, b = 220;
+    const alpha = 0.25 + 0.7 * ratio; // 0.25..0.95
+    const r = 15,
+      g = 60,
+      b = 220;
     return `rgba(${r},${g},${b},${alpha})`;
   }
 
   function roundRect(ctx, x, y, w, h, r = 4, fill = true, stroke = false) {
-    if (typeof r === 'number') r = { tl: r, tr: r, br: r, bl: r };
+    if (typeof r === "number") r = { tl: r, tr: r, br: r, bl: r };
     ctx.beginPath();
     ctx.moveTo(x + r.tl, y);
     ctx.lineTo(x + w - r.tr, y);
@@ -77,132 +93,225 @@
   // KPIs
   async function carregarKPIs() {
     try {
-      const [tentativasResp, taxaResp, adminsResp, inativasResp] = await Promise.all([
-        fetchJson('/acesso/kpi/tentativas'),
-        fetchJson('/acesso/kpi/taxa-sucesso'),
-        fetchJson('/acesso/kpi/admins'),
-        fetchJson('/acesso/kpi/inativas'),
-      ]);
+      const [tentativasResp, taxaResp, adminsResp, inativasResp] =
+        await Promise.all([
+          fetchJson("/acesso/kpi/tentativas"),
+          fetchJson("/acesso/kpi/taxa-sucesso"),
+          fetchJson("/acesso/kpi/admins"),
+          fetchJson("/acesso/kpi/inativas"),
+        ]);
 
-      const totalTentativas = Array.isArray(tentativasResp) && tentativasResp[0] && tentativasResp[0].total !== undefined
-        ? safeNum(tentativasResp[0].total)
-        : (tentativasResp && tentativasResp.total ? safeNum(tentativasResp.total) : 0);
+      const totalTentativas =
+        Array.isArray(tentativasResp) &&
+        tentativasResp[0] &&
+        tentativasResp[0].total !== undefined
+          ? safeNum(tentativasResp[0].total)
+          : tentativasResp && tentativasResp.total
+          ? safeNum(tentativasResp.total)
+          : 0;
 
-      const taxa = Array.isArray(taxaResp) && taxaResp[0] && taxaResp[0].taxa !== undefined
-        ? safeNum(taxaResp[0].taxa)
-        : (taxaResp && taxaResp.taxa ? safeNum(taxaResp.taxa) : 0);
+      const taxa =
+        Array.isArray(taxaResp) && taxaResp[0] && taxaResp[0].taxa !== undefined
+          ? safeNum(taxaResp[0].taxa)
+          : taxaResp && taxaResp.taxa
+          ? safeNum(taxaResp.taxa)
+          : 0;
 
-      const admins = Array.isArray(adminsResp) && adminsResp[0] && adminsResp[0].total !== undefined
-        ? safeNum(adminsResp[0].total)
-        : (adminsResp && adminsResp.total ? safeNum(adminsResp.total) : 0);
+      const admins =
+        Array.isArray(adminsResp) &&
+        adminsResp[0] &&
+        adminsResp[0].total !== undefined
+          ? safeNum(adminsResp[0].total)
+          : adminsResp && adminsResp.total
+          ? safeNum(adminsResp.total)
+          : 0;
 
-      const inativas = Array.isArray(inativasResp) && inativasResp[0] && inativasResp[0].inativas !== undefined
-        ? safeNum(inativasResp[0].inativas)
-        : (inativasResp && inativasResp.inativas ? safeNum(inativasResp.inativas) : 0);
+      const inativas =
+        Array.isArray(inativasResp) &&
+        inativasResp[0] &&
+        inativasResp[0].inativas !== undefined
+          ? safeNum(inativasResp[0].inativas)
+          : inativasResp && inativasResp.inativas
+          ? safeNum(inativasResp.inativas)
+          : 0;
 
-      const elK1 = $('kpi1'); if (elK1) elK1.textContent = totalTentativas;
-      const elK2 = $('kpi2'); if (elK2) elK2.textContent = `${Number(taxa).toFixed(2)}%`;
-      const elK3 = $('kpi3'); if (elK3) elK3.textContent = admins;
-      const elK4 = $('kpi4'); if (elK4) elK4.textContent = inativas;
-
+      const elK1 = $("kpi1");
+      if (elK1) elK1.textContent = totalTentativas;
+      const elK2 = $("kpi2");
+      if (elK2) elK2.textContent = `${Number(taxa).toFixed(2)}%`;
+      const elK3 = $("kpi3");
+      if (elK3) elK3.textContent = admins;
+      const elK4 = $("kpi4");
+      if (elK4) elK4.textContent = inativas;
     } catch (err) {
-      console.error('Erro carregarKPIs:', err);
+      console.error("Erro carregarKPIs:", err);
     }
   }
 
   async function carregarGraficoSucessoFalha() {
-    const canvas = $('grafico1');
-    if (!canvas) { console.warn('grafico1 canvas not found'); return; }
+    const canvas = $("grafico1");
+    if (!canvas) {
+      console.warn("grafico1 canvas not found");
+      return;
+    }
 
     try {
-      const resp = await fetchJson('/acesso/grafico/sucesso-vs-falha');
+      const resp = await fetchJson("/acesso/grafico/sucesso-vs-falha");
       const rows = Array.isArray(resp) ? resp : [];
 
-      let sucesso = 0, falha = 0;
-      rows.forEach(r => {
+      let sucesso = 0,
+        falha = 0;
+      rows.forEach((r) => {
         const key = safeNum(r.sucesso);
         const tot = safeNum(r.total);
         if (key === 1) sucesso = tot;
         else falha = tot;
       });
 
-      destroyChart('grafico1');
-      const ctx = canvas.getContext('2d');
+      destroyChart("grafico1");
+      const ctx = canvas.getContext("2d");
 
-      charts['grafico1'] = new Chart(ctx, {
-        type: 'doughnut',
+      charts["grafico1"] = new Chart(ctx, {
+        type: "doughnut",
         data: {
-          labels: ['Sucesso', 'Falha'],
-          datasets: [{
-            data: [sucesso, falha],
-            backgroundColor: ['rgba(75,108,240,0.85)', 'rgba(233,79,55,0.85)'],
-            borderColor: ['#ffffff', '#ffffff'],
-            borderWidth: 2
-          }]
+          labels: ["Sucesso", "Falha"],
+          datasets: [
+            {
+              data: [sucesso, falha],
+              backgroundColor: [
+                "rgba(75,108,240,0.85)",
+                "rgba(233,79,55,0.85)",
+              ],
+              borderColor: ["#ffffff", "#ffffff"],
+              borderWidth: 2,
+            },
+          ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            title: { display: true, text: 'Sucesso vs Falha (últimos 30 dias)' },
-            legend: { position: 'bottom' }
-          }
-        }
+            title: {
+              display: true,
+              text: "Sucesso vs Falha (últimos 07 dias)",
+              color: "#fff",
+              font: {
+                size: 18,
+                weight: "bold",
+              },
+            },
+            legend: {
+              position: "bottom",
+              labels: {
+                color: "#fff",
+              },
+            },
+          },
+        },
       });
-
     } catch (err) {
-      console.error('Erro carregarGraficoSucessoFalha:', err);
+      console.error("Erro carregarGraficoSucessoFalha:", err);
     }
   }
 
   async function carregarGraficoTentativasDia() {
-    const canvas = $('graficoAba');
-    if (!canvas) { console.warn('graficoAba canvas not found'); return; }
+    const canvas = $("graficoAba");
+    if (!canvas) {
+      console.warn("graficoAba canvas not found");
+      return;
+    }
 
     try {
-      const resp = await fetchJson('/acesso/grafico/tentativas-dia');
+      const resp = await fetchJson("/acesso/grafico/tentativas-dia");
       const rows = Array.isArray(resp) ? resp : [];
 
       const labels = [];
       const data = [];
-      rows.forEach(r => {
+      rows.forEach((r) => {
         const d = parseDbDate(r.dia);
         if (d) labels.push(d.toLocaleDateString());
         else labels.push(String(r.dia));
         data.push(safeNum(r.total));
       });
 
-      destroyChart('graficoAba');
-      const ctx = canvas.getContext('2d');
+      destroyChart("graficoAba");
+      const ctx = canvas.getContext("2d");
 
-      charts['graficoAba'] = new Chart(ctx, {
-        type: 'bar',
+      charts["graficoAba"] = new Chart(ctx, {
+        type: "bar",
         data: {
           labels,
-          datasets: [{
-            label: 'Tentativas',
-            data,
-            backgroundColor: 'rgba(75,108,240,0.8)',
-            borderColor: '#4B6CF0',
-            borderWidth: 1
-          }]
+          datasets: [
+            {
+              label: "Tentativas",
+              data,
+              backgroundColor: "rgba(75,108,240,0.8)",
+              borderColor: "#4B6CF0",
+              borderWidth: 1,
+            },
+          ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            title: { display: true, text: 'Tentativas de Login por Dia (últimos 30 dias)' },
-            legend: { display: false }
-          },
-          scales: {
-            x: { title: { display: true, text: 'Data' } },
-            y: { title: { display: true, text: 'Tentativas' }, beginAtZero: true }
-          }
-        }
-      });
+            // Título do gráfico
+            title: {
+              display: true,
+              // text: "Tentativas de Login por Dia (últimos 30 dias)",
+              color: "#1a1a1a", // cor do título
+              font: {
+                size: 18,
+                weight: "bold",
+              },
+            },
 
+            legend: {
+              display: false,
+              labels: {
+                color: "#fff", // cor das labels da legenda (caso ative no futuro)
+              },
+            },
+          },
+
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Data",
+                color: "#fff",
+                font: { size: 14, weight: "bold" },
+              },
+              ticks: {
+                color: "#fff",
+                font: { size: 12 },
+              },
+              grid: {
+                color: "rgba(0,0,0,0.1)",
+              },
+            },
+
+            y: {
+              title: {
+                display: true,
+                text: "Tentativas",
+                color: "#fff",
+                font: { size: 14, weight: "bold" },
+              },
+              ticks: {
+                color: "#fff",
+                font: { size: 12 },
+              },
+              beginAtZero: true,
+              grid: {
+                color: "rgba(0,0,0,0.1)",
+              },
+            },
+          },
+        },
+      });
     } catch (err) {
-      console.error('Erro carregarGraficoTentativasDia:', err);
+      console.error("Erro carregarGraficoTentativasDia:", err);
     }
   }
 
@@ -211,19 +320,19 @@
   let heatmapCells = [];
 
   function ensureTooltip() {
-    let t = $('heatmapTooltip');
+    let t = $("heatmapTooltip");
     if (!t) {
-      t = document.createElement('div');
-      t.id = 'heatmapTooltip';
-      t.style.position = 'absolute';
+      t = document.createElement("div");
+      t.id = "heatmapTooltip";
+      t.style.position = "absolute";
       t.style.zIndex = 9999;
-      t.style.padding = '6px 14px';
-      t.style.background = 'rgba(0,0,0,0.85)';
-      t.style.color = '#fff';
-      t.style.borderRadius = '4px';
-      t.style.fontSize = '12px';
-      t.style.pointerEvents = 'none';
-      t.style.display = 'none';
+      t.style.padding = "6px 14px";
+      t.style.background = "rgba(0,0,0,0.85)";
+      t.style.color = "#fff";
+      t.style.borderRadius = "4px";
+      t.style.fontSize = "12px";
+      t.style.pointerEvents = "none";
+      t.style.display = "none";
       document.body.appendChild(t);
     }
     return t;
@@ -231,34 +340,34 @@
 
   async function carregarHeatmapDados() {
     try {
-      const resp = await fetchJson('/acesso/grafico/heatmap');
+      const resp = await fetchJson("/acesso/grafico/heatmap");
       const rows = Array.isArray(resp) ? resp : [];
-      heatmapRows = rows.map(r => {
+      heatmapRows = rows.map((r) => {
         const d = parseDbDate(r.dia);
         return {
-          dia: d ? formatDateYMD(d) : String(r.dia).split('T')[0],
-          total: safeNum(r.total)
+          dia: d ? formatDateYMD(d) : String(r.dia).split("T")[0],
+          total: safeNum(r.total),
         };
       });
     } catch (err) {
-      console.error('Erro carregarHeatmapDados:', err);
+      console.error("Erro carregarHeatmapDados:", err);
       heatmapRows = [];
     }
   }
 
   function atualizarLabelMes() {
-    const label = $('currentMonthLabel');
+    const label = $("currentMonthLabel");
     if (!label) return;
     const m = heatmapVisibleMonth.getMonth();
     const y = heatmapVisibleMonth.getFullYear();
     label.textContent = `${mesesPt()[m]} ${y}`;
-    const title = $('heatmapTitle');
+    const title = $("heatmapTitle");
     if (title) title.textContent = `Heatmap de Logins — ${mesesPt()[m]} ${y}`;
   }
 
   function drawHeatmap(canvas) {
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const parent = canvas.parentElement;
     if (!parent) return;
 
@@ -276,12 +385,12 @@
     const visibleYear = heatmapVisibleMonth.getFullYear();
     const visibleMonth = heatmapVisibleMonth.getMonth();
     const map = {};
-    heatmapRows.forEach(r => {
-      const key = r.dia.split('T')[0];
+    heatmapRows.forEach((r) => {
+      const key = r.dia.split("T")[0];
       const d = parseDbDate(key);
       if (!d) return;
       if (d.getFullYear() === visibleYear && d.getMonth() === visibleMonth) {
-        map[ formatDateYMD(d) ] = safeNum(r.total);
+        map[formatDateYMD(d)] = safeNum(r.total);
       }
     });
 
@@ -297,34 +406,34 @@
     const gap = 6;
     const cols = 7;
     const rowsCount = weeks;
-    
+
     const gridWidth = width - padding * 2;
     const gridHeight = height - padding - titleH - 48;
-   
+
     const totalGapX = (cols - 1) * gap;
     const totalGapY = (rowsCount - 1) * gap;
     let cellW = (gridWidth - totalGapX) / cols;
     let cellH = (gridHeight - totalGapY) / rowsCount;
     let cellSize = Math.max(8, Math.floor(Math.min(cellW, cellH)));
-    
+
     const gridTotalW = cols * cellSize + totalGapX;
     const gridTotalH = rowsCount * cellSize + totalGapY;
     const offsetX = padding + (gridWidth - gridTotalW) / 2;
-    const offsetY = padding + titleH + ( (gridHeight - gridTotalH) / 2 );
+    const offsetY = padding + titleH + (gridHeight - gridTotalH) / 2;
 
     // max para escala
-    const vals = Object.keys(map).map(k => map[k]);
+    const vals = Object.keys(map).map((k) => map[k]);
     const maxVal = vals.length ? Math.max(...vals) : 0;
 
     // cabeçalho dias da semana (horizontal no topo)
-    const weekdays = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.font = '12px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    const weekdays = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.font = "12px Inter, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     for (let c = 0; c < cols; c++) {
       const x = offsetX + c * (cellSize + gap) + cellSize / 2;
-      const y = padding + (titleH / 2);
+      const y = padding + titleH / 2;
       ctx.fillText(weekdays[c], x, y);
     }
 
@@ -348,21 +457,27 @@
       ctx.fillStyle = fill;
       roundRect(ctx, x, y, cellSize, cellSize, 4, true, false);
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = "rgba(255,255,255,0.06)";
       ctx.lineWidth = 0.6;
       ctx.strokeRect(x + 0.3, y + 0.3, cellSize - 0.6, cellSize - 0.6);
 
       heatmapCells.push({
-        x, y, w: cellSize, h: cellSize,
+        x,
+        y,
+        w: cellSize,
+        h: cellSize,
         date: dateObj,
-        count
+        count,
       });
 
       if (count > 0 && cellSize >= 18) {
-        ctx.fillStyle = 'rgba(255,255,255,0.95)';
-        ctx.font = `${Math.max(10, Math.floor(cellSize / 2.6))}px Inter, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.fillStyle = "rgba(255,255,255,0.95)";
+        ctx.font = `${Math.max(
+          10,
+          Math.floor(cellSize / 2.6)
+        )}px Inter, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
         ctx.fillText(String(count), x + cellSize / 2, y + cellSize / 2);
       }
     }
@@ -371,14 +486,17 @@
     const legendH = 32;
     const lx = width - padding - legendW;
     const ly = height - padding - legendH;
-    ctx.fillStyle = 'rgba(255,255,255,0.04)';
+    ctx.fillStyle = "rgba(255,255,255,0.04)";
     roundRect(ctx, lx, ly, legendW, legendH, 6, true, false);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '11px Inter, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('Menos', lx + 8, ly + 6);
-    ctx.fillText('Mais', lx + legendW - 36, ly + 6);
-    const barX = lx + 36, barY = ly + 10, barW = 52, barH = 10;
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "11px Inter, sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("Menos", lx + 8, ly + 6);
+    ctx.fillText("Mais", lx + legendW - 36, ly + 6);
+    const barX = lx + 36,
+      barY = ly + 10,
+      barW = 52,
+      barH = 10;
     const grad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
     grad.addColorStop(0, colorForIntensity(0, maxVal));
     grad.addColorStop(1, colorForIntensity(maxVal, maxVal));
@@ -391,11 +509,12 @@
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    const mx = (evt.clientX - rect.left) * scaleX / devicePixelRatio;
-    const my = (evt.clientY - rect.top) * scaleY / devicePixelRatio;
+    const mx = ((evt.clientX - rect.left) * scaleX) / devicePixelRatio;
+    const my = ((evt.clientY - rect.top) * scaleY) / devicePixelRatio;
 
     for (const c of heatmapCells) {
-      if (mx >= c.x && mx <= c.x + c.w && my >= c.y && my <= c.y + c.h) return c;
+      if (mx >= c.x && mx <= c.x + c.w && my >= c.y && my <= c.y + c.h)
+        return c;
     }
     return null;
   }
@@ -403,47 +522,52 @@
   function wireHeatmapEvents(canvas) {
     if (!canvas) return;
     const tooltip = ensureTooltip();
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener("mousemove", (e) => {
       const hit = heatmapHitTest(canvas, e);
       if (hit) {
-        tooltip.style.display = 'block';
+        tooltip.style.display = "block";
         tooltip.style.left = `${e.pageX + 12}px`;
         tooltip.style.top = `${e.pageY + 12}px`;
         const d = hit.date;
-        const dd = String(d.getDate()).padStart(2, '0');
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, "0");
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
         const yyyy = d.getFullYear();
         tooltip.textContent = `${hit.count} login(s) — ${dd}/${mm}/${yyyy}`;
       } else {
-        tooltip.style.display = 'none';
+        tooltip.style.display = "none";
       }
     });
-    canvas.addEventListener('mouseleave', () => {
+    canvas.addEventListener("mouseleave", () => {
       const tooltip = ensureTooltip();
-      tooltip.style.display = 'none';
+      tooltip.style.display = "none";
     });
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       drawHeatmap(canvas);
     });
   }
 
   async function carregarHeatmap() {
-    const canvas = $('heatmapCanvas');
-    if (!canvas) { console.warn('heatmapCanvas not found'); return; }
+    const canvas = $("heatmapCanvas");
+    if (!canvas) {
+      console.warn("heatmapCanvas not found");
+      return;
+    }
 
     // eventos setas
-    const prev = $('prevMonth');
-    const next = $('nextMonth');
-    if (prev) prev.addEventListener('click', () => {
-      heatmapVisibleMonth.setMonth(heatmapVisibleMonth.getMonth() - 1);
-      drawHeatmap(canvas);
-      atualizarLabelMes();
-    });
-    if (next) next.addEventListener('click', () => {
-      heatmapVisibleMonth.setMonth(heatmapVisibleMonth.getMonth() + 1);
-      drawHeatmap(canvas);
-      atualizarLabelMes();
-    });
+    const prev = $("prevMonth");
+    const next = $("nextMonth");
+    if (prev)
+      prev.addEventListener("click", () => {
+        heatmapVisibleMonth.setMonth(heatmapVisibleMonth.getMonth() - 1);
+        drawHeatmap(canvas);
+        atualizarLabelMes();
+      });
+    if (next)
+      next.addEventListener("click", () => {
+        heatmapVisibleMonth.setMonth(heatmapVisibleMonth.getMonth() + 1);
+        drawHeatmap(canvas);
+        atualizarLabelMes();
+      });
 
     try {
       await carregarHeatmapDados();
@@ -451,7 +575,7 @@
       drawHeatmap(canvas);
       wireHeatmapEvents(canvas);
     } catch (err) {
-      console.error('Erro carregarHeatmap:', err);
+      console.error("Erro carregarHeatmap:", err);
     }
   }
 
@@ -461,26 +585,25 @@
     await Promise.all([
       carregarGraficoSucessoFalha(),
       carregarGraficoTentativasDia(),
-      carregarHeatmap()
+      carregarHeatmap(),
     ]);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }
-  
+
   window.atualizarBarraLateral = function () {
-    const barraLateral = document.querySelector('.barra_lateral');
-    const elementos = document.getElementById('elementos');
-    const butAtual = document.getElementById('but_atualizar_bl');
-    if (barraLateral) barraLateral.classList.toggle('ativa');
-    if (elementos) elementos.classList.toggle('bl_ativa');
+    const barraLateral = document.querySelector(".barra_lateral");
+    const elementos = document.getElementById("elementos");
+    const butAtual = document.getElementById("but_atualizar_bl");
+    if (barraLateral) barraLateral.classList.toggle("ativa");
+    if (elementos) elementos.classList.toggle("bl_ativa");
     if (butAtual) {
-      butAtual.classList.toggle('bxs-menu-wide');
-      butAtual.classList.toggle('bxs-menu-select');
+      butAtual.classList.toggle("bxs-menu-wide");
+      butAtual.classList.toggle("bxs-menu-select");
     }
   };
-
 })();

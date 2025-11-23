@@ -18,7 +18,7 @@
       onclick="atualizarBarraLateral()"></button>
 
     <span id="sel_componentes" name="op_setor" class="sel_dash">
-      <p id="title">Controle de Acesso e Segurança</p>
+      <p id="title">Controle de Acesso</p>
       <button id="dash_todas_maquinas" style="display: none;" 
         data-comp="geral"
         data-kpi1="Total de tentativas logins (últimos 7 dias)"
@@ -46,14 +46,15 @@
 
     <div id="home" class="ops_home">
       <ul></ul>
-      <li><a href="index.html">Controle e Acesso</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="empresa.html">Empresas</a></li>
       <li><a href="dados.html?tipoDados=alerta&titulo=Alertas">Downtime</a></li>
       <li><a href="dados.html?tipoDados=setor&titulo=Setores">Chamados Jira</a></li>
 
-      <span onclick="limparSessao()" class="clicavel clicado">
-        <i class='bxr bx-arrow-out-left-square-half'></i>
-        <p>ENCERRAR SESSÃO</p>
+      <span
+        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
+        <i class='bx bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+        <p>SAIR</p>
       </span>
     </div>
   </div>
@@ -69,7 +70,7 @@
       <span class="abas_kpis">
         <button data-aba="1" class="kpi interativo ativa">
           <b id="kpi1" class="dado_card"></b>
-          <p id="kpi1_desc">Total de Tentativas de Login (últimos 7 dias)</p>
+          <p id="kpi1_desc">Total de Tentativas login (últimos 07 dias)</p>
         </button>
 
         <button data-aba="2" class="kpi interativo">
@@ -84,12 +85,12 @@
 
         <button data-aba="4" class="kpi interativo">
           <b id="kpi4" class="dado_card"></b>
-          <p id="kpi4_desc">Contas Inativas (7 dias)</p>
+          <p id="kpi4_desc">Contas Inativas (07 dias)</p>
         </button>
       </span>
 
       <div id="aba_conteudo" class="interativo">
-        <p id="titulo-conteudo">Tentativas de Login (Sucesso vs Erro) por Dia</p>
+        <p id="titulo-conteudo">Tentativas de login por dia (últimos 07 dias)</p>
 
         <div class="grafico sombreado interativo" style="width: 100%; height: 350px;">
           <canvas id="graficoAba"></canvas>
@@ -102,16 +103,25 @@
 
       <!-- GRÁFICO PRINCIPAL -->
       <span class="grafico sombreado interativo">
+        <!-- <p id="titulo-grafico1">Sucesso vs Falha (últimos 07 dias)</p> -->
         <canvas id="grafico1"></canvas>
       </span>
 
       <!-- HEATMAP GITHUB-LIKE -->
-      <div class="graficoHeat" id="heatmap" style="width:100%; padding: 20px;">
+      <div class="grafico sombreado grafico--heatmap">
+        <div style="width:100%;">
+          <h3 id="heatmapTitle" class="heatmap-title">Heatmap de Logins — Mês</h3>
+          <div style="width:100%; display:flex; justify-content:center;">
+            <canvas id="heatmapCanvas" style="max-width:100%; height:240px;"></canvas>
+          </div>
 
-          <p id="titulo-conteudo">Histórico de tentativas de logins (ultimos 30 dias)</p>
-          <canvas id="heatmapCanvas" style="width:100%; height:180px;"></canvas>
-
+          <div class="heatmap-controls">
+            <button id="prevMonth" class="btn-heat">← Mês anterior</button>
+            <span id="currentMonthLabel" class="heatmap-month-label"></span>
+            <button id="nextMonth" class="btn-heat">Próximo mês →</button>
+          </div>
         </div>
+      </div>
 
       </div>
 
