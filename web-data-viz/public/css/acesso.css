@@ -550,6 +550,7 @@ body::before {
 #heatmapTitle {
     color: white;
     text-align: center;
+    font-size: 1vw;
 }
 
 .heatmap-controls {

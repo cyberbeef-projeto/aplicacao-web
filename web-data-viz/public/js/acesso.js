@@ -196,7 +196,7 @@
               text: "Sucesso vs Falha (últimos 07 dias)",
               color: "#fff",
               font: {
-                size: 18,
+                size: 16,
                 weight: "bold",
               },
             },
@@ -362,7 +362,7 @@
     const y = heatmapVisibleMonth.getFullYear();
     label.textContent = `${mesesPt()[m]} ${y}`;
     const title = $("heatmapTitle");
-    if (title) title.textContent = `Heatmap de Logins — ${mesesPt()[m]} ${y}`;
+    if (title) title.textContent = `Frequência de acessos diária — ${mesesPt()[m]} ${y}`;
   }
 
   function drawHeatmap(canvas) {
