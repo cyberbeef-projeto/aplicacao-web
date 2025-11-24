@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="css/jira.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link rel="icon" href="assets/icon/chip.png">
+
+  <title>Jira - CyberBeef</title>
+
+</head>
+
+<body>
+  <header class="navbar">
+    <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
+      onclick="atualizarBarraLateral()"></button>
+    <span id="sel_componentes" name="op_setor" class="sel_dash">
+      <p id="title">Controle de Chamados do Jira</p>
+    </span>
+  </header>
+
+  <div class="barra_lateral sombreado ativa">
+    <div id="logo"></div>
+    <hr>
+    <div id="usuario">
+      <i class='bxr bxs-user' style='color:#fffafa'></i>
+      <a id="b_usuario" class="texto_perfil" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
+        Administrador
+      </a>
+    </div>
+    <hr>
+    <div id="home" class="ops_home">
+      <ul></ul>
+      <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
+      <li class="clicado"><a href="empresa.html"> Empresas</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Downtime</a></li>
+      <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Chamados Jira</a></li>
+      <span onclick="limparSessao()"
+        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
+        class="clicavel clicado" title="Clique para encerrar sua sessão">
+        <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+        <p>Sair <a href="index.html"></a></p>
+      </span>
+    </div>
+  </div>
+
+  <div id="elementos" class="bl_ativa">
+    <div class="cards">
+      <span class="abas_kpis">
+        <button data-aba="1" class="kpi interativo ativa">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">Chamados do Jira</span>
+          </span>
+          <b id="kpi1" class="dado_card">...</b>
+          <p id="kpi1_desc">Total de Chamados Abertos</p>
+          <i id="kpi1_result" class="text_longo">Calculando...</i>
+        </button>
+
+        <button data-aba="2" class="kpi interativo">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">Taxa de Sucesso do SLA</span>
+          </span>
+          <b id="kpi2" class="dado_card">...</b>
+          <p id="kpi2_desc">Taxa de Sucesso do SLA</p>
+          <i id="kpi2_result" class="text_longo">No Último Mês</i>
+        </button>
+
+        <button data-aba="3" class="kpi interativo">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">Nota Média de Satisfação</span>
+          </span>
+          <b id="kpi3" class="dado_card">...</b>
+          <p id="kpi3_desc">Nota Média de Satisfação</p>
+          <i id="kpi3_result" class="text_longo">Nos Últimos 6 Meses</i>
+        </button>
+
+        <button data-aba="4" class="kpi interativo">
+          <span class="info-icon">
+            <i class='bx bx-info-circle'></i>
+            <span class="tooltip">Backlogs Crítico</span>
+          </span>
+          <b id="kpi4" class="dado_card">...</b>
+          <p id="kpi4_desc" class="text_longo">Total de Backlogs Crítico</p>
+          <i id="kpi4_result" class="text_longo">Prioridade Alta/Crítica</i>
+        </button>
+      </span>
+
+      <div class="graficos-meio">
+        <span class="grafico-duplo sombreado interativo">
+          <div style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+            <canvas id="graficoIncidReq"></canvas>
+          </div>
+        </span>
+        <span class="grafico-duplo sombreado interativo">
+          <div style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+            <canvas id="graficoCausas"></canvas>
+          </div>
+        </span>
+      </div>
+
+      <div id="cardsContainer"></div>
+    </div>
+
+    <div id="graficos">
+      <span class="grafico sombreado interativo" style="justify-content: flex-start;">
+        <div class="map-title">Chamados em Risco de Violação (SLA)</div>
+        <div id="lista-sla-container" style="width: 100%; overflow-y: auto;">
+          <table class="lista-risco">
+            <thead>
+              <tr>
+                <th>Chave</th>
+                <th>Assunto</th>
+                <th>Técnico</th>
+                <th>Tempo</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-sla-body">
+            </tbody>
+          </table>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <script src="js/jira.js"></script>
+</body>
+
+</html>
