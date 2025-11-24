@@ -20,7 +20,7 @@ function dashboard(req, res) {
         } else if (m.anterior === 0) {
             growth = 100; 
         } else {
-            growth = (((m.atual - m.anterior) / m.anterior) * 100).toFixed(0);
+            growth = (((m.totalEmpresas - m.canceladas) / m.totalEmpresas) * 100).toFixed(0);
             if (growth > 100) growth = 100; 
         }
 
