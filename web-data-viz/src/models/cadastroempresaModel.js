@@ -75,8 +75,49 @@ function desativarEmpresa(tokenEmpresa) {
   return database.executar(sql);
 }
 
+
+function editarEmpresa(
+  tokenEmpresa,
+  razaoSocial,
+  nomeFantasia,
+  cnpj,
+  logradouro,
+  numero,
+  bairro,
+  cidade,
+  estado,
+  cep
+) {
+    const sqlEmpresa = `
+        UPDATE empresa
+        SET 
+            razaoSocial = '${razaoSocial}',
+            nomeFantasia = '${nomeFantasia}',
+            cnpj = '${cnpj}'
+        WHERE tokenEmpresa = ${tokenEmpresa};
+    `;
+
+    const sqlEndereco = `
+        UPDATE endereco
+        SET 
+            logradouro = '${logradouro}',
+            numero = '${numero}',
+            bairro = '${bairro}',
+            cidade = '${cidade}',
+            estado = '${estado}',
+            cep = '${cep}'
+        WHERE tokenEmpresa = ${tokenEmpresa};
+    `;
+
+    return database.executar(sqlEmpresa)
+      .then(() => database.executar(sqlEndereco));
+}
+
+
+
 module.exports = {
   cadastrarEmpresaCompleta,
   listarEmpresasAtivas,
-  desativarEmpresa
+  desativarEmpresa,
+  editarEmpresa
 };

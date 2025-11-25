@@ -4,7 +4,7 @@ function dashboard(req, res) {
     Promise.all([
         empresaModel.obterMetricas(),
         empresaModel.obterEmpresasPorEstado(),
-        empresaModel.obterEmpresasPorCidade()
+        empresaModel.obterEmpresasPorCidade(),
     ])
     .then(([metricas, estados, cidades]) => {
 
@@ -55,5 +55,15 @@ function obterQtdCidadesEstados(req, res) {
         });
 }
 
+function graficoMensal(req, res) {
+    empresaModel.obterGraficoMensal()
+        .then(resultado => res.json(resultado))
+        .catch(erro => {
+            console.log("Erro ao obter gráfico mensal:", erro);
+            res.status(500).json(erro);
+        });
+}
 
-module.exports = { dashboard, obterQtdCidadesEstados };
+
+
+module.exports = { dashboard, obterQtdCidadesEstados, graficoMensal };

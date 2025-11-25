@@ -28,11 +28,11 @@
       <li class="clicado"><a href="index.html">Controle e Acesso</a></li>
       <li class="clicado"><a href="empresa.html">Empresas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Downtime</a></li>
-      <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Chamados Jira</a></li>
+      <li class="clicado"><a href="jira-empresa.html">Chamados Jira</a></li>
       <span
         style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
         <i class='bx bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-        <p>SAIR</p>
+        <p>Sair</p>
       </span>
     </div>
   </div>
@@ -183,9 +183,11 @@
       <th>CNPJ</th>
       <th>Data do Cadastro</th>
       <th style="text-align: center;">Ações</th>
+      
     </tr>
   </thead>
   <tbody id="tabelaBody">
+    
     <!-- Os dados serão inseridos aqui via JS -->
   </tbody>
 </table>
@@ -214,6 +216,8 @@
       <form id="formulario" onsubmit="salvarEmpresa(event)">
         <div class="modal-body">
           <div class="campo-card">
+            <input type="hidden" id="modal_tokenEmpresa">
+
             <label>Razão Social *</label>
             <input type="text" id="modal_razaoSocial" placeholder="Digite a razão social" required>
           </div>
@@ -382,7 +386,11 @@ function renderizarTabela() {
         <td>${emp.nomeFantasia}</td>
         <td>${emp.cnpj}</td>
         <td>${formatarData(emp.dataCadastro) || "-"}</td>
-        <td style="text-align: center;">
+        <td style="text-align: center; display:flex; gap:8px; justify-content:center;">
+           <button class="btn-acao btn-editar"
+          onclick="abrirModalEdicao(${inicio + index})">
+    <i class='bx bx-edit'></i>
+  </button>
           <button class="btn-acao btn-excluir"
                   onclick="abrirModalExcluir(${inicio + index})">
             <i class='bx bx-block'></i>
@@ -398,7 +406,6 @@ function renderizarTabela() {
 function formatarData(data) {
   if (!data) return "-";
   const d = new Date(data);
-  // Formato dd/mm/yyyy
   return d.toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
@@ -522,6 +529,68 @@ function confirmarExclusao() {
       alert("Erro ao desativar empresa");
     });
 }
+
+function abrirModalEdicao(index) {
+  const emp = empresasFiltradas[index];
+document.getElementById("modal_tokenEmpresa").value = emp.tokenEmpresa;
+  document.getElementById("modalTitle").innerText = "Editar Empresa";
+
+  modal_razaoSocial.value = emp.razaoSocial;
+  modal_nomeFantasia.value = emp.nomeFantasia;
+  modal_cnpj.value = emp.cnpj;
+  modal_cep.value = emp.cep || "";
+  modal_logradouro.value = emp.logradouro || "";
+  modal_bairro.value = emp.bairro || "";
+  modal_cidade.value = emp.cidade || "";
+  modal_uf.value = emp.estado || "";
+  modal_numero.value = emp.numero || "";
+
+  document.getElementById("formulario").dataset.token = emp.tokenEmpresa;
+
+
+  document.getElementById("modalBackdrop").style.display = "flex";
+}
+
+function salvarEmpresa(event) {
+  event.preventDefault();
+
+  const token = document.getElementById("modal_tokenEmpresa").value;
+
+  const dados = {
+    razaoSocial: modal_razaoSocial.value,
+    nomeFantasia: modal_nomeFantasia.value,
+    cnpj: modal_cnpj.value,
+    cep: modal_cep.value,
+    logradouro: modal_logradouro.value,
+    bairro: modal_bairro.value,
+    cidade: modal_cidade.value,
+    estado: modal_uf.value,
+    numero: modal_numero.value
+  };
+
+  fetch(`/cadastroempresa/editar/${token}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados)
+  })
+    .then(res => {
+      if (!res.ok) throw "Erro ao atualizar empresa";
+
+      alert("Empresa atualizada com sucesso!");
+      fecharModal();
+      carregarEmpresas();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Erro ao atualizar empresa");
+    });
+}
+
+
+function fecharModal() {
+  document.getElementById("modalBackdrop").style.display = "none";
+}
+
 
 
 /* INICIALIZAÇÃO*/

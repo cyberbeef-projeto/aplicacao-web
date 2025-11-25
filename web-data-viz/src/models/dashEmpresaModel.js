@@ -23,8 +23,18 @@ function obterMetricas() {
              FROM empresa 
              WHERE dataCadastro BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND DATE_SUB(NOW(), INTERVAL 6 MONTH)) AS anterior,
 
-            (SELECT COUNT(*) FROM empresa WHERE statusEmpresa = 1) AS ativas,
-            (SELECT COUNT(*) FROM empresa WHERE statusEmpresa = 0) AS inativas;
+            (SELECT COUNT(*) 
+             FROM empresa 
+             WHERE statusEmpresa = 1
+             AND dataCadastro >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+             ) AS ativas,
+
+             (SELECT COUNT(*) 
+              FROM empresa 
+             WHERE statusEmpresa = 0
+             AND dataCadastro >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            ) AS inativas;
+
     `;
     return database.executar(sql);
 }
@@ -68,6 +78,24 @@ function obterQtdCidadesEstados() {
     return database.executar(sql);
 }
 
+function obterGraficoMensal() {
+    const sql = `
+        SELECT 
+            DATE_FORMAT(dataCadastro, '%Y-%m') AS mes,
+            SUM(statusEmpresa = 1) AS empresasAtivas,
+            SUM(statusEmpresa = 0) AS empresasInativas
+        FROM empresa
+        WHERE YEAR(dataCadastro) = 2025
+        GROUP BY DATE_FORMAT(dataCadastro, '%Y-%m')
+        ORDER BY mes
+        LIMIT 6;
+    `;
+
+    return database.executar(sql);
+}
+
+
+
 
 
 
@@ -76,5 +104,6 @@ module.exports = {
     obterMetricas,
     obterEmpresasPorEstado,
     obterEmpresasPorCidade,
-    obterQtdCidadesEstados
+    obterQtdCidadesEstados,
+    obterGraficoMensal
 };

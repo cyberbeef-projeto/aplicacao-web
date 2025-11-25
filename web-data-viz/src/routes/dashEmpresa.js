@@ -10,6 +10,9 @@ router.get("/dashboard", (req, res) => {
  router.get("/obterQtdCidadesEstados", (req, res) => {
     dashEmpresaController.obterQtdCidadesEstados(req, res);
 });
+router.get("/grafico-mensal", function (req, res) {
+    dashEmpresaController.graficoMensal(req, res);
+});
 
 
 module.exports = router;

@@ -55,4 +55,42 @@ function desativar(req, res) {
     });
 }
 
-module.exports = { cadastrar, listar, desativar };
+function editar(req, res) {
+    var tokenEmpresa = req.params.tokenEmpresa;
+
+    var {
+        razaoSocial,
+        nomeFantasia,
+        cnpj,
+        logradouro,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        cep
+    } = req.body;
+
+    cadastroEmpresaModel.editarEmpresa(
+        tokenEmpresa,
+        razaoSocial,
+        nomeFantasia,
+        cnpj,
+        logradouro,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        cep
+    )
+    .then(() => {
+        res.status(200).json({ mensagem: "Empresa atualizada com sucesso!" });
+    })
+    .catch(erro => {
+        console.error("Erro ao editar empresa:", erro);
+        res.status(500).json(erro);
+    });
+}
+
+
+
+module.exports = { cadastrar, listar, desativar, editar };
