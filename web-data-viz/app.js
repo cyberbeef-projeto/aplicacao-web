@@ -24,6 +24,7 @@ var acessoRouter = require("./src/routes/acesso");
 var cadastroempresaRouter = require("./src/routes/cadastroempresa");
 var dashEmpresaRouter = require("./src/routes/dashEmpresa");
 var alertasRouter = require("./src/routes/alertas");
+var jiraRouter = require("./src/routes/jira");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -40,7 +41,7 @@ app.use("/acesso", acessoRouter);
 app.use("/cadastroempresa", cadastroempresaRouter);
 app.use("/dashEmpresa", dashEmpresaRouter);
 app.use("/alertas", alertasRouter);
-
+app.use("/jira", jiraRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
