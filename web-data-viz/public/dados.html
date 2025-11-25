@@ -8,7 +8,7 @@
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/paginasCRUD.css">
   <link rel="icon" href="assets/icon/chip.png">
-  <!-- <script src="./js/sessao.js"></script> -->
+  <script src="./js/sessao.js"></script>
 </head>
 
 <body onload="validarSessao()">
@@ -24,7 +24,8 @@
     <hr>
     <div id="usuario">
       <i class='bxr  bxs-user' style='color:#fffafa'></i>
-      <a id="b_usuario" class="texto_perfil" style=" max-width: 100%; overflow: hidden; text-overflow: ellipsis;">User</a>
+      <a id="b_usuario" class="texto_perfil"
+        style=" max-width: 100%; overflow: hidden; text-overflow: ellipsis;">User</a>
     </div>
     <hr>
     <div id="home" class="ops_home">
@@ -32,12 +33,15 @@
       <li class="clicado"><a href="index.html">Home</a></li>
       <li class="clicado"><a href="dashboard.html">Painéis</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=maquina&titulo=Máquinas">Máquinas</a></li>
-      <li class="clicado"><a href="dados.html?tipoDados=alerta&titulo=Alertas">Alertas</a></li>
+      <li class="clicado"><a href="alertas.html">Alertas</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=setor&titulo=Setores">Setores</a></li>
       <li class="clicado"><a href="dados.html?tipoDados=user&titulo=Usuários">Usuários</a></li>
-      <span onclick="limparSessao()" style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;" class="clicavel clicado" title="Clique para sair de sua conta">
-        <i  class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-        <p>SAIR<p>
+      <span onclick="limparSessao()"
+        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
+        class="clicavel clicado" title="Clique para sair de sua conta">
+        <i class='bxr  bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+        <p>SAIR
+        <p>
       </span>
     </div>
   </div>
@@ -89,11 +93,8 @@
         <h3 id="modalTitle">Novo Registro</h3>
         <i class='bxr bx-help-circle info' data-title="Sobre Níveis de Permissão:
           2 - Básico  = Visualizar somente os Painéis;
-          1 - Alto = Visualizar e editar todos os dados.
-          Sobre Senhas: 
-          Quando um novo usuário é criado ou a senha é editada por um administrador, por segurança, será solicitado ao usuário que teve a senha alterada uma nova senha no momento de login.
-">
-        </i> 
+          1 - Alto = Visualizar e editar todos os dados.">
+        </i>
         <!-- 2 - Médio = Visualizar a todos os dados; -->
       </span>
       <div class="modal-body" id="modalBody"></div>
@@ -109,26 +110,26 @@
     const tipoDados = params.get('tipoDados');
     const tituloPagina = params.get('titulo');
 
-    if (tipoDados == 'alerta') {
+    if (tipoDados == 'maquina' || tipoDados == 'setor') {
       document.getElementById('btnNew').style.display = 'none';
       document.getElementById('titulo_pagina').style.marginRight = '50%';
-      document.getElementById('metricas').style.display = 'flex';
+      // document.getElementById('metricas').style.display = 'flex';
     }
 
     const campos = {
       user: [
         { key: 'nome', label: 'Nome', type: 'text' },
         { key: 'email', label: 'E-mail', type: 'email' },
-        { key: 'permissaoUsuario', label: 'Nível de Permissão', type: 'select', options: ['2 - Básico', '1 - Alto'] }, // '2 - Médio'
+        { key: 'permissaoUsuario', label: 'Nível de Permissão', type: 'select', options: ['2 - Básico', '1 - Alto'] },
         { key: 'senha', label: 'Senha', type: 'password' }
       ],
       maquina: [
         { key: 'nome', label: 'Nome', type: 'text' },
-        { key: 'ultimaCap', label: 'Última Captura', type: 'date', readOnly: true }
+        { key: 'ultimaCap', label: 'Última Captura', type: 'text', readOnly: true }
       ],
       setor: [
         { key: 'nome', label: 'Nome', type: 'text' },
-        { key: 'numMaq', label: 'Número de Máquinas', type: 'text' }
+        { key: 'numMaq', label: 'Número de Máquinas', type: 'text', readOnly: true }
       ],
       alerta: [
         { key: 'data', label: 'Data', type: 'text', readOnly: true },
@@ -150,6 +151,7 @@
     const modalBackdrop = document.getElementById('modalBackdrop');
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
+    let identificador = '';
 
     function atualizarBarraLateral() {
       barraLateral.classList.toggle('ativa');
@@ -182,30 +184,26 @@
       });
     }
 
-    function criarRegistro(registro) {
-      fetch("/crud/criarUsuario", {
+    function realizarCRUD(router, registro) {
+      fetch(router, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           id: sessionStorage.TOKEN_EMPRESA,
-          ...registro
+          ...registro,
+          id2: identificador,
         })
       }).then(function (resposta) {
-
         if (resposta.ok) {
           console.log(resposta);
-
           resposta.json().then(json => {
             console.log(json);
-
           });
 
         } else {
-
-          console.log("Houve um erro ao tentar exibir os usuários");
-
+          console.log("Houve um erro ao tentar criar o usuário");
           resposta.text().then(texto => {
             console.error(texto);
           });
@@ -216,7 +214,33 @@
       })
     }
 
+    function novoRegistro() {
+      const inputs = modalBody.querySelectorAll('[data-key]');
+      const obj = {};
+      inputs.forEach(i => obj[i.dataset.key] = i.value);
+      if (obj['permissaoUsuario']) obj['permissaoUsuario'] = parseInt(obj['permissaoUsuario'][0]);
+      if (tipoDados == "user") realizarCRUD("/crud/criarUsuario", obj);
+      if (obj['senha']) obj['senha'] = '*********';
+      if (editingIndex >= 0) store[editingIndex] = obj; else store.push(obj);
+      modalBackdrop.style.display = 'none'; renderTable();
+    }
+
+    function editarRegistro() {
+      const inputs = modalBody.querySelectorAll('[data-key]');
+      const obj = {};
+      inputs.forEach(i => obj[i.dataset.key] = i.value);
+      if (obj['permissaoUsuario']) obj['permissaoUsuario'] = parseInt(obj['permissaoUsuario'][0]);
+      if (tipoDados == "user") realizarCRUD("/crud/editarUsuario", obj);
+      if (tipoDados == "maquina") realizarCRUD("/crud/editarMaquina", obj);
+      if (tipoDados == "setor") realizarCRUD("/crud/editarSetor", obj);
+      if (obj['senha']) obj['senha'] = '*********';
+      if (editingIndex >= 0) store[editingIndex] = obj; else store.push(obj);
+      modalBackdrop.style.display = 'none'; renderTable();
+    }
+
     function openModal(title, index = -1) {
+      if (title == "Novo Registro") document.getElementById('modalSave').addEventListener("click", novoRegistro);
+      else if (title == "Editar Registro") document.getElementById('modalSave').addEventListener("click", editarRegistro);
       editingIndex = index;
       modalTitle.textContent = title;
       modalBody.innerHTML = '';
@@ -233,22 +257,12 @@
         wrap.appendChild(input);
         modalBody.appendChild(wrap);
       });
+      identificador = modalBody.querySelectorAll('input')[0].value;
       modalBackdrop.style.display = 'flex';
     }
 
     document.getElementById('btnNew').onclick = () => openModal('Novo Registro');
     document.getElementById('modalCancel').onclick = () => modalBackdrop.style.display = 'none';
-    document.getElementById('modalSave').onclick = () => {
-      const inputs = modalBody.querySelectorAll('[data-key]');
-      const obj = {};
-      inputs.forEach(i => obj[i.dataset.key] = i.value);
-      if (obj['permissaoUsuario']) obj['permissaoUsuario'] = parseInt(obj['permissaoUsuario'][0]);
-      console.log(obj);
-      criarRegistro(obj);
-      if (obj['senha']) obj['senha'] = '*********';
-      if (editingIndex >= 0) store[editingIndex] = obj; else store.push(obj);
-      modalBackdrop.style.display = 'none'; renderTable();
-    };
 
     dados = {
       user: [],
@@ -273,23 +287,15 @@
 
     let store = [];
 
-    //fetch temporário com apenas user (mudar)
     if (tipoDados == "user") {
       fetch("/crud/usuarios", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          id: sessionStorage.TOKEN_EMPRESA
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: sessionStorage.TOKEN_EMPRESA })
       }).then(function (resposta) {
-
         if (resposta.ok) {
           console.log(resposta);
-
           resposta.json().then(json => {
-            console.log(json);
             dados['user'] = json;
             store = dados[tipoDados]
             renderTable();
@@ -305,7 +311,58 @@
       }).catch(function (erro) {
         console.log(erro);
       })
-    } else {
+    }
+    else if (tipoDados == "maquina") {
+      fetch("/crud/maquinas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: sessionStorage.TOKEN_EMPRESA })
+      }).then(function (resposta) {
+        if (resposta.ok) {
+          console.log(resposta);
+          resposta.json().then(json => {
+            dados['maquina'] = json;
+            store = dados[tipoDados]
+            renderTable();
+          });
+
+        } else {
+          console.log("Houve um erro ao tentar exibir os usuários");
+          resposta.text().then(texto => {
+            console.error(texto);
+          });
+        }
+
+      }).catch(function (erro) {
+        console.log(erro);
+      })
+    }
+    else if (tipoDados == "setor") {
+      fetch("/crud/setores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: sessionStorage.TOKEN_EMPRESA })
+      }).then(function (resposta) {
+        if (resposta.ok) {
+          console.log(resposta);
+          resposta.json().then(json => {
+            dados['setor'] = json;
+            store = dados[tipoDados]
+            renderTable();
+          });
+
+        } else {
+          console.log("Houve um erro ao tentar exibir os usuários");
+          resposta.text().then(texto => {
+            console.error(texto);
+          });
+        }
+
+      }).catch(function (erro) {
+        console.log(erro);
+      })
+    }
+    else {
       store = dados[tipoDados]
       renderTable();
     }
