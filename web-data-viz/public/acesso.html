@@ -25,8 +25,26 @@
     </span>
 
     <nav id="buts_superiores">
-      <a class="clicavel clicado">Exportar <i class='bxr bx-arrow-down-stroke-circle'></i></a>
-      <a class="clicavel clicado">Gerar relatório</a>
+      <button id="btnLiveMode" class="top-btn">
+        <i class='bx bx-broadcast'></i> Modo Tempo Real
+      </button>
+
+      <span id="liveIndicator" class="live-indicator" style="display: none;">
+        ● AO VIVO
+      </span>
+
+      <button id="btnRiskAI" class="top-btn">
+        <i class='bx bx-brain'></i> Análise inteligente
+      </button>
+
+      <div id="modalAI" class="modal-ai">
+        <div class="modal-content-ai glass">
+          <span id="closeAI" class="close-ai">&times;</span>
+          <h2 class="titulo-modal">Análise Inteligente de Riscos</h2>
+          <pre id="aiOutput" class="ai-output">Clique em "Análise Inteligente" para iniciar.</pre>
+        </div>
+      </div>
+
     </nav>
   </header>
 
