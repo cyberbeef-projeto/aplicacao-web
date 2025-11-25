@@ -307,6 +307,7 @@
           },
         },
       });
+      window.graficoAbaRef = charts["graficoAba"];
     } catch (err) {
       console.error("Erro carregarGraficoTentativasDia:", err);
     }
@@ -359,7 +360,8 @@
     const y = heatmapVisibleMonth.getFullYear();
     label.textContent = `${mesesPt()[m]} ${y}`;
     const title = $("heatmapTitle");
-    if (title) title.textContent = `Frequência de acessos diária — ${mesesPt()[m]} ${y}`;
+    if (title)
+      title.textContent = `Frequência de acessos diária — ${mesesPt()[m]} ${y}`;
   }
 
   function drawHeatmap(canvas) {
@@ -431,7 +433,6 @@
     }
 
     heatmapCells = [];
-
 
     for (let d = 1; d <= daysInMonth; d++) {
       const slotIndex = firstWeekday + (d - 1);
@@ -586,6 +587,108 @@
   } else {
     init();
   }
+
+  let liveInterval = null;
+  const liveButton = document.getElementById("btnLiveMode");
+  const liveIndicator = document.getElementById("liveIndicator");
+
+  liveButton.addEventListener("click", () => {
+    if (liveInterval) {
+      clearInterval(liveInterval);
+      liveInterval = null;
+
+      liveButton.classList.remove("active");
+      liveIndicator.style.display = "none";
+
+      return;
+    }
+
+    liveButton.classList.add("active");
+    liveIndicator.style.display = "inline";
+
+    // Atualiza a cada 5 segundos
+    liveInterval = setInterval(() => {
+      atualizarDashboard();
+    }, 5000);
+
+    atualizarDashboard(); // atualiza imediatamente
+  });
+
+  function atualizarDashboard() {
+    carregarKPIs();
+    carregarGraficoTentativasDia();
+    carregarGraficoSucessoFalha();
+    carregarHeatmap();
+  }
+
+  const btnRiskAI = document.getElementById("btnRiskAI");
+  const modalAI = document.getElementById("modalAI");
+  const aiOutput = document.getElementById("aiOutput");
+  const closeAI = document.getElementById("closeAI");
+
+  btnRiskAI.addEventListener("click", async () => {
+    modalAI.style.display = "flex";
+    aiOutput.textContent = "Gerando análise com IA...\nCarregando dados...";
+
+    await gerarAnaliseIA();
+  });
+
+  closeAI.addEventListener("click", () => {
+    modalAI.style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modalAI) modalAI.style.display = "none";
+  });
+
+  async function gerarAnaliseIA() {
+  let kpi1 = document.getElementById("kpi1").textContent.trim();
+  let kpi2 = document.getElementById("kpi2").textContent.trim();
+  let kpi3 = document.getElementById("kpi3").textContent.trim();
+  let kpi4 = document.getElementById("kpi4").textContent.trim();
+
+  let grafico = window.graficoAbaRef || null;
+  let dias = grafico ? grafico.data.labels : [];
+  let tentativas = grafico ? grafico.data.datasets[0].data : [];
+
+  const prompt = `
+Analise de segurança do sistema CyberBeef:
+
+KPIs:
+- Total de tentativas (7 dias): ${kpi1}
+- Taxa de sucesso: ${kpi2}
+- Contas admin: ${kpi3}
+- Contas inativas: ${kpi4}
+
+Atividade por dia:
+Dias: ${JSON.stringify(dias)}
+Tentativas: ${JSON.stringify(tentativas)}
+
+Gere:
+1) Diagnóstico Geral
+2) Evidências observadas
+3) Riscos potenciais
+4) Usuários suspeitos
+5) Recomendações críticas
+
+Lembre de não usar *** deixe limpo apenas com o texto
+  `;
+
+  try {
+    const resp = await fetch("/acesso/ia/analise", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await resp.json();
+    aiOutput.textContent = data.text || "Erro na análise.";
+
+  } catch (err) {
+    aiOutput.textContent = "Erro ao conectar com a IA.";
+    console.error(err);
+  }
+}
 
   window.atualizarBarraLateral = function () {
     const barraLateral = document.querySelector(".barra_lateral");
