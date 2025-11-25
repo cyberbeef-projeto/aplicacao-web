@@ -14,4 +14,6 @@ router.get("/grafico/sucesso-vs-falha", acessoController.graficoSucessoFalha);
 router.get("/grafico/cargos", acessoController.graficoCargos);
 router.get("/grafico/heatmap", acessoController.graficoHeatmap);
 
+router.post("/ia/analise", acessoController.gerarAnaliseIA);
+
 module.exports = router;

@@ -1,4 +1,6 @@
 var acessoModel = require("../models/acessoModel");
+const Groq = require("groq-sdk");
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 function kpiInativas(req, res) {
     acessoModel.kpiInativas()
@@ -48,6 +50,37 @@ function graficoHeatmap(req, res) {
         .catch(e => res.status(500).json(e));
 }
 
+async function gerarAnaliseIA(req, res) {
+  try {
+    const { prompt } = req.body;
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content: "Você é um analista de segurança cibernética."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 800
+    });
+
+    const texto =
+      completion.choices[0]?.message?.content ||
+      "Falha ao gerar resposta.";
+
+    res.json({ text: texto });
+
+  } catch (e) {
+    console.error("Erro com IA:", e);
+    res.status(500).json({ error: "Erro ao gerar análise IA." });
+  }
+}
+
 module.exports = {
     kpiInativas,
     kpiTotalTentativas,
@@ -56,5 +89,6 @@ module.exports = {
     graficoTentativasDia,
     graficoSucessoFalha,
     graficoCargos,
-    graficoHeatmap
+    graficoHeatmap,
+    gerarAnaliseIA
 };
