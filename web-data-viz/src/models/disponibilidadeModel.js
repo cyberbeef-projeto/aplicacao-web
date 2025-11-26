@@ -1,10 +1,6 @@
 var database = require("../database/config");
 
 function buscarKpis() {
-    // KPI 1: Total de Máquinas
-    // KPI 2: Tempo sem Downtime (Diferença em minutos do último alerta crítico até agora)
-    // KPI 3: Capturas por minuto (Leituras no último minuto)
-    // KPI 4: Data do Último Downtime
     var instrucaoSql = `
         SELECT 
             (SELECT COUNT(idMaquina) FROM maquina) as totalMaquinas,
@@ -24,8 +20,6 @@ function buscarKpis() {
 }
 
 function buscarStatusRecursos(idMaquina) {
-    // Essa query retorna as classes CSS (led-red, color-down) prontas para o Front-end
-    // Baseia-se na tabela 'parametro' para decidir se é Crítico ou não
     var instrucaoSql = `
         SELECT 
             c.tipoComponente AS nome,
@@ -61,7 +55,6 @@ function buscarStatusRecursos(idMaquina) {
 }
 
 function buscarGraficos() {
-    // Retorna o Top 5 máquinas com mais alertas para o gráfico de barras
     var instrucaoSql = `
         SELECT m.hostname, COUNT(a.idAlerta) as qtd_alertas
         FROM alerta a

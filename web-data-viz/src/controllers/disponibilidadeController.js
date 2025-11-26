@@ -4,10 +4,8 @@ function buscarKpis(req, res) {
     disponibilidadeModel.buscarKpis()
         .then(function (resultado) {
             if (resultado.length > 0) {
-                // Lógica de tratamento dos dados (como no seu dashEmpresaController)
                 const dados = resultado[0];
                 
-                // Conversão de minutos para horas
                 const minutosTotal = dados.tempoSemDowntime || 0;
                 const horas = Math.floor(minutosTotal / 60);
                 const minutos = minutosTotal % 60;
