@@ -71,7 +71,7 @@
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: "Top 5 Cidades por Número de Cadastros - Último Semestre",
+                        text: "Top 5 Cidades por Número de Cadastros - Semestre Atual",
                         color: "#fff",
                         font: { size: 14, weight: "bold" }
                     },
@@ -111,7 +111,7 @@ function atualizarGraficoLinha(ativos, inativos) {
     grad2.addColorStop(1, "rgba(255,0,80,0)");
 
     // Labels fixas dos 6 meses de 2025
-    const meses = ["Jan/25", "Fev/25", "Mar/25", "Abr/25", "Mai/25", "Jun/25"];
+    const meses = ["Jun/25", "Jul/25", "Ago/25", "Set/25", "Out/25", "Nov/25"];
 
     // Distribuindo os valores ao longo dos 6 meses
     // Exemplo: SOMA final = ativos (hoje). Ele preenche crescimento suave.
@@ -162,7 +162,7 @@ function atualizarGraficoLinha(ativos, inativos) {
                 legend: { labels: { color: "#fff" } },
                 title: {
                     display: true,
-                    text: "Desempenho Mensal de Contratação — Último Semestre",
+                    text: "Desempenho Mensal de Contratação — Semestre Atual",
                     color: "#fff",
                     font: { size: 14, weight: "bold" }
                 }
