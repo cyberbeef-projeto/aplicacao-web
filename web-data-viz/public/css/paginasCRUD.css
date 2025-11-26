@@ -62,6 +62,33 @@ header {
     z-index: 10;
 }
 
+#buts_superiores {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5%;
+    height: 100%;
+    width: 22%;
+}
+
+#buts_superiores button {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    height: 100%;
+    user-select: none;
+    color: #fff;
+    font-size: 1.1vw;
+    text-align: center;
+    font-weight: normal;
+    background-color: #4B6CF0;
+    border-radius: 0.5vw;
+}
+
 header p {
     font-size: x-large;
 }

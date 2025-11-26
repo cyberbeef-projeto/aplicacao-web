@@ -110,7 +110,7 @@ async function trazerDadosDash() {
             grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosTodas")).graficoUm[0], 
               labels: (await dadosGraficos("/dash/graficosTodas")).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"]},
             grafico2: { id: "grafico2", tipo: "bar", dados: (await dadosGraficos("/dash/graficosTodas")).graficoDois[0]
-              , labels: (await dadosGraficos("/dash/graficosTodas")).graficoDois[1], titulo: "3 Máquinas com Mais Alertas (últimos 7 dias)", xylabels: ["Máquina", "N° Alerta"]}
+              , labels: (await dadosGraficos("/dash/graficosTodas")).graficoDois[1], titulo: "3 Máquinas com Mais Alertas (últimos 7 dias)", xylabels: ["Máquina", "N° Alerta(s)"]}
           }
         }
       } catch (erro) {

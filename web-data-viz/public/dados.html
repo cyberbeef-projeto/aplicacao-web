@@ -16,7 +16,11 @@
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
       onclick="atualizarBarraLateral()"></button>
     <p id="titulo_pagina"></p>
-    <button class="btn primary clicado" id="btnNew">+ Novo Registro</button>
+    <nav id="buts_superiores">
+      <button style="border: none;" class="clicavel clicado" onclick="baixarCSV()">Exportar dados <i
+          class='bxr  bx-arrow-down-stroke-circle'></i></button>
+      <button class="btn primary clicado" id="btnNew">+ Novo Registro</button>
+    </nav>
   </header>
 
   <div class="barra_lateral sombreado ativa">
@@ -91,7 +95,7 @@
     <div class="modal">
       <span style="display: flex; align-items: center; flex-wrap: nowrap; gap: 1%;">
         <h3 id="modalTitle">Novo Registro</h3>
-        <i class='bxr bx-help-circle info' data-title="Sobre Níveis de Permissão:
+        <i id="mais_sobre" style="display: none;" class='bxr bx-help-circle info' data-title="Sobre Níveis de Permissão:
           2 - Básico  = Visualizar somente os Painéis;
           1 - Alto = Visualizar e editar todos os dados.">
         </i>
@@ -110,9 +114,10 @@
     const tipoDados = params.get('tipoDados');
     const tituloPagina = params.get('titulo');
 
-    if (tipoDados == 'maquina' || tipoDados == 'setor') {
+    if (tipoDados == 'user') document.getElementById('mais_sobre').style.display = 'block';
+    if (tipoDados == 'maquina') {
       document.getElementById('btnNew').style.display = 'none';
-      document.getElementById('titulo_pagina').style.marginRight = '50%';
+      // document.getElementById('titulo_pagina').style.marginRight = '50%';
       // document.getElementById('metricas').style.display = 'flex';
     }
 
@@ -129,7 +134,7 @@
       ],
       setor: [
         { key: 'nome', label: 'Nome', type: 'text' },
-        { key: 'numMaq', label: 'Número de Máquinas', type: 'text', readOnly: true }
+        { key: 'descricao', label: 'Descrição', type: 'textarea' }
       ],
       alerta: [
         { key: 'data', label: 'Data', type: 'text', readOnly: true },
@@ -160,6 +165,33 @@
       butAtualizarBl.classList.toggle('bxs-menu-select');
     }
 
+    function jsonToCSV(jsonArray) {
+      if (!jsonArray.length) return "";
+
+      const headers = Object.keys(jsonArray[0]);
+
+      const linhas = jsonArray.map(obj =>
+        headers.map(h =>
+          JSON.stringify(obj[h] ?? "")
+        ).join(";")
+      );
+
+      return [headers.join(";"), ...linhas].join("\n");
+    }
+
+    function baixarCSV() {
+      const csv = jsonToCSV(dados[tipoDados]);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "dados.csv";
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }
+
     function renderTable() {
       tableHead.innerHTML = '';
       campos[tipoDados].forEach(f => { const th = document.createElement('th'); th.textContent = f.label; tableHead.appendChild(th); });
@@ -177,7 +209,13 @@
           const btnE = document.createElement('button'); btnE.className = 'btn clicado'; btnE.textContent = 'Editar';
           btnE.onclick = () => openModal('Editar Registro', i);
           const btnD = document.createElement('button'); btnD.className = 'btn danger clicado'; btnD.textContent = 'Excluir';
-          btnD.onclick = () => { store.splice(i, 1); renderTable(); };
+          btnD.onclick = () => {
+            if (tipoDados == 'setor') realizarCRUD("/crud/deletarSetor", store[i]);
+            if (tipoDados == 'user') realizarCRUD("/crud/deletarUsuario", store[i]);
+            if (tipoDados == 'maquina') realizarCRUD("/crud/deletarMaquina", store[i]);
+            store.splice(i, 1);
+            renderTable();
+          };
           tdAct.append(btnE, btnD); tr.appendChild(tdAct);
         }
         tableBody.appendChild(tr);
@@ -220,6 +258,7 @@
       inputs.forEach(i => obj[i.dataset.key] = i.value);
       if (obj['permissaoUsuario']) obj['permissaoUsuario'] = parseInt(obj['permissaoUsuario'][0]);
       if (tipoDados == "user") realizarCRUD("/crud/criarUsuario", obj);
+      if (tipoDados == "setor") realizarCRUD("/crud/criarSetor", obj);
       if (obj['senha']) obj['senha'] = '*********';
       if (editingIndex >= 0) store[editingIndex] = obj; else store.push(obj);
       modalBackdrop.style.display = 'none'; renderTable();

@@ -33,6 +33,15 @@ function editarUsuario(req, res) {
   });
 }
 
+function deletarUsuario(req, res) {
+  var nome = req.body.nome;
+
+  crudModel.deletarUsuario(nome).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+
 function buscarMaquinas(req, res) {
   var id = req.body.id;
 
@@ -51,6 +60,15 @@ function editarMaquina(req, res) {
   });
 }
 
+function deletarMaquina(req, res) {
+  var nome = req.body.nome;
+
+
+  crudModel.deletarMaquina(nome).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 function buscarSetores(req, res) {
   var id = req.body.id;
 
@@ -59,22 +77,44 @@ function buscarSetores(req, res) {
   });
 }
 
-function editarSetor(req, res) {
+function criarSetor(req, res) {
+  var id = req.body.id;
   var nome = req.body.nome;
-  var id2 = req.body.id2;
+  var descricao = req.body.descricao;
 
-
-  crudModel.editarSetor(nome, id2).then((resultado) => {
+  crudModel.criarSetor(id, nome, descricao).then((resultado) => {
     res.status(200).json(resultado);
   });
 }
 
+function editarSetor(req, res) {
+  var nome = req.body.nome;
+  var descricao = req.body.descricao;
+  var id2 = req.body.id2;
+
+
+  crudModel.editarSetor(nome, descricao, id2).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function deletarSetor(req, res) {
+  var nome = req.body.nome;
+
+  crudModel.deletarSetor(nome).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
 module.exports = {
     buscarUsuarios,
     criarUsuario,
     editarUsuario,
+    deletarUsuario,
     buscarMaquinas,
     editarMaquina,
+    deletarMaquina,
     buscarSetores,
+    criarSetor,
     editarSetor,
+    deletarSetor,
 };

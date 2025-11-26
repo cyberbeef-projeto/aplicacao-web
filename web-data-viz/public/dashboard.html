@@ -43,8 +43,8 @@
       </span>
       </div>
       <nav id="buts_superiores">
-        <a class="clicavel clicado">Exportar dados <i class='bxr  bx-arrow-down-stroke-circle'></i></a>
-        <a class="clicavel clicado">Gerar Relatório</a>
+        <a style="display: none;" class="clicavel clicado">Exportar dados <i class='bxr  bx-arrow-down-stroke-circle'></i></a>
+        <a style="display: none;" class="clicavel clicado">Gerar Relatório</a>
       </nav>
     </header>
 
@@ -227,7 +227,7 @@
                 .map(
                   (d) => `
                 <div class="dado-item">
-                  <span class="dado-nome">${d.nome}</span>
+                  <span class="dado-nome">${acentuar(d.nome)}</span>
                   ${colorirDado(d)}
                 </div>
               `
@@ -370,6 +370,14 @@
       });
     });
 
+    function acentuar(dado){
+      if(dado == "Maquina") return "Máquina";
+      if(dado == "DesvioPadrao") return "Desvio Padrão";
+      if(dado == "Media") return "Média";
+      if(dado == "DataHora") return "Data/Hora";
+      return dado;
+    }
+
     //Modificar essa função no futuro 
     function colorirDado(dado) {
       let color = "#ffff";
@@ -382,7 +390,7 @@
       if (dado.nome == "Dado") {
         if (num > 90) color = "#E94F37";
         else if (num >= 85) color = "#FFD447";
-        else color = "#6EEB83";
+        // else color = "#6EEB83";
         dado.valor = ((dado.valor).toString()).replaceAll(".", ",");
         return `<span class="dado-valor" style="color: ${color};">${dado.valor}%</span>`;
       }

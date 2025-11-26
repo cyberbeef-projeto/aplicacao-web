@@ -17,8 +17,8 @@
     <header class="navbar">
         <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
             onclick="atualizarBarraLateral()"></button>
-        <p>Alertas</p>
-        <a class="clicavel clicado">Gerar Relatório</a>
+        <p style="margin-right: 50%;">Alertas</p>
+        <a style="display: none;" class="clicavel clicado">Gerar Relatório</a>
     </header>
 
     <div class="barra_lateral sombreado ativa">
@@ -86,7 +86,34 @@
                     <a id="but_export" class="clicavel clicado" onclick="baixarCSV()">Exportar dados <i
                             class='bxr  bx-arrow-down-stroke-circle'></i></a>
                 </div>
+                <h3 style="display: block; align-self: flex-start; margin-left: 2.4%;">Métricas Alertas</h3>
                 <main class="list-panel">
+                    <div id="metricas">
+                        <span>
+                            <h3>CPU <i class='bxr  bx-chip'></i> </h3>
+                            <p class="critico">Alerta Crítico: &gt; 90%</p>
+                            <p class="anormal">Alerta Anormal: 85% ≥ x ≤ 90%</p>
+                            <p class="normal">Normal: &lt; 85%</p>
+                        </span>
+                        <span>
+                            <h3>RAM <i class='bxr  bx-microchip'></i></i></h3>
+                            <p class="critico">Alerta Critico: &gt; 90%</p>
+                            <p class="anormal">Alerta Anormal: 85% ≥ x ≤ 90%</p>
+                            <p class="normal">Normal: &lt; 85%</p>
+                        </span>
+                        <span>
+                            <h3>Disco <i class='bxr  bx-hard-drive'></i></h3>
+                            <p class="critico">Alerta Critico: &gt; 90%</p>
+                            <p class="anormal">Alerta Anormal: 85% ≥ x ≤ 90%</p>
+                            <p class="normal">Normal: &lt; 85%</p>
+                        </span>
+                        <span>
+                            <h3>Perda de Pacotes <i class='bxr  bx-wifi-2'></i></h3>
+                            <p class="critico">Alerta Critico: &gt; 10%</p>
+                            <p class="anormal">Alerta Anormal: 2,5% ≥ x ≤ 10%</p>
+                            <p class="normal">Normal: &lt; 2,5%</p>
+                        </span>
+                    </div>
                     <h3 style="align-self: flex-start; margin-bottom: 1%;">Registros</h3>
                     <table aria-label="lista de registros">
                         <thead>
