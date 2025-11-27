@@ -60,18 +60,26 @@
     ];
   }
 
-  function parseDbDateSP(v) {
-  if (!v) return null;
-  const d = new Date(v);
-  if (isNaN(d)) return null;
+  function parseLocalDate(v) {
+    if (!v) return null;
 
-  // converte para America/Sao_Paulo via fuso
-  const sp = new Date(
-    d.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
-  );
+    // Se vier "2025-02-25" → monta uma data local sem shift de timezone
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+      const [y, m, d] = v.split("-").map((n) => Number(n));
+      return new Date(y, m - 1, d);
+    }
 
-  return sp;
-}
+    const d = new Date(v);
+    if (isNaN(d)) return null;
+    return new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate(),
+      d.getHours(),
+      d.getMinutes(),
+      d.getSeconds()
+    );
+  }
 
   function intensidadeCor(value, max) {
     if (!max || max <= 0) {
@@ -239,7 +247,7 @@
       const labels = [];
       const data = [];
       rows.forEach((r) => {
-        const d = parseDbDateSP(r.dia);
+        const d = parseLocalDate(r.dia);
         if (d) labels.push(d.toLocaleDateString());
         else labels.push(String(r.dia));
         data.push(safeNum(r.total));
@@ -354,7 +362,7 @@
       const resp = await fetchJson("/acesso/grafico/heatmap");
       const rows = Array.isArray(resp) ? resp : [];
       heatmapRows = rows.map((r) => {
-        const d = parseDbDateSP(r.dia);
+        const d = parseLocalDate(r.dia);
         return {
           dia: d ? formatDateYMD(d) : String(r.dia).split("T")[0],
           total: safeNum(r.total),
@@ -365,6 +373,10 @@
       heatmapRows = [];
     }
   }
+
+  function weekdayIndexMondayFirst(day) {
+      return (day + 6) % 7;
+    }
 
   function atualizarLabelMes() {
     const label = $("currentMonthLabel");
@@ -399,15 +411,17 @@
     const map = {};
     heatmapRows.forEach((r) => {
       const key = r.dia.split("T")[0];
-      const d = parseDbDateSP(key);
+      const d = parseLocalDate(key);
       if (!d) return;
       if (d.getFullYear() === visibleYear && d.getMonth() === visibleMonth) {
         map[formatDateYMD(d)] = safeNum(r.total);
       }
     });
 
+
     const daysInMonth = new Date(visibleYear, visibleMonth + 1, 0).getDate();
-    const firstWeekday = new Date(visibleYear, visibleMonth, 1).getDay();
+    const rawDay = new Date(visibleYear, visibleMonth, 1).getDay();
+    const firstWeekday = weekdayIndexMondayFirst(rawDay);
     const totalSlots = firstWeekday + daysInMonth;
     const weeks = Math.ceil(totalSlots / 7);
 
@@ -619,12 +633,11 @@
     liveButton.classList.add("active");
     liveIndicator.style.display = "inline";
 
-    // Atualiza a cada 5 segundos
     liveInterval = setInterval(() => {
       atualizarDashboard();
     }, 5000);
 
-    atualizarDashboard(); // atualiza imediatamente
+    atualizarDashboard();
   });
 
   function atualizarDashboard() {
@@ -655,16 +668,16 @@
   });
 
   async function gerarAnaliseIA() {
-  let kpi1 = document.getElementById("kpi1").textContent.trim();
-  let kpi2 = document.getElementById("kpi2").textContent.trim();
-  let kpi3 = document.getElementById("kpi3").textContent.trim();
-  let kpi4 = document.getElementById("kpi4").textContent.trim();
+    let kpi1 = document.getElementById("kpi1").textContent.trim();
+    let kpi2 = document.getElementById("kpi2").textContent.trim();
+    let kpi3 = document.getElementById("kpi3").textContent.trim();
+    let kpi4 = document.getElementById("kpi4").textContent.trim();
 
-  let grafico = window.graficoAbaRef || null;
-  let dias = grafico ? grafico.data.labels : [];
-  let tentativas = grafico ? grafico.data.datasets[0].data : [];
+    let grafico = window.graficoAbaRef || null;
+    let dias = grafico ? grafico.data.labels : [];
+    let tentativas = grafico ? grafico.data.datasets[0].data : [];
 
-  const prompt = `
+    const prompt = `
 Analise de segurança do sistema CyberBeef:
 
 KPIs:
@@ -687,21 +700,20 @@ Gere:
 Lembre de não usar *** deixe limpo apenas com o texto
   `;
 
-  try {
-    const resp = await fetch("/acesso/ia/analise", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
-    });
+    try {
+      const resp = await fetch("/acesso/ia/analise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
 
-    const data = await resp.json();
-    aiOutput.textContent = data.text || "Erro na análise.";
-
-  } catch (err) {
-    aiOutput.textContent = "Erro ao conectar com a IA.";
-    console.error(err);
+      const data = await resp.json();
+      aiOutput.textContent = data.text || "Erro na análise.";
+    } catch (err) {
+      aiOutput.textContent = "Erro ao conectar com a IA.";
+      console.error(err);
+    }
   }
-}
 
   window.atualizarBarraLateral = function () {
     const barraLateral = document.querySelector(".barra_lateral");
