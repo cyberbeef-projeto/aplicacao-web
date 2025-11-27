@@ -5,5 +5,6 @@ var jiraController = require("../controllers/jiraController");
 router.get("/kpis", jiraController.getKpis);
 router.get("/status", jiraController.getStatus);
 router.get("/tipos", jiraController.getIncidentsByType);
+router.get("/risco", jiraController.getChamadosEmRisco);
 
 module.exports = router;

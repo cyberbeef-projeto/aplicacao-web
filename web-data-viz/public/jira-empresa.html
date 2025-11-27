@@ -4,23 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Ícones -->
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="icon" href="assets/icon/chip.png">
-
-  <!-- Estilos Externos -->
   <link rel="stylesheet" href="css/jira.css">
-
-  <!-- Bibliotecas de Gráficos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
   <title>Jira - CyberBeef</title>
 </head>
 
 <body>
-  <!-- Cabeçalho Superior -->
   <header class="navbar">
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
       onclick="atualizarBarraLateral()"></button>
@@ -29,20 +21,18 @@
     </span>
   </header>
 
-  <!-- Barra Lateral -->
   <div class="barra_lateral sombreado ativa">
     <div id="logo"></div>
     <hr>
-
     <div id="usuario">
-      <i class='bxr bxs-user'></i> <!-- Cor definida no CSS -->
+      <i class='bxr bxs-user'></i>
       <a id="b_usuario" class="texto_perfil">
         Administrador
       </a>
     </div>
 
     <hr>
-
+    
     <div id="home" class="ops_home">
       <ul></ul>
       <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
@@ -57,50 +47,59 @@
     </div>
   </div>
 
-  <!-- Conteúdo Principal -->
   <div id="elementos" class="bl_ativa">
     <div class="cards">
-      <!-- 1. Cartões de KPIs -->
+      <!-- KPIs -->
       <span class="abas_kpis">
 
-        <!-- KPI 1: Total -->
+        <!-- Total de Chamados Abertos -->
         <button data-aba="1" class="kpi interativo ativa">
           <span class="info-icon">
             <i class='bx bx-info-circle'></i>
-            <span class="tooltip">Chamados do Jira</span>
+            <span class="tooltip">
+              Soma de todos os chamados (Incidentes + Requisições) que estão em aberto no momento, independente do status ou prioridade
+            </span>
           </span>
           <b id="kpi1" class="dado_card">...</b>
           <p id="kpi1_desc">Total de Chamados Abertos</p>
           <i id="kpi1_result" class="text_longo">Calculando...</i>
         </button>
 
-        <!-- KPI 2: SLA -->
+        <!-- Taxa de Sucesso do SLA -->
         <button data-aba="2" class="kpi interativo">
           <span class="info-icon">
             <i class='bx bx-info-circle'></i>
-            <span class="tooltip">Taxa de Sucesso do SLA</span>
+            <span class="tooltip">
+              Porcentagem de chamados resolvidos dentro do prazo nos ultimos 6 meses <br>
+              SLA Success Rate = (Chamados Resolvidos Dentro do Prazo ÷ Total de Chamados Resolvidos) × 100. 
+            </span>
           </span>
           <b id="kpi2" class="dado_card">...</b>
           <p id="kpi2_desc">Taxa de Sucesso do SLA</p>
-          <i id="kpi2_result" class="text_longo">No Último Mês</i>
+          <i id="kpi2_result" class="text_longo">Nos Últimos 6 Meses</i>
         </button>
 
-        <!-- KPI 3: Satisfação -->
+        <!-- Nota Média de Satisfação -->
         <button data-aba="3" class="kpi interativo">
           <span class="info-icon">
             <i class='bx bx-info-circle'></i>
-            <span class="tooltip">Nota Média de Satisfação</span>
+            <span class="tooltip">
+              Indica o nível de satisfação geral com o atendimento prestado nos ultimos 6 meses<br>
+              CSAT (Customer Satisfaction Score) = Média das avaliações dos clientes em escala de 1 a 5. 
+            </span>
           </span>
           <b id="kpi3" class="dado_card">...</b>
           <p id="kpi3_desc">Nota Média de Satisfação</p>
           <i id="kpi3_result" class="text_longo">Nos Últimos 6 Meses</i>
         </button>
 
-        <!-- KPI 4: Backlog -->
+        <!-- Backlog Crítico -->
         <button data-aba="4" class="kpi interativo">
           <span class="info-icon">
             <i class='bx bx-info-circle'></i>
-            <span class="tooltip">Backlogs Crítico</span>
+            <span class="tooltip">
+              Quantidade de chamados em aberto classificados como Prioridade Alta ou Critical que necessitam atenção imediata da equipe
+            </span>
           </span>
           <b id="kpi4" class="dado_card">...</b>
           <p id="kpi4_desc" class="text_longo">Total de Backlogs Crítico</p>
@@ -108,40 +107,51 @@
         </button>
       </span>
 
-      <!-- 2. Gráficos Centrais -->
-      <div class="graficos-meio">
-        <span class="grafico-duplo sombreado interativo">
-          <h3 class="grafico-title">Chamados de Incidentes vs. Requisições</h3>
-          <div class="chart-area">
-            <canvas id="graficoIncidReq"></canvas>
-          </div>
-        </span>
+      <!-- Chamados Abertos -->
+      <div class="tabela-central">
+        <span class="container-tabela sombreado interativo">
+          <h3 class="grafico-title">Chamados Abertos Atualmente</h3>
 
-        <span class="grafico-duplo sombreado interativo">
-          <h3 class="grafico-title">Status dos Chamados</h3>
-          <div class="chart-area">
-            <canvas id="graficoStatus"></canvas>
+          <div class="tabela-scroll">
+            <table class="lista-risco">
+              <thead>
+                <tr>
+                  <th>Chave</th>
+                  <th>Assunto</th>
+                  <th>Técnico</th>
+                  <th>Status</th>
+                  <th>Suporte</th>
+                  <th class="th-ordenavel" onclick="ordenarPor('prioridade')">
+                    Prioridade
+                    <span class="seta-ordem" id="seta-prioridade">⇅</span>
+                  </th>
+                  <th class="th-ordenavel" onclick="ordenarPor('tempo')">
+                    Tempo Restante
+                    <span class="seta-ordem ativo" id="seta-tempo">↑</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tabela-sla-body">
+              </tbody>
+            </table>
           </div>
         </span>
       </div>
     </div>
 
+    <!-- Gráficos-->
     <div id="graficos">
-      <span class="grafico sombreado interativo" style="justify-content: flex-start;">
-        <div class="map-title">Chamados em Risco de Violação (SLA)</div>
-        <div id="lista-sla-container" style="width: 100%; overflow-y: auto;">
-          <table class="lista-risco">
-            <thead>
-              <tr>
-                <th>Chave</th>
-                <th>Assunto</th>
-                <th>Técnico</th>
-                <th>Tempo</th>
-              </tr>
-            </thead>
-            <tbody id="tabela-sla-body">
-            </tbody>
-          </table>
+      <span class="grafico sombreado interativo">
+        <h3 class="grafico-title">Incidentes vs. Requisições | Últimos 6 Meses</h3>
+        <div class="chart-area">
+          <canvas id="graficoIncidReq"></canvas>
+        </div>
+      </span>
+
+      <span class="grafico sombreado interativo">
+        <h3 class="grafico-title">Distribuição por Status | Em Aberto</h3>
+        <div class="chart-area">
+          <canvas id="graficoStatus"></canvas>
         </div>
       </span>
     </div>

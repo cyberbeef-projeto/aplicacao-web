@@ -11,34 +11,34 @@ const jiraClient = axios.create({
 });
 
 async function search(jql, fields = null, maxResults = 50) {
-    const qp = [
-        `jql=${encodeURIComponent(jql)}`,
-        `maxResults=${encodeURIComponent(maxResults)}`
-    ];
-    if (fields) qp.push(`fields=${encodeURIComponent(fields)}`);
-    const url = `/rest/api/3/search/jql?${qp.join("&")}`;
-    try {
-    const resp = await jiraClient.get(url);
-    return resp.data;
-} catch (err) {
-    console.error("\n=== ERRO NO AXIOS ===");
-    console.error("URL chamada:", url);
+    const url = '/rest/api/3/search/jql';
     
-    if (err.response) {
-        console.error("STATUS:", err.response.status);
-        console.error("DATA:", err.response.data);
-    } else {
-        console.error("SEM RESPOSTA DO SERVIDOR:", err.message);
+    const params = {
+        jql: jql,
+        maxResults: maxResults
+    };
+    
+    if (fields) {
+        params.fields = fields;
     }
-
-    console.error("=====================\n");
-    throw err;
-}
+    
+    try {
+        const resp = await jiraClient.get(url, { params });
+        return resp.data;
+    } catch (err) {
+        console.error("Erro na busca Jira:", {
+            url: url,
+            jql: jql,
+            status: err.response?.status,
+            message: err.message
+        });
+        throw err;
+    }
 }
 
 async function count(jql) {
-    const data = await search(jql, null, 1);
-    return data.total || 0;
+    const data = await search(jql, null, 1000);
+    return data.issues?.length || 0;
 }
 
 async function fetchIssues(jql, fields = null, maxResults = 500) {
@@ -46,9 +46,13 @@ async function fetchIssues(jql, fields = null, maxResults = 500) {
     return data.issues || [];
 }
 
-console.log("JIRA DOMAIN:", process.env.JIRA_DOMAIN);
-console.log("EMAIL:", process.env.JIRA_EMAIL);
-console.log("TOKEN (inicio):", process.env.JIRA_TOKEN?.substring(0, 4));
+// Log básico de inicialização
+if (process.env.NODE_ENV !== 'production') {
+    console.log("Jira API configurada:", {
+        domain: process.env.JIRA_DOMAIN,
+        project: process.env.JIRA_PROJECT_KEY
+    });
+}
 
 module.exports = {
     jiraClient,

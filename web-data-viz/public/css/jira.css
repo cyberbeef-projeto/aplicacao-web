@@ -34,7 +34,6 @@ body::before {
     z-index: -5;
 }
 
-/* --- NAVBAR --- */
 .navbar {
     display: flex;
     box-sizing: border-box;
@@ -61,7 +60,7 @@ body::before {
     align-items: center;
     width: 41.5%;
     gap: 3%;
-    padding-right: 79.6vw;
+    padding-right: 100vw;
 }
 
 .sel_dash p {
@@ -182,7 +181,6 @@ body::before {
     margin-left: 0.9vw;
 }
 
-/* --- LAYOUT PRINCIPAL --- */
 #elementos {
     display: flex;
     flex-direction: row;
@@ -220,7 +218,6 @@ body::before {
     background: #4B6CF0;
 }
 
-/* --- KPIs (TOPO) --- */
 .abas_kpis {
     display: flex;
     flex-direction: row;
@@ -272,7 +269,6 @@ body::before {
     position: relative;
 }
 
-/* --- TOOLTIPS KPI --- */
 .info-icon {
     position: absolute;
     top: 6px;
@@ -327,29 +323,148 @@ body::before {
     opacity: 1;
 }
 
-/* --- ÁREA DE GRÁFICOS (MEIO) --- */
-.graficos-meio {
+.tabela-central {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     width: 100%;
     height: 70%;
-    gap: 2%;
     margin: 2% 0.5%;
 }
 
-.grafico-duplo {
+.container-tabela {
     display: flex;
+    flex-direction: column;
     box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    height: 106%;
+    width: 100%;
+    height: 108%;
     border-radius: 1vh;
     background-color: rgb(11, 15, 25, 80%);
     position: relative;
-    overflow: hidden;
-    padding-top: 2.6rem;
+    padding: 3rem 1.5rem 1rem 1.5rem;
+}
+
+.filtros-tabela {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.filtro-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #b8c3e0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filtro-btn:hover {
+    background-color: rgba(75, 108, 240, 0.2);
+    border-color: rgba(75, 108, 240, 0.5);
+    transform: translateY(-2px);
+}
+
+.filtro-btn.ativo {
+    background-color: rgba(75, 108, 240, 0.7);
+    border-color: #4B6CF0;
+    color: white;
+    font-weight: bold;
+}
+
+.filtro-btn i {
+    font-size: 1.1rem;
+}
+
+.tabela-scroll {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tabela-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tabela-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.tabela-scroll::-webkit-scrollbar-thumb {
+    background: rgba(75, 108, 240, 0.5);
+    border-radius: 4px;
+}
+
+.tabela-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(75, 108, 240, 0.8);
+}
+
+.lista-risco {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    color: white;
+}
+
+.lista-risco th,
+.lista-risco td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.85rem;
+    vertical-align: middle;
+}
+
+.lista-risco th {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: 600;
+}
+
+.lista-risco tr:hover {
+    background-color: rgba(75, 108, 240, 0.1);
+    transition: background-color 0.2s;
+}
+
+.tag-risco {
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+#graficos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2%;
+    width: 32%;
+    height: 100%;
+}
+
+.grafico {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 48%;
+    border-radius: 1vh;
+    background-color: rgb(11, 15, 25, 80%);
+    padding: 15px;
+    position: relative;
 }
 
 .grafico-title {
@@ -367,84 +482,11 @@ body::before {
 
 .chart-area {
     width: 100%;
-    height: calc(100% - 2.6rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-}
-
-/* --- LISTA E TABELA (LADO DIREITO) --- */
-#graficos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2%;
-    width: 32%;
     height: 100%;
-}
-
-.grafico {
     display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
     align-items: center;
     justify-content: center;
-    width: 95%;
-    height: 97%;
-    border-radius: 1vh;
-    background-color: rgb(11, 15, 25, 80%);
-    padding: 15px;
-    position: relative;
-}
-
-.map-title {
-    position: absolute;
-    top: 14px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 1.2vw;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-.lista-risco {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 30px;
-    font-family: sans-serif;
-    color: white;
-}
-
-.lista-risco th,
-.lista-risco td {
-    text-align: left;
-    padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.9rem;
-}
-
-.lista-risco th {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #fff;
-}
-
-.tag-risco {
-    background-color: #ffcccc;
-    color: #cc0000;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.8rem;
-}
-
-#cardsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(32%, 1fr));
-    gap: 1.2vw;
-    width: 100%;
+    padding: 2rem 0.5rem 0.5rem 0.5rem;
 }
 
 .sombreado {
