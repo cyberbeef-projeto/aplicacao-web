@@ -128,11 +128,12 @@ body::before {
     gap: 1%;
     width: 100%;
     height: 15%;
-    color: #000;
+    color: #fff;
 }
 
 #usuario .bxs-user {
     font-size: 4vw;
+    color: #fff;
 }
 
 #usuario a {
@@ -176,9 +177,21 @@ body::before {
     color: #fff;
 }
 
+
+
+.barra_lateral.ativa {
+    left: 0;
+}
+
+
 #home .bx-arrow-out-left-square-half {
     font-size: 2.5vw;
     margin-left: 0.9vw;
+    color: #fff;
+}
+
+#home p {
+    color:#fff;
 }
 
 #elementos {
