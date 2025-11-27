@@ -51,20 +51,44 @@
         <div class="cards">
             <span class="abas_kpis">
                 <button data-aba="1" class="kpi interativo">
+                    <span class="info-icon">
+                        <i class='bx bx-info-circle'></i>
+                        <span class="tooltip">
+                            Filtro aplicado aos dados
+                        </span>
+                    </span>
                     <b id="kpi1" class="dado_card">Todas as Máquinas</b>
                 </button>
 
                 <button data-aba="2" class="kpi interativo">
+                    <span class="info-icon">
+                        <i class='bx bx-info-circle'></i>
+                        <span class="tooltip">
+                            Número de alertas (críticos ou anormais)
+                        </span>
+                    </span>
                     <b id="kpi2" class="dado_card">CARREGANDO...</b>
-                    <p id="kpi2_desc" class="text_longo">Alertas</p>
+                    <p id="kpi2_desc" class="text_longo">Alerta(s)</p>
                 </button>
 
                 <button data-aba="3" class="kpi interativo">
+                    <span class="info-icon">
+                        <i class='bx bx-info-circle'></i>
+                        <span class="tooltip">
+                            Número de alertas críticos 
+                        </span>
+                    </span>
                     <b id="kpi3" class="dado_card critico">CARREGANDO...</b>
                     <p id="kpi3_desc" class="text_longo">Alerta(s) Crítico(s)</p>
                 </button>
 
                 <button data-aba="4" class="kpi interativo">
+                    <span class="info-icon">
+                        <i class='bx bx-info-circle'></i>
+                        <span class="tooltip">
+                            Número de alertas anormais
+                        </span>
+                    </span>
                     <b id="kpi4" class="dado_card anormal">CARREGANDO...</b>
                     <p id="kpi4_desc" class="text_longo">Alerta(s) Anormal(is)</p>
                 </button>
@@ -80,7 +104,7 @@
                         <button data-period=" AND l.dthCaptura >= NOW() - INTERVAL 6 MONTH">Último semestre</button>
                     </div>
                     <div id="barra_pesquisa">
-                        <input type="text" placeholder="Pesquisar por máquinas..." id="pesquisa" class="">
+                        <input type="text" placeholder="Filtrar por máquinas..." id="pesquisa" class="">
                         <div id="nomes_dash" class="accordion"></div>
                     </div>
                     <a id="but_export" class="clicavel clicado" onclick="baixarCSV()">Exportar dados <i
@@ -97,19 +121,19 @@
                         </span>
                         <span>
                             <h3>RAM <i class='bxr  bx-microchip'></i></i></h3>
-                            <p class="critico">Alerta Critico: &gt; 90%</p>
+                            <p class="critico">Alerta Crítico: &gt; 90%</p>
                             <p class="anormal">Alerta Anormal: 85% ≥ x ≤ 90%</p>
                             <p class="normal">Normal: &lt; 85%</p>
                         </span>
                         <span>
                             <h3>Disco <i class='bxr  bx-hard-drive'></i></h3>
-                            <p class="critico">Alerta Critico: &gt; 90%</p>
+                            <p class="critico">Alerta Crítico: &gt; 90%</p>
                             <p class="anormal">Alerta Anormal: 85% ≥ x ≤ 90%</p>
                             <p class="normal">Normal: &lt; 85%</p>
                         </span>
                         <span>
                             <h3>Perda de Pacotes <i class='bxr  bx-wifi-2'></i></h3>
-                            <p class="critico">Alerta Critico: &gt; 10%</p>
+                            <p class="critico">Alerta Crítico: &gt; 10%</p>
                             <p class="anormal">Alerta Anormal: 2,5% ≥ x ≤ 10%</p>
                             <p class="normal">Normal: &lt; 2,5%</p>
                         </span>
