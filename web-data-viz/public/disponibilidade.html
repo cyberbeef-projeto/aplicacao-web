@@ -7,6 +7,7 @@
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/disponibilidade.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="./js/sessao.js"></script>
     <link rel="icon" href="assets/icon/chip.png">
 
     <title>Monitoramento de Disponibilidade - CyberBeef</title>
@@ -64,7 +65,7 @@
     </style>
 </head>
 
-<body>
+<body onload="validarSessao()">
     <header class="navbar">
         <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
             onclick="atualizarBarraLateral()"></button>
@@ -99,7 +100,7 @@
 
             <!-- <li class="clicado" style="background-color: rgba(255,255,255,0.1); border-left: 0.3vw solid #4B6CF0;"> -->
             <li class="clicado">
-                <a href="dados.html?tipoDados=alerta&titulo=Alertas">Disponibilidade</a>
+                <a href="">Disponibilidade</a>
             </li>
 
             <li class="clicado"><a href="jira-empresa.html">Chamados Jira</a></li>
@@ -108,7 +109,7 @@
                 style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; margin-top: 20px;"
                 class="clicavel clicado" title="Clique para encerrar sua sessão">
                 <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-                <p>Sair <a href="index.html"></a></p>
+                <p>SAIR <a href="index.html"></a></p>
             </span>
         </div>
     </div>

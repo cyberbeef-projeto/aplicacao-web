@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/cadastro-empresa.css">
+  <script src="./js/sessao.js"></script>
   <link rel="icon" href="/web-data-viz/public/assets/icon/chip.png">
   <title>Cadastro de Empresas - CyberBeef</title>
 </head>
 
-<body>
+<body onload="validarSessao()">
   <div class="barra_lateral sombreado ativa">
 
     <div id="logo">
@@ -32,7 +33,7 @@
       <span
         style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
         <i class='bx bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-        <p>Sair <a href="index.html"></a></p>
+        <p>SAIR<a href="index.html"></a></p>
       </span>
     </div>
   </div>
@@ -56,101 +57,119 @@
 
       <!-- Formulário -->
       <form class="formulario" id="formCadastroEmpresa" onsubmit="cadastrarEmpresa(event)">
-    <div class="form-row">
-        <div class="form-grupo">
+        <div class="form-row">
+          <div class="form-grupo">
             <label>Razão Social</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite a razão social" id="razaoSocial" required>
-                 <i class='bx  bx-enterprise'></i> 
+              <input type="text" placeholder="Digite a razão social" id="razaoSocial" required>
+              <i class='bx  bx-enterprise'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>Nome Fantasia</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite o nome fantasia" id="nomeFantasia" required>
-                <i class='bx  bx-enterprise'></i> 
+              <input type="text" placeholder="Digite o nome fantasia" id="nomeFantasia" required>
+              <i class='bx  bx-enterprise'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>CNPJ</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite o CNPJ" id="cnpj" required>
-                <i class='bx bx-edit'></i>
+              <input type="text" placeholder="Digite o CNPJ" id="cnpj" required>
+              <i class='bx bx-edit'></i>
             </div>
+          </div>
         </div>
-    </div>
 
-    <div class="form-row">
-        <div class="form-grupo">
+        <div class="form-row">
+          <div class="form-grupo">
             <label>CEP</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite  o CEP" id="cep">
-                <i class='bx bx-map'></i>
+              <input type="text" placeholder="Digite  o CEP" id="cep">
+              <i class='bx bx-map'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>Logradouro</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite o logradouro" id="logradouro">
-                <i class='bx bx-map'></i>
+              <input type="text" placeholder="Digite o logradouro" id="logradouro">
+              <i class='bx bx-map'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>Bairro</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite o bairro" id="bairro">
-                <i class='bx bx-map'></i>
+              <input type="text" placeholder="Digite o bairro" id="bairro">
+              <i class='bx bx-map'></i>
             </div>
+          </div>
         </div>
-    </div>
 
-    <div class="form-row">
-        <div class="form-grupo">
+        <div class="form-row">
+          <div class="form-grupo">
             <label>Cidade</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite a cidade" id="cidade">
-                <i class='bx bx-map'></i>
+              <input type="text" placeholder="Digite a cidade" id="cidade">
+              <i class='bx bx-map'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>UF</label>
             <div class="input-wrapper">
-                <select id="estado">
-                    <option value="">Selecione</option>
-                    <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
-                    <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
-                    <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
-                    <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
-                    <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
-                    <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
-                    <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
-                    <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
-                    <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
-                </select>
-                <i class='bx bx-chevron-down'></i>
+              <select id="estado">
+                <option value="">Selecione</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+              </select>
+              <i class='bx bx-chevron-down'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>Número</label>
             <div class="input-wrapper">
-                <input type="text" placeholder="Digite o número" id="numero">
-                <i class='bx bx-map'></i>
+              <input type="text" placeholder="Digite o número" id="numero">
+              <i class='bx bx-map'></i>
             </div>
-        </div>
-        <div class="form-grupo">
+          </div>
+          <div class="form-grupo">
             <label>Token Empresa</label>
             <div class="input-wrapper">
-                <input type="number" placeholder="ID único" id="tokenEmpresa" required>
-                <i class='bx bx-chevron-down'></i>
+              <input type="number" placeholder="ID único" id="tokenEmpresa" required>
+              <i class='bx bx-chevron-down'></i>
             </div>
+          </div>
         </div>
-    </div>
 
-    <div class="form-acao">
-        <button type="button" class="btn-primeiro" onclick="formCadastroEmpresa.reset()">Cancelar</button>
-        <button type="submit" class="btn-segundo">Salvar</button>
-    </div>
-</form>
+        <div class="form-acao">
+          <button type="button" class="btn-primeiro" onclick="formCadastroEmpresa.reset()">Cancelar</button>
+          <button type="submit" class="btn-segundo">Salvar</button>
+        </div>
+      </form>
 
 
       <!-- Listagem -->
@@ -176,21 +195,21 @@
 
         <div class="tabela-wrapper">
           <table class="tabela-empresas">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome Fantasia</th>
-      <th>CNPJ</th>
-      <th>Data do Cadastro</th>
-      <th style="text-align: center;">Ações</th>
-      
-    </tr>
-  </thead>
-  <tbody id="tabelaBody">
-    
-    <!-- Os dados serão inseridos aqui via JS -->
-  </tbody>
-</table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome Fantasia</th>
+                <th>CNPJ</th>
+                <th>Data do Cadastro</th>
+                <th style="text-align: center;">Ações</th>
+
+              </tr>
+            </thead>
+            <tbody id="tabelaBody">
+
+              <!-- Os dados serão inseridos aqui via JS -->
+            </tbody>
+          </table>
 
           </table>
         </div>
@@ -303,7 +322,7 @@
           Tem certeza que deseja desativar a empresa <strong id="nomeEmpresaExcluir" style="color: #fff;"></strong>?
         </p>
         <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.75rem;">
-        
+
         </p>
       </div>
       <div class="modal-actions" style="margin-top: 1.5rem;">
@@ -314,73 +333,73 @@
     </div>
   </div>
 
- <script>
-let empresas = [];
-let empresasFiltradas = [];
+  <script>
+    let empresas = [];
+    let empresasFiltradas = [];
 
-let paginaAtual = 1;
-let registrosPorPagina = 10;
+    let paginaAtual = 1;
+    let registrosPorPagina = 10;
 
-let excluindoIndex = -1;
+    let excluindoIndex = -1;
 
-/* TROCA ENTRE ABAS */
-function mostrarAba(aba) {
-  const formulario = document.getElementById("formCadastroEmpresa");
-  const listagem = document.getElementById("listagem");
-  const tabs = document.querySelectorAll(".tab");
+    /* TROCA ENTRE ABAS */
+    function mostrarAba(aba) {
+      const formulario = document.getElementById("formCadastroEmpresa");
+      const listagem = document.getElementById("listagem");
+      const tabs = document.querySelectorAll(".tab");
 
-  if (aba === "formulario") {
-    formulario.classList.remove("oculto");
-    listagem.classList.add("oculto");
-    tabs[0].classList.add("ativa");
-    tabs[1].classList.remove("ativa");
-  } else {
-    formulario.classList.add("oculto");
-    listagem.classList.remove("oculto");
-    tabs[0].classList.remove("ativa");
-    tabs[1].classList.add("ativa");
-  }
-}
+      if (aba === "formulario") {
+        formulario.classList.remove("oculto");
+        listagem.classList.add("oculto");
+        tabs[0].classList.add("ativa");
+        tabs[1].classList.remove("ativa");
+      } else {
+        formulario.classList.add("oculto");
+        listagem.classList.remove("oculto");
+        tabs[0].classList.remove("ativa");
+        tabs[1].classList.add("ativa");
+      }
+    }
 
-/* BUSCA */
-function filtrarEmpresas() {
-  const busca = document.getElementById("campoBusca").value.toLowerCase();
+    /* BUSCA */
+    function filtrarEmpresas() {
+      const busca = document.getElementById("campoBusca").value.toLowerCase();
 
-  empresasFiltradas = empresas.filter(emp =>
-    emp.nomeFantasia.toLowerCase().includes(busca) ||
-    emp.razaoSocial.toLowerCase().includes(busca) ||
-    emp.cnpj.includes(busca)
-  );
+      empresasFiltradas = empresas.filter(emp =>
+        emp.nomeFantasia.toLowerCase().includes(busca) ||
+        emp.razaoSocial.toLowerCase().includes(busca) ||
+        emp.cnpj.includes(busca)
+      );
 
-  paginaAtual = 1;
-  renderizarTabela();
-}
-
-/* CARREGAR EMPRESAS DO BANCO*/
-function carregarEmpresas() {
-  fetch("/cadastroempresa/listar")
-    .then(res => res.json())
-    .then(dados => {
-      console.log("EMPRESAS DO BANCO:", dados);
-
-      empresas = dados;
-      empresasFiltradas = [...empresas];
+      paginaAtual = 1;
       renderizarTabela();
-    })
-    .catch(err => console.error("Erro ao carregar:", err));
-}
+    }
 
-/*RENDERIZAR TABELA*/
-function renderizarTabela() {
-  const tbody = document.getElementById("tabelaBody");
+    /* CARREGAR EMPRESAS DO BANCO*/
+    function carregarEmpresas() {
+      fetch("/cadastroempresa/listar")
+        .then(res => res.json())
+        .then(dados => {
+          console.log("EMPRESAS DO BANCO:", dados);
 
-  const inicio = (paginaAtual - 1) * registrosPorPagina;
-  const fim = inicio + registrosPorPagina;
+          empresas = dados;
+          empresasFiltradas = [...empresas];
+          renderizarTabela();
+        })
+        .catch(err => console.error("Erro ao carregar:", err));
+    }
 
-  const pagina = empresasFiltradas.slice(inicio, fim);
+    /*RENDERIZAR TABELA*/
+    function renderizarTabela() {
+      const tbody = document.getElementById("tabelaBody");
 
-  tbody.innerHTML = pagina
-    .map((emp, index) => `
+      const inicio = (paginaAtual - 1) * registrosPorPagina;
+      const fim = inicio + registrosPorPagina;
+
+      const pagina = empresasFiltradas.slice(inicio, fim);
+
+      tbody.innerHTML = pagina
+        .map((emp, index) => `
       <tr>
         <td>${emp.tokenEmpresa}</td>
         <td>${emp.nomeFantasia}</td>
@@ -398,205 +417,205 @@ function renderizarTabela() {
         </td>
       </tr>
     `)
-    .join("");
+        .join("");
 
-  atualizarPaginacao();
-}
+      atualizarPaginacao();
+    }
 
-function formatarData(data) {
-  if (!data) return "-";
-  const d = new Date(data);
-  return d.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-  });
-}
+    function formatarData(data) {
+      if (!data) return "-";
+      const d = new Date(data);
+      return d.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+    }
 
-/*PAGINAÇÃO */
-function atualizarTabela() {
-  registrosPorPagina = Number(document.getElementById("registrosPorPagina").value);
-  paginaAtual = 1;
-  renderizarTabela();
-}
+    /*PAGINAÇÃO */
+    function atualizarTabela() {
+      registrosPorPagina = Number(document.getElementById("registrosPorPagina").value);
+      paginaAtual = 1;
+      renderizarTabela();
+    }
 
-function atualizarPaginacao() {
-  const total = empresasFiltradas.length;
-  const inicio = (paginaAtual - 1) * registrosPorPagina + 1;
-  const fim = Math.min(paginaAtual * registrosPorPagina, total);
+    function atualizarPaginacao() {
+      const total = empresasFiltradas.length;
+      const inicio = (paginaAtual - 1) * registrosPorPagina + 1;
+      const fim = Math.min(paginaAtual * registrosPorPagina, total);
 
-  document.getElementById("paginacaoInfo").innerText = `${inicio} a ${fim} de ${total}`;
+      document.getElementById("paginacaoInfo").innerText = `${inicio} a ${fim} de ${total}`;
 
-  const totalPaginas = Math.ceil(total / registrosPorPagina);
+      const totalPaginas = Math.ceil(total / registrosPorPagina);
 
-  document.getElementById("btnAnterior").disabled = paginaAtual === 1;
-  document.getElementById("btnProxima").disabled = paginaAtual === totalPaginas || total === 0;
-}
+      document.getElementById("btnAnterior").disabled = paginaAtual === 1;
+      document.getElementById("btnProxima").disabled = paginaAtual === totalPaginas || total === 0;
+    }
 
-function proximaPagina() {
-  const totalPaginas = Math.ceil(empresasFiltradas.length / registrosPorPagina);
-  if (paginaAtual < totalPaginas) {
-    paginaAtual++;
-    renderizarTabela();
-  }
-}
-
-function paginaAnterior() {
-  if (paginaAtual > 1) {
-    paginaAtual--;
-    renderizarTabela();
-  }
-}
-
-/* ADASTRAR EMPRESA */
-function cadastrarEmpresa(event) {
-  event.preventDefault();
-
-  let dados = {
-    tokenEmpresa: tokenEmpresa.value,
-    razaoSocial: razaoSocial.value,
-    nomeFantasia: nomeFantasia.value,
-    cnpj: cnpj.value,
-    logradouro: logradouro.value,
-    numero: numero.value,
-    bairro: bairro.value,
-    cidade: cidade.value,
-    estado: estado.value,
-    cep: cep.value
-  };
-
-  console.log("ENVIANDO AO BACKEND:", dados);
-
-  fetch("/cadastroempresa/cadastrar", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dados)
-  })
-    .then(res => {
-      if (!res.ok) throw "Erro ao cadastrar";
-      alert("Empresa cadastrada com sucesso!");
-      formCadastroEmpresa.reset();
-      carregarEmpresas();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Falha ao cadastrar empresa");
-    });
-}
-
-/* DESATIVAR EMPRESA */
-function abrirModalExcluir(index) {
-  excluindoIndex = index;
-
-  const emp = empresasFiltradas[index];
-  document.getElementById("nomeEmpresaExcluir").innerText =
-    emp.nomeFantasia || emp.razaoSocial;
-
-  document.getElementById("modalExcluir").style.display = "flex";
-}
-
-function fecharModalExcluir() {
-  document.getElementById("modalExcluir").style.display = "none";
-  excluindoIndex = -1;
-}
-
-function confirmarExclusao() {
-  if (excluindoIndex < 0) return;
-
-  const empresa = empresasFiltradas[excluindoIndex];
-
-  fetch(`/cadastroempresa/desativar/${empresa.tokenEmpresa}`, {
-    method: "PUT"
-  })
-    .then(res => {
-      if (!res.ok) throw "Erro ao desativar";
-
-      alert("Empresa desativada!");
-
-      carregarEmpresas();  
-
-      
-      if (window.carregarDashboard) {
-        carregarDashboard();
+    function proximaPagina() {
+      const totalPaginas = Math.ceil(empresasFiltradas.length / registrosPorPagina);
+      if (paginaAtual < totalPaginas) {
+        paginaAtual++;
+        renderizarTabela();
       }
+    }
 
-      fecharModalExcluir();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Erro ao desativar empresa");
-    });
-}
+    function paginaAnterior() {
+      if (paginaAtual > 1) {
+        paginaAtual--;
+        renderizarTabela();
+      }
+    }
 
-function abrirModalEdicao(index) {
-  const emp = empresasFiltradas[index];
-document.getElementById("modal_tokenEmpresa").value = emp.tokenEmpresa;
-  document.getElementById("modalTitle").innerText = "Editar Empresa";
+    /* ADASTRAR EMPRESA */
+    function cadastrarEmpresa(event) {
+      event.preventDefault();
 
-  modal_razaoSocial.value = emp.razaoSocial;
-  modal_nomeFantasia.value = emp.nomeFantasia;
-  modal_cnpj.value = emp.cnpj;
-  modal_cep.value = emp.cep || "";
-  modal_logradouro.value = emp.logradouro || "";
-  modal_bairro.value = emp.bairro || "";
-  modal_cidade.value = emp.cidade || "";
-  modal_uf.value = emp.estado || "";
-  modal_numero.value = emp.numero || "";
+      let dados = {
+        tokenEmpresa: tokenEmpresa.value,
+        razaoSocial: razaoSocial.value,
+        nomeFantasia: nomeFantasia.value,
+        cnpj: cnpj.value,
+        logradouro: logradouro.value,
+        numero: numero.value,
+        bairro: bairro.value,
+        cidade: cidade.value,
+        estado: estado.value,
+        cep: cep.value
+      };
 
-  document.getElementById("formulario").dataset.token = emp.tokenEmpresa;
+      console.log("ENVIANDO AO BACKEND:", dados);
+
+      fetch("/cadastroempresa/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+      })
+        .then(res => {
+          if (!res.ok) throw "Erro ao cadastrar";
+          alert("Empresa cadastrada com sucesso!");
+          formCadastroEmpresa.reset();
+          carregarEmpresas();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Falha ao cadastrar empresa");
+        });
+    }
+
+    /* DESATIVAR EMPRESA */
+    function abrirModalExcluir(index) {
+      excluindoIndex = index;
+
+      const emp = empresasFiltradas[index];
+      document.getElementById("nomeEmpresaExcluir").innerText =
+        emp.nomeFantasia || emp.razaoSocial;
+
+      document.getElementById("modalExcluir").style.display = "flex";
+    }
+
+    function fecharModalExcluir() {
+      document.getElementById("modalExcluir").style.display = "none";
+      excluindoIndex = -1;
+    }
+
+    function confirmarExclusao() {
+      if (excluindoIndex < 0) return;
+
+      const empresa = empresasFiltradas[excluindoIndex];
+
+      fetch(`/cadastroempresa/desativar/${empresa.tokenEmpresa}`, {
+        method: "PUT"
+      })
+        .then(res => {
+          if (!res.ok) throw "Erro ao desativar";
+
+          alert("Empresa desativada!");
+
+          carregarEmpresas();
 
 
-  document.getElementById("modalBackdrop").style.display = "flex";
-}
+          if (window.carregarDashboard) {
+            carregarDashboard();
+          }
 
-function salvarEmpresa(event) {
-  event.preventDefault();
+          fecharModalExcluir();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erro ao desativar empresa");
+        });
+    }
 
-  const token = document.getElementById("modal_tokenEmpresa").value;
+    function abrirModalEdicao(index) {
+      const emp = empresasFiltradas[index];
+      document.getElementById("modal_tokenEmpresa").value = emp.tokenEmpresa;
+      document.getElementById("modalTitle").innerText = "Editar Empresa";
 
-  const dados = {
-    razaoSocial: modal_razaoSocial.value,
-    nomeFantasia: modal_nomeFantasia.value,
-    cnpj: modal_cnpj.value,
-    cep: modal_cep.value,
-    logradouro: modal_logradouro.value,
-    bairro: modal_bairro.value,
-    cidade: modal_cidade.value,
-    estado: modal_uf.value,
-    numero: modal_numero.value
-  };
+      modal_razaoSocial.value = emp.razaoSocial;
+      modal_nomeFantasia.value = emp.nomeFantasia;
+      modal_cnpj.value = emp.cnpj;
+      modal_cep.value = emp.cep || "";
+      modal_logradouro.value = emp.logradouro || "";
+      modal_bairro.value = emp.bairro || "";
+      modal_cidade.value = emp.cidade || "";
+      modal_uf.value = emp.estado || "";
+      modal_numero.value = emp.numero || "";
 
-  fetch(`/cadastroempresa/editar/${token}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dados)
-  })
-    .then(res => {
-      if (!res.ok) throw "Erro ao atualizar empresa";
-
-      alert("Empresa atualizada com sucesso!");
-      fecharModal();
-      carregarEmpresas();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Erro ao atualizar empresa");
-    });
-}
+      document.getElementById("formulario").dataset.token = emp.tokenEmpresa;
 
 
-function fecharModal() {
-  document.getElementById("modalBackdrop").style.display = "none";
-}
+      document.getElementById("modalBackdrop").style.display = "flex";
+    }
+
+    function salvarEmpresa(event) {
+      event.preventDefault();
+
+      const token = document.getElementById("modal_tokenEmpresa").value;
+
+      const dados = {
+        razaoSocial: modal_razaoSocial.value,
+        nomeFantasia: modal_nomeFantasia.value,
+        cnpj: modal_cnpj.value,
+        cep: modal_cep.value,
+        logradouro: modal_logradouro.value,
+        bairro: modal_bairro.value,
+        cidade: modal_cidade.value,
+        estado: modal_uf.value,
+        numero: modal_numero.value
+      };
+
+      fetch(`/cadastroempresa/editar/${token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+      })
+        .then(res => {
+          if (!res.ok) throw "Erro ao atualizar empresa";
+
+          alert("Empresa atualizada com sucesso!");
+          fecharModal();
+          carregarEmpresas();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erro ao atualizar empresa");
+        });
+    }
+
+
+    function fecharModal() {
+      document.getElementById("modalBackdrop").style.display = "none";
+    }
 
 
 
-/* INICIALIZAÇÃO*/
-carregarEmpresas();
-mostrarAba("formulario");
-</script>
+    /* INICIALIZAÇÃO*/
+    carregarEmpresas();
+    mostrarAba("formulario");
+  </script>
 
 </body>
 

@@ -7,12 +7,14 @@
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/acesso.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./js/sessao.js"></script>
+
   <link rel="icon" href="assets/icon/chip.png">
 
   <title>Segurança de Acesso - CyberBeef</title>
 </head>
 
-<body>
+<body onload="validarSessao()">
   <header class="navbar">
     <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
       onclick="atualizarBarraLateral()"></button>
@@ -64,12 +66,12 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="empresa.html">Empresas</a></li>
       <li><a href="dados.html?tipoDados=alerta&titulo=Alertas">Downtime</a></li>
-      <li><a href="dados.html?tipoDados=setor&titulo=Setores">Chamados Jira</a></li>
+      <li><a href="jira-empresa.html">Chamados Jira</a></li>
 
       <span
         style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
         <i class='bx bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-        <p>SAIR</p>
+        <p>SAIR <a href="index.html"></a></p>
       </span>
     </div>
   </div>
