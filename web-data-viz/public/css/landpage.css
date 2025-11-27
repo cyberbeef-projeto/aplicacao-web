@@ -952,3 +952,14 @@ footer .redes img:hover {
   transform: translateY(-8px);
   box-shadow: 5px 5px 0px #4B6CF0, 0 0 25px rgba(76, 111, 255, 0.3);
 }
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 600;
+}

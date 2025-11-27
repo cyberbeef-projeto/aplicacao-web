@@ -208,15 +208,34 @@
     <section class="contato" id="contato">
         <h2>Entre em contato!</h2>
         <div class="contato-content">
-            <form class="contato-form">
-                <div class="form-row">
-                    <input type="text" placeholder="Nome do representante">
-                    <input type="email" placeholder="Email">
-                </div>
-                <input type="text" placeholder="Assunto">
-                <textarea placeholder="Mensagem"></textarea>
-                <button type="submit" class="submit-btn">Enviar Mensagem</button>
-            </form>
+           <form class="contato-form">
+
+    <div class="form-row">
+        <div class="input-group">
+            <label for="nome">Nome do representante</label>
+            <input id="nome" type="text" placeholder="Digite seu nome">
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="Digite seu email">
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label for="assunto">Assunto</label>
+        <input id="assunto" type="text" placeholder="Digite o assunto">
+    </div>
+
+    <div class="input-group">
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" placeholder="Digite sua mensagem"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Enviar Mensagem</button>
+
+</form>
+
             <div class="contato-image"></div>
         </div>
 
