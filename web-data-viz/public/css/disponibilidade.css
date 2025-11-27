@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
 }
 
 html {
@@ -54,8 +54,8 @@ body::before {
     color: white;
     background-color: transparent;
     z-index: 10;
-    
-    
+
+
 }
 
 .sel_dash {
@@ -73,7 +73,7 @@ body::before {
     margin-right: 5%;
     align-self: flex-start;
     white-space: nowrap;
-    
+
     font-weight: bold;
 }
 
@@ -136,18 +136,16 @@ body::before {
 
 #buts_superiores a {
     display: flex;
-    box-sizing: border-box;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 50%;
     height: 100%;
-    user-select: none;
-    color: #fff;
+    color: #ffffff00;
     font-size: 1.1vw;
     text-align: center;
     font-weight: normal;
-    background-color: #4B6CF0;
+    background-color: #4b6cf000;
     border-radius: 0.5vw;
 }
 
@@ -246,7 +244,7 @@ body::before {
 
 #home .bx-arrow-out-left-square-half {
     font-size: 2.5vw;
-    margin-left: 0.9vw;
+    margin-left: 0.2vw;
 }
 
 .barra_lateral.ativa {
@@ -527,16 +525,13 @@ body::before {
 
 #geoChart {
     width: 100%;
-    height: 360px; 
-    justify-content: center; 
-    align-items: center;    
+    height: 360px;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     position: relative;
     margin-right: -100px;
 }
-
-
-
 
 .map-stats {
     display: flex;
@@ -595,10 +590,6 @@ body::before {
     box-shadow: 0 0 16px rgba(0, 198, 255, 0.15);
 }
 
-
-
-
-
 .map-legend {
     width: 100%;
     text-align: center;
@@ -607,7 +598,6 @@ body::before {
     font-size: 0.9vw;
 }
 
-
 .legend-title {
     font-weight: bold;
     font-size: 1vw;
@@ -615,14 +605,12 @@ body::before {
     margin-bottom: 6px;
 }
 
-
 .legend-gradient {
     width: 55%;
     height: 14px;
     margin: 0 auto;
     border-radius: 6px;
 
- 
     background: linear-gradient(to right,
             #CDE1FF,
             #A8C6FF,
@@ -634,7 +622,6 @@ body::before {
 
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
 
 .legend-labels {
     display: flex;
@@ -668,7 +655,7 @@ body::before {
 
 .info-icon i {
     font-size: 1.2vw;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255, 255, 255, 0.9);
     transition: 0.2s;
 }
 
@@ -692,7 +679,7 @@ body::before {
     z-index: 99;
     font-size: 0.8vw;
     line-height: 1.2vw;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 
     transition: opacity 0.25s ease-in-out;
 }
@@ -714,35 +701,28 @@ body::before {
     opacity: 1;
 }
 
-/* =================================================================
-   CORREÇÃO DE LAYOUT E CORES - DASHBOARD DISPONIBILIDADE
-   ================================================================= */
-
 .graficos-meio {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    
-    /* AQUI: Aumentamos de 35/40vh para 50vh */
-    /* Isso dá espaço para a legenda "respirar" embaixo */
-    height: 50vh; 
-    
+
+    height: 50vh;
+
     margin: 2% 0.5%;
     gap: 1.5%;
 }
 
 .grafico-duplo {
-    width: 70%; 
-    height: 120%; 
+    width: 70%;
+    height: 120%;
     border-radius: 1vh;
     background-color: rgb(11, 15, 25, 80%);
     padding: 10px;
     box-sizing: border-box;
-    position: relative; 
+    position: relative;
 }
 
-/* 2. Estilos da Tabela Lateral (Histórico) para ser legível */
 .table-container {
     width: 100%;
     height: 90%;
@@ -755,7 +735,7 @@ body::before {
 .log-table {
     width: 100%;
     border-collapse: collapse;
-    color: #ffffff; /* Texto branco */
+    color: #ffffff;
     font-size: 0.85vw;
 }
 
@@ -775,7 +755,6 @@ body::before {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 3. Badges de Status (Coloridos) */
 .status-badge {
     padding: 4px 8px;
     border-radius: 12px;
@@ -783,21 +762,34 @@ body::before {
     font-weight: bold;
     text-transform: uppercase;
 }
-.status-up { background: rgba(0, 255, 127, 0.15); color: #00ff7f; border: 1px solid #00ff7f; }
-.status-down { background: rgba(255, 0, 80, 0.15); color: #ff0050; border: 1px solid #ff0050; }
-.status-warn { background: rgba(255, 165, 0, 0.15); color: #ffa500; border: 1px solid #ffa500; }
 
-/* Container da lista */
+.status-up {
+    background: rgba(0, 255, 127, 0.15);
+    color: #00ff7f;
+    border: 1px solid #00ff7f;
+}
+
+.status-down {
+    background: rgba(255, 0, 80, 0.15);
+    color: #ff0050;
+    border: 1px solid #ff0050;
+}
+
+.status-warn {
+    background: rgba(255, 165, 0, 0.15);
+    color: #ffa500;
+    border: 1px solid #ffa500;
+}
+
 .status-container {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around; /* Espalha os itens verticalmente */
+    justify-content: space-around;
     padding: 10px;
 }
 
-/* Cada linha do componente */
 .component-item {
     display: flex;
     justify-content: space-between;
@@ -814,7 +806,6 @@ body::before {
     transform: translateX(5px);
 }
 
-/* Textos */
 .comp-name {
     display: block;
     color: #fff;
@@ -839,29 +830,50 @@ body::before {
     letter-spacing: 1px;
 }
 
-/* Cores de Texto */
-.color-up { color: #00ff7f; }
-.color-down { color: #ff0050; }
-.color-warn { color: #ffa500; }
+.color-up {
+    color: #00ff7f;
+}
 
-/* O Efeito do LED Pulsando */
+.color-down {
+    color: #ff0050;
+}
+
+.color-warn {
+    color: #ffa500;
+}
+
 .led {
     width: 12px;
     height: 12px;
     border-radius: 50%;
 }
 
-/* Animação de pulso (Radar) */
 @keyframes pulse-green {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 127, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(0, 255, 127, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 127, 0); }
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 127, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 255, 127, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 127, 0);
+    }
 }
 
 @keyframes pulse-red {
-    0% { box-shadow: 0 0 0 0 rgba(255, 0, 80, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 0, 80, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 0, 80, 0); }
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 80, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 0, 80, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 80, 0);
+    }
 }
 
 .led-green {
@@ -871,11 +883,59 @@ body::before {
 
 .led-red {
     background-color: #ff0050;
-    animation: pulse-red 1.5s infinite; /* Pisca mais rápido */
+    animation: pulse-red 1.5s infinite;
 }
 
 .led-yellow {
     background-color: #ffa500;
-    /* Sem animação ou animação lenta */
     box-shadow: 0 0 5px #ffa500;
+}
+
+.status-badge {
+    padding: 0.3vw 0.8vw;
+    border-radius: 2vh;
+    font-size: 0.75vw;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-up {
+    background-color: rgba(0, 255, 127, 0.15);
+    color: #00ff7f;
+    border: 1px solid rgba(0, 255, 127, 0.3);
+}
+
+.status-down {
+    background-color: rgba(255, 0, 80, 0.15);
+    color: #ff0050;
+    border: 1px solid rgba(255, 0, 80, 0.3);
+}
+
+.status-warn {
+    background-color: rgba(255, 165, 0, 0.15);
+    color: #ffa500;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #cfd7ff;
+    font-size: 0.9vw;
+}
+
+.log-table th {
+    text-align: left;
+    padding: 1vh;
+    border-bottom: 2px solid rgba(75, 108, 240, 0.3);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    background-color: rgb(11, 15, 25);
+}
+
+.log-table td {
+    padding: 1.2vh 1vh;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }

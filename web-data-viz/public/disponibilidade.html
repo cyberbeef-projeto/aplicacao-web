@@ -7,62 +7,9 @@
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/disponibilidade.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="./js/sessao.js"></script>
+    <script src="./js/sessao.js"></script>
     <link rel="icon" href="assets/icon/chip.png">
-
     <title>Monitoramento de Disponibilidade - CyberBeef</title>
-
-    <style>
-        /* Estilos Adicionais para a Dashboard */
-        .status-badge {
-            padding: 0.3vw 0.8vw;
-            border-radius: 2vh;
-            font-size: 0.75vw;
-            font-weight: bold;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-
-        .status-up {
-            background-color: rgba(0, 255, 127, 0.15);
-            color: #00ff7f;
-            border: 1px solid rgba(0, 255, 127, 0.3);
-        }
-
-        .status-down {
-            background-color: rgba(255, 0, 80, 0.15);
-            color: #ff0050;
-            border: 1px solid rgba(255, 0, 80, 0.3);
-        }
-
-        .status-warn {
-            background-color: rgba(255, 165, 0, 0.15);
-            color: #ffa500;
-            border: 1px solid rgba(255, 165, 0, 0.3);
-        }
-
-        .log-table {
-            width: 100%;
-            border-collapse: collapse;
-            color: #cfd7ff;
-            font-size: 0.9vw;
-        }
-
-        .log-table th {
-            text-align: left;
-            padding: 1vh;
-            border-bottom: 2px solid rgba(75, 108, 240, 0.3);
-            color: #fff;
-            position: sticky;
-            top: 0;
-            background-color: rgb(11, 15, 25);
-        }
-
-        .log-table td {
-            padding: 1.2vh 1vh;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-    </style>
 </head>
 
 <body onload="validarSessao()">
@@ -94,36 +41,23 @@
         <hr>
 
         <div id="home" class="ops_home">
-            <ul></ul>
-            <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
-            <li class="clicado"><a href="empresa.html">Empresas</a></li>
+      <ul></ul>
+      <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
+      <li class="clicado"><a href="empresa.html"> Empresas</a></li>
+      <li class="clicado"><a href="disponibilidade.html">Disponibilidade</a></li>
+      <li class="clicado"><a href="jira-empresa.html">Chamados Jira</a></li>
 
-            <!-- <li class="clicado" style="background-color: rgba(255,255,255,0.1); border-left: 0.3vw solid #4B6CF0;"> -->
-            <li class="clicado">
-                <a href="">Disponibilidade</a>
-            </li>
-
-            <li class="clicado"><a href="jira-empresa.html">Chamados Jira</a></li>
-
-            <span onclick="limparSessao()"
-                style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; margin-top: 20px;"
-                class="clicavel clicado" title="Clique para encerrar sua sessão">
-                <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-                <p>SAIR <a href="index.html"></a></p>
-            </span>
-        </div>
+      <span onclick="limparSessao()"
+        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
+        class="clicavel clicado" title="Clique para encerrar sua sessão">
+        <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+        <p>SAIR<a href="index.html"></a></p>
+      </span>
+    </div>
     </div>
 
     <div id="elementos" class="bl_ativa">
         <div class="cards">
-            <div id="barra_pesquisa">
-                <select id="periodo-select" class="interativo"
-                    style="background: rgb(11, 15, 25); color: white; border: 1px solid #4B6CF0; padding: 5px; border-radius: 5px; width: auto;">
-                    <option>Hoje</option>
-                    <option>Últimos 7 Dias</option>
-                    <option>Este Mês</option>
-                </select>
-            </div>
 
             <span class="abas_kpis">
                 <button data-aba="1" class="kpi interativo">
@@ -137,7 +71,7 @@
                 <button data-aba="2" class="kpi interativo ativa">
                     <span class="info-icon"><i class='bx bx-info-circle'></i><span class="tooltip">Tempo corrido desde a
                             última interrupção geral.</span></span>
-                    <b id="kpi_tempo_up" class="dado_card" style="color: #00ff7f;">42h 15m</b>
+                    <b id="kpi_tempo_up" class="dado_card">42h 15m</b>
                     <p class="text_longo">Tempo sem Downtime</p>
                     <i class="text_longo">Estabilidade Global</i>
                 </button>
@@ -153,7 +87,7 @@
                 <button data-aba="4" class="kpi interativo">
                     <span class="info-icon"><i class='bx bx-info-circle'></i><span class="tooltip">Data e hora do último
                             incidente crítico registrado.</span></span>
-                    <b id="kpi_last_down" class="dado_card" style="color: #ff0050;">24/11</b>
+                    <b id="kpi_last_down" class="dado_card">24/11</b>
                     <p class="text_longo">Data Último Downtime</p>
                     <i class="text_longo">Às 14:30 (SRV-04)</i>
                 </button>
@@ -239,7 +173,6 @@
     </div>
 
     <script>
-        // --- Lógica dos Gráficos (Chart.js) ---
         const ctx1 = document.getElementById('chartDowntimesMaquina').getContext('2d');
         const gradientBar = ctx1.createLinearGradient(0, 0, 0, 300);
         gradientBar.addColorStop(0, '#4B6CF0');
@@ -294,7 +227,6 @@
             }
         });
 
-        // --- Lógica da Barra Lateral ---
         function atualizarBarraLateral() {
             const barraLateral = document.querySelector('.barra_lateral');
             const elementos = document.getElementById('elementos');
