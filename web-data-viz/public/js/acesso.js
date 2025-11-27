@@ -60,6 +60,19 @@
     ];
   }
 
+  function parseDbDateSP(v) {
+  if (!v) return null;
+  const d = new Date(v);
+  if (isNaN(d)) return null;
+
+  // converte para America/Sao_Paulo via fuso
+  const sp = new Date(
+    d.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+  );
+
+  return sp;
+}
+
   function intensidadeCor(value, max) {
     if (!max || max <= 0) {
       return "rgba(230,240,255,0.35)";
@@ -226,7 +239,7 @@
       const labels = [];
       const data = [];
       rows.forEach((r) => {
-        const d = parseDbDate(r.dia);
+        const d = parseDbDateSP(r.dia);
         if (d) labels.push(d.toLocaleDateString());
         else labels.push(String(r.dia));
         data.push(safeNum(r.total));
@@ -341,7 +354,7 @@
       const resp = await fetchJson("/acesso/grafico/heatmap");
       const rows = Array.isArray(resp) ? resp : [];
       heatmapRows = rows.map((r) => {
-        const d = parseDbDate(r.dia);
+        const d = parseDbDateSP(r.dia);
         return {
           dia: d ? formatDateYMD(d) : String(r.dia).split("T")[0],
           total: safeNum(r.total),
@@ -386,7 +399,7 @@
     const map = {};
     heatmapRows.forEach((r) => {
       const key = r.dia.split("T")[0];
-      const d = parseDbDate(key);
+      const d = parseDbDateSP(key);
       if (!d) return;
       if (d.getFullYear() === visibleYear && d.getMonth() === visibleMonth) {
         map[formatDateYMD(d)] = safeNum(r.total);
@@ -421,7 +434,7 @@
     const vals = Object.keys(map).map((k) => map[k]);
     const maxVal = vals.length ? Math.max(...vals) : 0;
 
-    const weekdays = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+    const weekdays = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"];
     ctx.fillStyle = "rgba(255,255,255,0.9)";
     ctx.font = "12px Inter, sans-serif";
     ctx.textAlign = "center";
