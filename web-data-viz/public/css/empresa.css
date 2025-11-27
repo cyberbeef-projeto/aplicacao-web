@@ -43,7 +43,6 @@ body::before {
     align-items: center;
     position: fixed;
     padding: 1vh 0vh 1vh 2.5vh;
-    justify-content: space-between;
     top: 0;
     gap: 2%;
     width: 100%;
@@ -127,6 +126,7 @@ body::before {
 
 #buts_superiores {
     display: flex;
+    margin-left: auto;
     flex-direction: row;
     align-items: center;
     justify-content: center;
