@@ -10,86 +10,76 @@
     <script src="./js/sessao.js"></script>
     <link rel="icon" href="assets/icon/chip.png">
     <title>Monitoramento de Disponibilidade - CyberBeef</title>
+
 </head>
 
-<body onload="validarSessao()">
+<body onload="iniciarPagina()">
     <header class="navbar">
         <button id="but_atualizar_bl" class="clicavel bxr bxs-menu-select clicado"
             onclick="atualizarBarraLateral()"></button>
-
         <span id="sel_componentes" name="op_setor" class="sel_dash">
             <p id="title">Monitoramento de Disponibilidade</p>
         </span>
-
         <nav id="buts_superiores">
-            <a href="#" class="clicavel clicado">Exportar Log <i class='bx bxs-file-pdf'
-                    style="padding: 0.3rem;"></i></a>
+            <a href="#">Exportar Log <i class='bx bxs-file-pdf' style="padding: 0.3rem;"></i></a>
         </nav>
     </header>
 
     <div class="barra_lateral sombreado ativa">
         <div id="logo"></div>
         <hr>
-
         <div id="usuario">
             <i class='bxr bxs-user' style='color:#fffafa'></i>
             <a id="b_usuario" class="texto_perfil" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
                 Administrador
             </a>
         </div>
-
         <hr>
-
         <div id="home" class="ops_home">
-      <ul></ul>
-      <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
-      <li class="clicado"><a href="empresa.html"> Empresas</a></li>
-      <li class="clicado"><a href="disponibilidade.html">Disponibilidade</a></li>
-      <li class="clicado"><a href="jira-empresa.html">Chamados Jira</a></li>
+            <ul></ul>
+            <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
+            <li class="clicado"><a href="empresa.html"> Empresas</a></li>
+            <li class="clicado"><a href="disponibilidade.html">Disponibilidade</a></li>
+            <li class="clicado"><a href="jira-empresa.html">Chamados Jira</a></li>
 
-      <span onclick="limparSessao()"
-        style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
-        class="clicavel clicado" title="Clique para encerrar sua sessão">
-        <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
-        <p>SAIR<a href="index.html"></a></p>
-      </span>
-    </div>
+            <span onclick="limparSessao()"
+                style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%;"
+                class="clicavel clicado" title="Clique para encerrar sua sessão">
+                <i class='bxr bx-arrow-out-left-square-half' style="color: #fffafa;"></i>
+                <p>SAIR<a href="index.html"></a></p>
+            </span>
+        </div>
     </div>
 
     <div id="elementos" class="bl_ativa">
         <div class="cards">
-
             <span class="abas_kpis">
                 <button data-aba="1" class="kpi interativo">
-                    <span class="info-icon"><i class='bx bx-info-circle'></i><span class="tooltip">Total de
-                            servidores/máquinas sendo monitorados.</span></span>
-                    <b id="kpi_maquinas" class="dado_card">128</b>
+                    <span class="info-icon"><i class='bx bx-info-circle'></i></span>
+                    <b id="kpi_maquinas" class="dado_card">...</b>
                     <p class="text_longo">Máquinas Monitoradas</p>
                     <i class="text_longo">Total Ativo</i>
                 </button>
 
                 <button data-aba="2" class="kpi interativo ativa">
-                    <span class="info-icon"><i class='bx bx-info-circle'></i><span class="tooltip">Tempo corrido desde a
-                            última interrupção geral.</span></span>
-                    <b id="kpi_tempo_up" class="dado_card">42h 15m</b>
+                    <span class="info-icon"><i class='bx bx-info-circle'></i></span>
+                    <b id="kpi_tempo_up" class="dado_card" style="color: #00ff7f;">...</b>
                     <p class="text_longo">Tempo sem Downtime</p>
                     <i class="text_longo">Estabilidade Global</i>
                 </button>
 
                 <button data-aba="3" class="kpi interativo">
-                    <span class="info-icon"><i class='bx bx-info-circle'></i><span class="tooltip">Volume de dados de
-                            monitoramento recebidos por minuto.</span></span>
-                    <b id="kpi_capturas" class="dado_card">2.450</b>
+                    <span class="info-icon"><i class='bx bx-info-circle'></i></span>
+                    <b id="kpi_capturas" class="dado_card">...</b>
                     <p class="text_longo">Capturas por Minuto</p>
                     <i class="text_longo">Throughput</i>
                 </button>
 
                 <button data-aba="4" class="kpi interativo">
-                    <span class="info-icon"><i class='bx bx-info-circle'></i><span class="tooltip">Data e hora do último
-                            incidente crítico registrado.</span></span>
-                    <b id="kpi_last_down" class="dado_card">24/11</b>
+                    <span class="info-icon"><i class='bx bx-info-circle'></i></span>
+                    <b id="kpi_last_down" class="dado_card" style="color: #ff0050;">...</b>
                     <p class="text_longo">Data Último Downtime</p>
-                    <i class="text_longo">Às 14:30 (SRV-04)</i>
+                    <i class="text_longo">Crítico</i>
                 </button>
             </span>
 
@@ -111,80 +101,28 @@
                     style="display: flex; justify-content: space-between; align-items: center; padding: 0 5px; width: 100%;">
                     <span>Monitoramento de Recursos</span>
                 </div>
-
                 <div class="status-container">
-                    <div class="component-item">
-                        <div class="comp-info">
-                            <span class="comp-name">Uso Global de CPU</span>
-                            <span class="comp-sub">Média do Cluster: 12%</span>
-                        </div>
-                        <div class="comp-status">
-                            <span class="status-text color-up">ESTÁVEL</span>
-                            <div class="led led-green"></div>
-                        </div>
-                    </div>
-
-                    <div class="component-item">
-                        <div class="comp-info">
-                            <span class="comp-name">Memória RAM</span>
-                            <span class="comp-sub">Disponível: 64GB / 128GB</span>
-                        </div>
-                        <div class="comp-status">
-                            <span class="status-text color-up">NORMAL</span>
-                            <div class="led led-green"></div>
-                        </div>
-                    </div>
-
-                    <div class="component-item">
-                        <div class="comp-info">
-                            <span class="comp-name">Armazenamento (Disco)</span>
-                            <span class="comp-sub">SRV-04 Critico: 98% Cheio</span>
-                        </div>
-                        <div class="comp-status">
-                            <span class="status-text color-down">CHEIO</span>
-                            <div class="led led-red"></div>
-                        </div>
-                    </div>
-
-                    <div class="component-item">
-                        <div class="comp-info">
-                            <span class="comp-name">Interface de Rede (Eth0)</span>
-                            <span class="comp-sub">Pacotes Perdidos: 15%</span>
-                        </div>
-                        <div class="comp-status">
-                            <span class="status-text color-warn">INSTÁVEL</span>
-                            <div class="led led-yellow"></div>
-                        </div>
-                    </div>
-
-                    <div class="component-item">
-                        <div class="comp-info">
-                            <span class="comp-name">Agentes Ativos</span>
-                            <span class="comp-sub">127 de 128 respondendo</span>
-                        </div>
-                        <div class="comp-status">
-                            <span class="status-text color-up">ONLINE</span>
-                            <div class="led led-green"></div>
-                        </div>
-                    </div>
+                    <p style="color: #aaa; text-align: center; margin-top: 20px;">Carregando status...</p>
                 </div>
             </span>
         </div>
     </div>
 
     <script>
+        const API_URL = "http://localhost:3333";
+
         const ctx1 = document.getElementById('chartDowntimesMaquina').getContext('2d');
         const gradientBar = ctx1.createLinearGradient(0, 0, 0, 300);
         gradientBar.addColorStop(0, '#4B6CF0');
         gradientBar.addColorStop(1, 'rgba(75, 108, 240, 0.2)');
 
-        new Chart(ctx1, {
+        const chartBarra = new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: ['SRV-Banco-01', 'SRV-Web-02', 'AWS-Lambda', 'SRV-Legacy', 'SRV-App-04'],
+                labels: [],
                 datasets: [{
-                    label: 'Qtd. Downtimes',
-                    data: [5, 3, 2, 2, 1],
+                    label: 'Qtd. Alertas',
+                    data: [],
                     backgroundColor: gradientBar,
                     borderRadius: 6,
                     borderWidth: 0
@@ -205,12 +143,12 @@
         });
 
         const ctx2 = document.getElementById('chartProporcao').getContext('2d');
-        new Chart(ctx2, {
+        const chartRosca = new Chart(ctx2, {
             type: 'doughnut',
             data: {
                 labels: ['Uptime (Disponível)', 'Downtime (Indisponível)'],
                 datasets: [{
-                    data: [96.5, 3.5],
+                    data: [100, 0],
                     backgroundColor: ['#00ff7f', '#ff0050'],
                     borderWidth: 0,
                     hoverOffset: 4
@@ -227,10 +165,107 @@
             }
         });
 
+        function atualizarKPIs() {
+            fetch(`${API_URL}/disponibilidade/kpis-geral`)
+                .then(res => {
+                    if (res.ok) return res.json();
+                    throw new Error("Falha na API KPI");
+                })
+                .then(data => {
+                    document.getElementById('kpi_maquinas').innerText = data.totalMaquinas;
+                    document.getElementById('kpi_tempo_up').innerText = data.tempoUp;
+                    document.getElementById('kpi_capturas').innerText = Number(data.capturasMin).toLocaleString('pt-BR');
+                    document.getElementById('kpi_last_down').innerText = data.dtLastDown;
+                })
+                .catch(erro => {
+                    console.log("Usando dados Mock para KPI devido a erro:", erro);
+                    document.getElementById('kpi_maquinas').innerText = "128";
+                    document.getElementById('kpi_tempo_up').innerText = "42h 15m";
+                    document.getElementById('kpi_capturas').innerText = "2.450";
+                    document.getElementById('kpi_last_down').innerText = "24/11";
+                });
+        }
+
+        function atualizarLEDsRecursos() {
+            const idMaquina = 1;
+            fetch(`${API_URL}/disponibilidade/status-atual/${idMaquina}`)
+                .then(res => {
+                    if (res.ok && res.status !== 204) return res.json();
+                    throw new Error("Falha na API LEDs");
+                })
+                .then(dados => plotarLEDs(dados))
+                .catch(erro => {
+                    console.log("Usando dados Mock para LEDs devido a erro:", erro);
+                    const mock = [
+                        { nome: 'Uso Global CPU', valor: '12', unidade: '%', status_texto: 'ESTÁVEL', cor_texto: 'color-up', cor_led: 'led-green' },
+                        { nome: 'Memória RAM', valor: '64', unidade: 'GB', status_texto: 'NORMAL', cor_texto: 'color-up', cor_led: 'led-green' },
+                        { nome: 'Armazenamento', valor: '98', unidade: '%', status_texto: 'CHEIO', cor_texto: 'color-down', cor_led: 'led-red' },
+                        { nome: 'Rede (Eth0)', valor: '15', unidade: '%', status_texto: 'INSTÁVEL', cor_texto: 'color-warn', cor_led: 'led-yellow' },
+                        { nome: 'Agentes Ativos', valor: '127/128', unidade: '', status_texto: 'ONLINE', cor_texto: 'color-up', cor_led: 'led-green' }
+                    ];
+                    plotarLEDs(mock);
+                });
+        }
+
+        function plotarLEDs(dados) {
+            const container = document.querySelector('.status-container');
+            container.innerHTML = "";
+            if (!dados || dados.length === 0) {
+                container.innerHTML = '<p style="color:#aaa; text-align:center;">Sem dados</p>';
+                return;
+            }
+            dados.forEach(item => {
+                container.innerHTML += `
+                    <div class="component-item">
+                        <div class="comp-info">
+                            <span class="comp-name">${item.nome}</span>
+                            <span class="comp-sub">${item.valor}${item.unidade}</span>
+                        </div>
+                        <div class="comp-status">
+                            <span class="status-text ${item.cor_texto}">${item.status_texto}</span>
+                            <div class="led ${item.cor_led}"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function atualizarGraficos() {
+            fetch(`${API_URL}/disponibilidade/graficos`)
+                .then(res => {
+                    if (res.ok && res.status !== 204) return res.json();
+                    throw new Error("Falha na API Gráficos");
+                })
+                .then(data => {
+                    const labels = data.map(d => d.hostname);
+                    const valores = data.map(d => d.qtd_alertas);
+                    chartBarra.data.labels = labels;
+                    chartBarra.data.datasets[0].data = valores;
+                    chartBarra.update();
+                })
+                .catch(erro => {
+                    console.log("Usando dados Mock para Gráficos:", erro);
+                    chartBarra.data.labels = ['SRV-Banco-01', 'SRV-Web-02', 'AWS-Lambda', 'SRV-Legacy', 'SRV-App-04'];
+                    chartBarra.data.datasets[0].data = [5, 3, 2, 2, 1];
+                    chartBarra.update();
+
+                    chartRosca.data.datasets[0].data = [96.5, 3.5];
+                    chartRosca.update();
+                });
+
+            fetch(`${API_URL}/disponibilidade/global`)
+                .then(res => res.ok ? res.json() : null)
+                .then(data => {
+                    if (data) {
+                        chartRosca.data.datasets[0].data = [data.uptime, data.downtime];
+                        chartRosca.update();
+                    }
+                }).catch(e => { });
+        }
+
         function atualizarBarraLateral() {
             const barraLateral = document.querySelector('.barra_lateral');
             const elementos = document.getElementById('elementos');
-
             if (barraLateral.classList.contains('ativa')) {
                 barraLateral.classList.remove('ativa');
                 elementos.classList.remove('bl_ativa');
@@ -241,8 +276,25 @@
         }
 
         function limparSessao() {
-            alert('Sessão encerrada com sucesso!');
             window.location.href = "index.html";
+        }
+
+        function iniciarPagina() {
+            if (typeof validarSessao === 'function') {
+                validarSessao();
+            } else {
+                console.warn("Script de sessão não encontrado. Ignorando validação.");
+            }
+
+            atualizarKPIs();
+            atualizarLEDsRecursos();
+            atualizarGraficos();
+
+            setInterval(() => {
+                atualizarKPIs();
+                atualizarLEDsRecursos();
+                atualizarGraficos();
+            }, 5000);
         }
     </script>
 </body>
