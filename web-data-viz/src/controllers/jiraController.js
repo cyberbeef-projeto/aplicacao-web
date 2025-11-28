@@ -3,7 +3,6 @@ var jiraModel = require("../models/jiraModel");
 const PROJECT_KEY = process.env.JIRA_PROJECT_KEY;
 const CSAT_FIELD_ID = process.env.JIRA_CSAT_FIELD;
 
-// Calcular SLA 
 async function calcularSLA() {
     try {
         const jql = `project = "${PROJECT_KEY}" AND resolved >= -180d`;
@@ -33,7 +32,6 @@ async function calcularSLA() {
     }
 }
 
-// Calcular CSAT
 async function calcularCsat() {
     try {
         const jqlTodos = `project = "${PROJECT_KEY}" AND resolution is not EMPTY`;
@@ -90,30 +88,22 @@ async function calcularCsat() {
 
 async function getKpis(req, res) {
     try {
-        const jqlAbertos = `project = "${PROJECT_KEY}" AND resolution is EMPTY`;
-        const jqlMesAtual = `project = "${PROJECT_KEY}" AND created >= -30d`;
-        const jqlMesPassado = `project = "${PROJECT_KEY}" AND created >= -60d AND created < -30d`;
+        const jqlCriados = `project = "${PROJECT_KEY}" AND created >= -30d`;
+        const jqlResolvidos = `project = "${PROJECT_KEY}" AND resolved >= -30d`;
         const jqlCritico = `project = "${PROJECT_KEY}" AND resolution is EMPTY AND priority in (High, Highest, Critical)`;
+        const jqlAbertos = `project = "${PROJECT_KEY}" AND resolution is EMPTY`;
 
-        const [totalAbertos, criadosMesAtual, criadosMesPassado, totalCritico, csatScore, slaScore] = await Promise.all([
-            jiraModel.count(jqlAbertos),
-            jiraModel.count(jqlMesAtual),
-            jiraModel.count(jqlMesPassado),
+        const [totalCriados, totalResolvidos, totalCritico, totalAbertos, csatScore, slaScore] = await Promise.all([
+            jiraModel.count(jqlCriados),
+            jiraModel.count(jqlResolvidos),
             jiraModel.count(jqlCritico),
+            jiraModel.count(jqlAbertos),
             calcularCsat(),
             calcularSLA()
         ]);
 
-        let variacao = 0;
-        if (criadosMesPassado > 0) {
-            variacao = ((criadosMesAtual - criadosMesPassado) / criadosMesPassado) * 100;
-        } else if (criadosMesAtual > 0) {
-            variacao = 100;
-        }
-
         res.json({
-            total: totalAbertos,
-            variacao: variacao.toFixed(1),
+            totalAbertos: totalAbertos,
             sla: parseFloat(slaScore),
             csat: csatScore,
             backlog: totalCritico
@@ -223,7 +213,6 @@ async function getIncidentsByType(req, res) {
     }
 }
 
-// Chamados abertos (todos exceto resolvidos)
 async function getChamadosEmRisco(req, res) {
     try {
         const jql = `project = "${PROJECT_KEY}" AND resolution is EMPTY ORDER BY created DESC`;

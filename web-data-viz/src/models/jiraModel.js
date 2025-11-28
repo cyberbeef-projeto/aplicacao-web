@@ -46,7 +46,6 @@ async function fetchIssues(jql, fields = null, maxResults = 500) {
     return data.issues || [];
 }
 
-// Log básico de inicialização
 if (process.env.NODE_ENV !== 'production') {
     console.log("Jira API configurada:", {
         domain: process.env.JIRA_DOMAIN,

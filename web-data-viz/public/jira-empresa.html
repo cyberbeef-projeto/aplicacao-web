@@ -21,148 +21,152 @@
     <span id="sel_componentes" name="op_setor" class="sel_dash">
       <p id="title">Controle de Chamados do Jira</p>
     </span>
+
+    <nav id="buts_superiores">
+      <button href='jira-management.html'">
+        Jira Management
+      </button>
+    </nav>
   </header>
 
-  <div class="barra_lateral sombreado ativa">
-    <div id="logo"></div>
-    <hr>
-    <div id="usuario">
-      <i class='bxr bxs-user'></i>
-      <a id="b_usuario" class="texto_perfil">
-        Administrador
-      </a>
-    </div>
+  <div class=" barra_lateral sombreado ativa">
+        <div id="logo"></div>
+        <hr>
+        <div id="usuario">
+          <i class='bxr bxs-user'></i>
+          <a id="b_usuario" class="texto_perfil">
+            Administrador
+          </a>
+        </div>
 
-    <hr>
+        <hr>
 
-    <div id="home" class="ops_home">
-      <ul></ul>
-      <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
-      <li class="clicado"><a href="empresa.html">Empresas</a></li>
-      <li class="clicado"><a href="disponibilidade.html">Disponibilidade</a></li>
-      <li class="clicado"><a href="">Chamados Jira</a></li>
+        <div id="home" class="ops_home">
+          <ul></ul>
+          <li class="clicado"><a href="acesso.html">Controle e Acesso</a></li>
+          <li class="clicado"><a href="empresa.html">Empresas</a></li>
+          <li class="clicado"><a href="disponibilidade.html">Disponibilidade</a></li>
+          <li class="clicado"><a href="">Chamados Jira</a></li>
 
-      <span onclick="limparSessao()" class="clicavel clicado" title="Clique para encerrar sua sessão"
-      style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
-        <i class='bxr bx-arrow-out-left-square-half'></i>
-        <p>SAIR<a href="index.html"></a></p>
-      </span>
-    </div>
-  </div>
-
-  <div id="elementos" class="bl_ativa">
-    <div class="cards">
-      <!-- KPIs -->
-      <span class="abas_kpis">
-
-        <!-- Total de Chamados Abertos -->
-        <button data-aba="1" class="kpi interativo ativa">
-          <span class="info-icon">
-            <i class='bx bx-info-circle'></i>
-            <span class="tooltip">
-              Soma de todos os chamados (Incidentes + Requisições) que estão em aberto no momento, independente do
-              status ou prioridade
-            </span>
+          <span onclick="limparSessao()" class="clicavel clicado" title="Clique para encerrar sua sessão"
+            style="display: inline-flex; align-items: center; color: #fffafa; font-size: large; gap: 1%; cursor: pointer;">
+            <i class='bxr bx-arrow-out-left-square-half'></i>
+            <p>SAIR<a href="index.html"></a></p>
           </span>
-          <b id="kpi1" class="dado_card">...</b>
-          <p id="kpi1_desc">Total de Chamados Abertos</p>
-          <i id="kpi1_result" class="text_longo">Calculando...</i>
-        </button>
+        </div>
+        </div>
 
-        <!-- Taxa de Sucesso do SLA -->
-        <button data-aba="2" class="kpi interativo">
-          <span class="info-icon">
-            <i class='bx bx-info-circle'></i>
-            <span class="tooltip">
-              Porcentagem de chamados resolvidos dentro do prazo nos ultimos 6 meses <br>
-              SLA Success Rate = (Chamados Resolvidos Dentro do Prazo ÷ Total de Chamados Resolvidos) × 100.
+        <div id="elementos" class="bl_ativa">
+          <div class="cards">
+            <span class="abas_kpis">
+
+              <!-- Total de Chamados em Aberto -->
+              <button data-aba="1" class="kpi interativo ativa">
+                <span class="info-icon">
+                  <i class='bx bx-info-circle'></i>
+                  <span class="tooltip">
+                    Quantidade atual de chamados não resolvidos ou fechados no sistema.<br>
+                    Total = Contagem de chamados em aberto<br>
+                  </span>
+                </span>
+                <b id="kpi1" class="dado_card">...</b>
+                <p id="kpi1_desc">Total de Chamados em Aberto</p>
+              </button>
+
+              <!-- Taxa de Sucesso do SLA -->
+              <button data-aba="2" class="kpi interativo">
+                <span class="info-icon">
+                  <i class='bx bx-info-circle'></i>
+                  <span class="tooltip">
+                    Porcentagem de chamados resolvidos dentro do prazo nos últimos 6 meses.<br>
+                    Taxa = (Resolvidos no Prazo ÷ Total Resolvidos) × 100<br>
+                    100%-93%: Excelente | 92%-80%: Regular | 79%-0%: Ruim
+                  </span>
+                </span>
+                <b id="kpi2" class="dado_card">...</b>
+                <p id="kpi2_desc">Taxa de Sucesso do SLA</p>
+                <i id="kpi2_result" class="text_longo">Nos Últimos 6 Meses</i>
+              </button>
+
+              <!-- Nota Média de Satisfação -->
+              <button data-aba="3" class="kpi interativo">
+                <span class="info-icon">
+                  <i class='bx bx-info-circle'></i>
+                  <span class="tooltip">
+                    Média das avaliações dos clientes sobre o atendimento nos últimos 6 meses.<br>
+                    CSAT = Soma de todas as notas ÷ Quantidade de avaliações<br>
+                    5.0: Excelente | 4.0-4.9: Satisfatório | 3.0-3.9: Neutro | < 3.0: Insatisfatório </span>
+                  </span>
+                  <b id="kpi3" class="dado_card">...</b>
+                  <p id="kpi3_desc">Nota Média de Satisfação</p>
+                  <i id="kpi3_result" class="text_longo">Nos Últimos 6 Meses</i>
+              </button>
+
+              <!-- Backlog Crítico -->
+              <button data-aba="4" class="kpi interativo">
+                <span class="info-icon">
+                  <i class='bx bx-info-circle'></i>
+                  <span class="tooltip">
+                    Chamados em aberto com prioridade Alta ou Crítica que exigem atenção imediata.<br>
+                    Total = Contagem de chamados críticos em aberto<br>
+                    0: Sem urgências | 1-5: Controlado | 6-15: Atenção | 16+: Sobrecarga
+                  </span>
+                </span>
+                <b id="kpi4" class="dado_card">...</b>
+                <p id="kpi4_desc" class="text_longo">Total de Backlog Crítico</p>
+                <i id="kpi4_result" class="text_longo">Prioridade Alta/Crítica</i>
+              </button>
             </span>
-          </span>
-          <b id="kpi2" class="dado_card">...</b>
-          <p id="kpi2_desc">Taxa de Sucesso do SLA</p>
-          <i id="kpi2_result" class="text_longo">Nos Últimos 6 Meses</i>
-        </button>
 
-        <!-- Nota Média de Satisfação -->
-        <button data-aba="3" class="kpi interativo">
-          <span class="info-icon">
-            <i class='bx bx-info-circle'></i>
-            <span class="tooltip">
-              Indica o nível de satisfação geral com o atendimento prestado nos ultimos 6 meses<br>
-              CSAT (Customer Satisfaction Score) = Média das avaliações dos clientes em escala de 1 a 5.
-            </span>
-          </span>
-          <b id="kpi3" class="dado_card">...</b>
-          <p id="kpi3_desc">Nota Média de Satisfação</p>
-          <i id="kpi3_result" class="text_longo">Nos Últimos 6 Meses</i>
-        </button>
+            <div class="tabela-central">
+              <span class="container-tabela sombreado interativo">
+                <h3 class="grafico-title">Chamados em Aberto</h3>
 
-        <!-- Backlog Crítico -->
-        <button data-aba="4" class="kpi interativo">
-          <span class="info-icon">
-            <i class='bx bx-info-circle'></i>
-            <span class="tooltip">
-              Quantidade de chamados em aberto classificados como Prioridade Alta ou Critical que necessitam atenção
-              imediata da equipe
-            </span>
-          </span>
-          <b id="kpi4" class="dado_card">...</b>
-          <p id="kpi4_desc" class="text_longo">Total de Backlogs Crítico</p>
-          <i id="kpi4_result" class="text_longo">Prioridade Alta/Crítica</i>
-        </button>
-      </span>
-
-      <!-- Chamados Abertos -->
-      <div class="tabela-central">
-        <span class="container-tabela sombreado interativo">
-          <h3 class="grafico-title">Chamados Abertos Atualmente</h3>
-
-          <div class="tabela-scroll">
-            <table class="lista-risco">
-              <thead>
-                <tr>
-                  <th>Chave</th>
-                  <th>Assunto</th>
-                  <th>Técnico</th>
-                  <th>Status</th>
-                  <th>Suporte</th>
-                  <th class="th-ordenavel" onclick="ordenarPor('prioridade')">
-                    Prioridade
-                    <span class="seta-ordem" id="seta-prioridade">⇅</span>
-                  </th>
-                  <th class="th-ordenavel" onclick="ordenarPor('tempo')">
-                    Tempo Restante
-                    <span class="seta-ordem ativo" id="seta-tempo">↑</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="tabela-sla-body">
-              </tbody>
-            </table>
+                <div class="tabela-scroll">
+                  <table class="lista-risco">
+                    <thead>
+                      <tr>
+                        <th>Chave</th>
+                        <th>Assunto</th>
+                        <th>Técnico</th>
+                        <th>Status</th>
+                        <th>Suporte</th>
+                        <th class="th-ordenavel" onclick="ordenarPor('prioridade')">
+                          Prioridade
+                          <span class="seta-ordem" id="seta-prioridade">⇅</span>
+                        </th>
+                        <th class="th-ordenavel" onclick="ordenarPor('tempo')">
+                          Tempo Restante
+                          <span class="seta-ordem ativo" id="seta-tempo">↓</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabela-sla-body">
+                    </tbody>
+                  </table>
+                </div>
+              </span>
+            </div>
           </div>
-        </span>
-      </div>
-    </div>
 
-    <!-- Gráficos-->
-    <div id="graficos">
-      <span class="grafico sombreado interativo">
-        <h3 class="grafico-title">Incidentes vs. Requisições | Últimos 6 Meses</h3>
-        <div class="chart-area">
-          <canvas id="graficoIncidReq"></canvas>
+          <div id="graficos">
+            <span class="grafico sombreado interativo">
+              <h3 class="grafico-title">Incidentes vs. Requisições | Últimos 6 Meses</h3>
+              <div class="chart-area">
+                <canvas id="graficoIncidReq"></canvas>
+              </div>
+            </span>
+
+            <span class="grafico sombreado interativo">
+              <h3 class="grafico-title">Distribuição por Status | Em Aberto</h3>
+              <div class="chart-area">
+                <canvas id="graficoStatus"></canvas>
+              </div>
+            </span>
+          </div>
         </div>
-      </span>
 
-      <span class="grafico sombreado interativo">
-        <h3 class="grafico-title">Distribuição por Status | Em Aberto</h3>
-        <div class="chart-area">
-          <canvas id="graficoStatus"></canvas>
-        </div>
-      </span>
-    </div>
-  </div>
-
-  <script src="js/jira.js"></script>
+        <script src="js/jira.js"></script>
 </body>
 
 </html>

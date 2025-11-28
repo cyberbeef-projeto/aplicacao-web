@@ -60,11 +60,10 @@ body::before {
     align-items: center;
     width: 41.5%;
     gap: 3%;
-    padding-right: 100vw;
 }
 
 .sel_dash p {
-    font-size: 3vw;
+    font-size: 1.3vw;
     max-width: 40%;
     margin-right: 5%;
     align-self: flex-start;
@@ -84,6 +83,41 @@ body::before {
     border: none;
     background: none;
     color: #fff;
+}
+
+#buts_superiores {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    height: 100%;
+    width: 100%;
+    margin-right: 2.5rem;
+    gap: 1.4rem;
+}
+
+#buts_superiores a,
+#buts_superiores button {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    user-select: none;
+    color: #fff;
+    font-size: 1.1vw;
+    text-align: center;
+    font-weight: normal;
+    background-color: #4b6cf0;
+    border-radius: 0.5vw;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#buts_superiores button:hover {
+    background-color: #1d3d7c;
 }
 
 /* --- BARRA LATERAL --- */
@@ -177,12 +211,9 @@ body::before {
     color: #fff;
 }
 
-
-
 .barra_lateral.ativa {
     left: 0;
 }
-
 
 #home .bx-arrow-out-left-square-half {
     font-size: 2.5vw;
@@ -455,6 +486,27 @@ body::before {
     border-radius: 4px;
     font-weight: bold;
     font-size: 0.8rem;
+}
+
+.th-ordenavel {
+    cursor: pointer;
+    user-select: none;
+}
+
+.th-ordenavel:hover {
+    background-color: rgba(75, 108, 240, 0.2);
+}
+
+.seta-ordem {
+    display: inline-block;
+    margin-left: 5px;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.seta-ordem.ativo {
+    opacity: 1;
+    color: #4B6CF0;
 }
 
 #graficos {
