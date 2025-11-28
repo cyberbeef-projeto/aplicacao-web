@@ -14,7 +14,7 @@ function buscarKpis(filtro) {
         JOIN leitura l ON l.idLeitura = a.idLeitura
         JOIN maquina m ON m.idmaquina = a.idmaquina
         JOIN setorMaquina sm ON sm.idMaquina = m.idMaquina
-        ${filtro} AND a.descricao = "Crítico") as alertasCriticos,
+        ${filtro} AND a.descricao = "Critico") as alertasCriticos,
     (SELECT COUNT(*) 
         FROM alerta a 
         JOIN leitura l ON l.idLeitura = a.idLeitura

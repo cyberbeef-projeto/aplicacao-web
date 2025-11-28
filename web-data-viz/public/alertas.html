@@ -302,6 +302,7 @@
     async function trazerDados() {
         filtroCompleto = `WHERE sm.tokenEmpresa = '${sessionStorage.TOKEN_EMPRESA}'`;
         filtroCompleto = filtroCompleto + filtroData + filtroMaquina;
+        nomesDash.innerHTML = '<button class="titulo_dash clicado">Todas as Máquinas</button>';
 
         try {
             nomesDash.innerHTML = '<button class="titulo_dash clicado">Todas as Máquinas</button>';
@@ -436,7 +437,7 @@
     trazerDados();
 
     //Loop dos dados
-    const loopDosDados = setInterval(trazerDados, 10000);
+    const loopDosDados = setInterval(trazerDados, 5000);
 
 </script>
 
