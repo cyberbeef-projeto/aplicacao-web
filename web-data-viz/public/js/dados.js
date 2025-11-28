@@ -150,10 +150,10 @@ async function trazerDadosDash() {
         })).json())
         kpiCpu = kpiCpu[0];
         maquina.recursos['cpu'] = {
-          kpi1: [(kpiCpu.ultimaCaptura + "%").replaceAll(".", ","), kpiCpu.ultimaCaptura - kpiCpu.penultimaCaptura, await descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "CPU")],
+          kpi1: [(Math.round(kpiCpu.ultimaCaptura, 2) + "%").replaceAll(".", ","), kpiCpu.ultimaCaptura - kpiCpu.penultimaCaptura, await descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "CPU")],
           kpi2: [kpiCpu.alertasAtuais, kpiCpu.alertasAtuais - kpiCpu.alertasPassados, await descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "CPU")],
           kpi3: [kpiCpu.diasSemAlertas, "N", await descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "CPU")],
-          kpi4: [(kpiCpu.cvAtual + "%").replaceAll(".", ","), kpiCpu.cvAtual - kpiCpu.cvPassado, await descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "CPU")],
+          kpi4: [(Math.round(kpiCpu.cvAtual, 2) + "%").replaceAll(".", ","), kpiCpu.cvAtual - kpiCpu.cvPassado, await descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "CPU")],
           grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'CPU')).graficoUm[0], 
             labels: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'CPU')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "histograma", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'CPU')).graficoDois[0], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
@@ -170,10 +170,10 @@ async function trazerDadosDash() {
         })).json())
         kpiRam = kpiRam[0];
         maquina.recursos['ram'] = {
-          kpi1: [(kpiRam.ultimaCaptura + "%").replaceAll(".", ","), kpiRam.ultimaCaptura - kpiRam.penultimaCaptura, await descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "RAM")],
+          kpi1: [(Math.round(kpiRam.ultimaCaptura, 2) + "%").replaceAll(".", ","), kpiRam.ultimaCaptura - kpiRam.penultimaCaptura, await descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "RAM")],
           kpi2: [kpiRam.alertasAtuais, kpiRam.alertasAtuais - kpiRam.cvPassado, await descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "RAM")],
           kpi3: [kpiRam.diasSemAlertas, "N", await descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "RAM")],
-          kpi4: [kpiRam.cvAtual + "%", kpiRam.cvAtual - kpiRam.alertasAtuais, await descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "RAM")],
+          kpi4: [(Math.round(kpiRam.cvAtual, 2) + "%").replaceAll(".", ","),, kpiRam.cvAtual - kpiRam.alertasAtuais, await descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "RAM")],
           grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'RAM')).graficoUm[0], 
             labels: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'RAM')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "histograma", dados:  (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'RAM')).graficoDois[0], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
@@ -191,10 +191,10 @@ async function trazerDadosDash() {
         })).json())
         kpiDisco = kpiDisco[0];
         maquina.recursos['disco'] = {
-          kpi1: [(kpiDisco.ultimaCaptura + "%").replaceAll(".", ","), kpiDisco.ultimaCaptura - kpiDisco.penultimaCaptura, await descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "DISCO")],
+          kpi1: [(Math.round(kpiDisco.ultimaCaptura, 2) + "%").replaceAll(".", ","), kpiDisco.ultimaCaptura - kpiDisco.penultimaCaptura, await descKpi("/dash/kpisCRDDesc", "Captura", 1, maquina.dashboard, "DISCO")],
           kpi2: [kpiDisco.alertasAtuais, kpiDisco.alertasAtuais - kpiDisco.alertasPassados, await descKpi("/dash/kpisCRDDesc", "Alerta", 2, maquina.dashboard, "DISCO")],
           kpi3: [kpiDisco.diasSemAlertas, "N", await descKpi("/dash/kpisCRDDesc", "Último Alerta", 3, maquina.dashboard, "DISCO")],
-          kpi4: [kpiDisco.cvAtual + "%", kpiDisco.cvAtual - kpiDisco.cvPassado, await descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "DISCO")],
+          kpi4: [(Math.round(kpiDisco.cvAtual, 2) + "%").replaceAll(".", ","), kpiDisco.cvAtual - kpiDisco.cvPassado, await descKpi("/dash/kpisCRDDesc", "Balanço (últimos 7 dias)", 4, maquina.dashboard, "DISCO")],
           grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'DISCO')).graficoUm[0],
              labels: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'DISCO')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "histograma", dados: (await dadosGraficos("/dash/graficosCRD", maquina.dashboard, 'DISCO')).graficoDois[0], titulo: "Histograma de Dados Capturados (últimos 7 dias)", xylabels: ["Intervalo Capturado (%)", "Frequência"] }
@@ -211,10 +211,10 @@ async function trazerDadosDash() {
         })).json())
         kpiRede = kpiRede[0];
         maquina.recursos['rede'] = {
-          kpi1: [(kpiRede.ultimaCaptura + "MB/s".replaceAll(".", ",")), kpiRede.ultimaCaptura - kpiRede.penultimaCaptura, await descKpi("/dash/kpisRedeDesc", "Captura", 1, maquina.dashboard, "REDE")],
+          kpi1: [(Math.round(kpiRede.ultimaCaptura, 2) + "MB/s").replaceAll(".", ","), kpiRede.ultimaCaptura - kpiRede.penultimaCaptura, await descKpi("/dash/kpisRedeDesc", "Captura", 1, maquina.dashboard, "REDE")],
           kpi2: [kpiRede.alertasAtuais, kpiRede.alertasAtuais - kpiRede.alertasPassados, await descKpi("/dash/kpisRedeDesc", "Alerta", 2, maquina.dashboard, "REDE")],
           kpi3: [kpiRede.diasSemAlertas, "N", await descKpi("/dash/kpisRedeDesc", "Último Alerta", 3, maquina.dashboard, "REDE")],
-          kpi4: [(kpiRede.ultimaPl + "%").replaceAll(".", ","), kpiRede.ultimaPl - kpiRede.penultimoPl, await descKpi("/dash/kpisRedeDesc", "Captura", 4, maquina.dashboard, "REDE")],
+          kpi4: [(Math.round(kpiRede.ultimaPl, 2) + "%").replaceAll(".", ","), kpiRede.ultimaPl - kpiRede.penultimoPl, await descKpi("/dash/kpisRedeDesc", "Captura", 4, maquina.dashboard, "REDE")],
           grafico1: { id: "grafico1", tipo: "line", dados: (await dadosGraficos("/dash/graficosRede", maquina.dashboard, 'REDE')).graficoUm[0],
              labels: (await dadosGraficos("/dash/graficosRede", maquina.dashboard, 'REDE')).graficoUm[1], titulo: "Alertas (últimos 7 dias)", xylabels: ["Data", "N° Alerta(s)"] },
           grafico2: { id: "grafico2", tipo: "histograma", dados: (await dadosGraficos("/dash/graficosRede", maquina.dashboard, 'REDE')).graficoDois[0], titulo: "Histograma de Perda de Pacotes (últimos 7 dias)", xylabels: ["Intervalo (%)", "Frequência"] }

@@ -27,7 +27,7 @@ function buscarKpis(filtro) {
 
 function buscarTabela(filtro) {
     var instrucaoSql = `
-    SELECT DATE_FORMAT(l.dthCaptura, '%d/%m/%y %H:%i') as dataHora, m.hostname as maquina, c.tipoComponente as componente, a.descricao as tipo, CONCAT(l.dado, "%") as dado 
+    SELECT DATE_FORMAT(l.dthCaptura, '%d/%m/%y %H:%i') as dataHora, m.hostname as maquina, c.tipoComponente as componente, a.descricao as tipo, l.dado as dado 
         FROM alerta a 
         JOIN leitura l ON l.idLeitura = a.idLeitura
         JOIN componente c ON c.idComponente = a.idComponente

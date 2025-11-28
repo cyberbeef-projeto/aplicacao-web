@@ -394,10 +394,12 @@
       if (num > 90) color = "#E94F37";
       else if (num >= 85) color = "#FFD447";
       // else color = "#6EEB83";
+      dado.valor = Math.round(dado.valor, 2);
       dado.valor = ((dado.valor).toString()).replaceAll(".", ",");
       return `<span class="dado-valor" style="color: ${color};">${dado.valor}%</span>`;
     }
     if (dado.nome == "Upload" || dado.nome == "Download") {
+      Math.round(dado.valor, 2);
       dado.valor = ((dado.valor).toString()).replaceAll(".", ",");
       return `<span class="dado-valor" style="color: ${color};">${dado.valor}MB/s</span>`;
     }
@@ -405,7 +407,7 @@
     return `<span class="dado-valor" style="color: ${color};">${dado.valor}</span>`;
   }
 
-  const loopDosDados = setInterval(trazerDadosDash, 30000);
+  const loopDosDados = setInterval(trazerDadosDash, 200000);
 </script>
 
 </html>

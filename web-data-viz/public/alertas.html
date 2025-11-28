@@ -76,7 +76,7 @@
                     <span class="info-icon">
                         <i class='bx bx-info-circle'></i>
                         <span class="tooltip">
-                            Número de alertas críticos 
+                            Número de alertas críticos
                         </span>
                     </span>
                     <b id="kpi3" class="dado_card critico">CARREGANDO...</b>
@@ -281,8 +281,15 @@
             campos[tipoDados].forEach(f => {
                 const td = document.createElement('td');
                 td.textContent = row[f.key] || '-';
+                let num = Number(td.textContent);
+                if (!isNaN(num)) {
+                    td.textContent = Math.round(num, 2) + "%";
+                }
                 if (td.textContent == 'Anormal') td.classList.add('anormal');
-                if (td.textContent == 'Crítico') td.classList.add('critico');
+                if (td.textContent == 'Critico') {
+                    td.textContent = "Crítico";
+                    td.classList.add('critico');
+                }
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
