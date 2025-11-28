@@ -63,22 +63,20 @@
   function parseLocalDate(v) {
     if (!v) return null;
 
-    // Se vier "2025-02-25" → monta uma data local sem shift de timezone
+    // Formato puro de data: "2025-02-27"
     if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
-      const [y, m, d] = v.split("-").map((n) => Number(n));
-      return new Date(y, m - 1, d);
+      const [y, m, d] = v.split("-").map(Number);
+      return new Date(y, m - 1, d); // <-- sempre local
     }
 
-    const d = new Date(v);
-    if (isNaN(d)) return null;
-    return new Date(
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDate(),
-      d.getHours(),
-      d.getMinutes(),
-      d.getSeconds()
-    );
+    // Caso venha com "T" (2025-02-27T00:00:00)
+    if (/^\d{4}-\d{2}-\d{2}T/.test(v)) {
+      const [datePart] = v.split("T");
+      const [y, m, d] = datePart.split("-").map(Number);
+      return new Date(y, m - 1, d); // <-- ignorar horário
+    }
+
+    return null;
   }
 
   function intensidadeCor(value, max) {
@@ -247,9 +245,14 @@
       const labels = [];
       const data = [];
       rows.forEach((r) => {
-        const d = parseLocalDate(r.dia);
-        if (d) labels.push(d.toLocaleDateString());
-        else labels.push(String(r.dia));
+        const key = String(r.dia).split("T")[0];
+        const d = parseLocalDate(key);
+        labels.push(
+          `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}`
+        );
+
         data.push(safeNum(r.total));
       });
 
@@ -362,9 +365,9 @@
       const resp = await fetchJson("/acesso/grafico/heatmap");
       const rows = Array.isArray(resp) ? resp : [];
       heatmapRows = rows.map((r) => {
-        const d = parseLocalDate(r.dia);
+        const key = String(r.dia).split("T")[0];
         return {
-          dia: d ? formatDateYMD(d) : String(r.dia).split("T")[0],
+          dia: key,
           total: safeNum(r.total),
         };
       });
@@ -375,8 +378,8 @@
   }
 
   function weekdayIndexMondayFirst(day) {
-      return (day + 6) % 7;
-    }
+    return (day + 6) % 7;
+  }
 
   function atualizarLabelMes() {
     const label = $("currentMonthLabel");
@@ -417,7 +420,6 @@
         map[formatDateYMD(d)] = safeNum(r.total);
       }
     });
-
 
     const daysInMonth = new Date(visibleYear, visibleMonth + 1, 0).getDate();
     const rawDay = new Date(visibleYear, visibleMonth, 1).getDay();
