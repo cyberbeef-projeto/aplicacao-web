@@ -248,8 +248,6 @@ function atualizarGraficoLinha(ativos, inativos) {
 
     }
 
-    function limparSessao() {
-        alert('Sessão encerrada com sucesso!');
-    }
+
 
 

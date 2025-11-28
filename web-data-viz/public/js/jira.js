@@ -23,11 +23,6 @@ function atualizarBarraLateral() {
     document.getElementById('but_atualizar_bl').classList.toggle('clicado');
 }
 
-function limparSessao() {
-    alert("Sessão encerrada.");
-    window.location.reload();
-}
-
 async function carregarKPIs() {
     try {
         let dados;
