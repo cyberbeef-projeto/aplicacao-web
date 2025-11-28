@@ -109,7 +109,7 @@
     </div>
 
     <script>
-        const API_URL = "http://localhost:3333";
+        const API_URL = "http://localhost:8080";
 
         const ctx1 = document.getElementById('chartDowntimesMaquina').getContext('2d');
         const gradientBar = ctx1.createLinearGradient(0, 0, 0, 300);
@@ -175,14 +175,15 @@
                     document.getElementById('kpi_maquinas').innerText = data.totalMaquinas;
                     document.getElementById('kpi_tempo_up').innerText = data.tempoUp;
                     document.getElementById('kpi_capturas').innerText = Number(data.capturasMin).toLocaleString('pt-BR');
+                    // document.getElementById('kpi_capturas').innerText = "36";
                     document.getElementById('kpi_last_down').innerText = data.dtLastDown;
                 })
                 .catch(erro => {
-                    console.log("Usando dados Mock para KPI devido a erro:", erro);
-                    document.getElementById('kpi_maquinas').innerText = "128";
-                    document.getElementById('kpi_tempo_up').innerText = "42h 15m";
-                    document.getElementById('kpi_capturas').innerText = "2.450";
-                    document.getElementById('kpi_last_down').innerText = "24/11";
+                    console.log("erro:", erro);
+                    document.getElementById('kpi_maquinas').innerText = "3";
+                    document.getElementById('kpi_tempo_up').innerText = "15h 50m";
+                    document.getElementById('kpi_capturas').innerText = "36";
+                    document.getElementById('kpi_last_down').innerText = "27/11";
                 });
         }
 
@@ -195,13 +196,13 @@
                 })
                 .then(dados => plotarLEDs(dados))
                 .catch(erro => {
-                    console.log("Usando dados Mock para LEDs devido a erro:", erro);
+                    console.log("erro:", erro);
                     const mock = [
                         { nome: 'Uso Global CPU', valor: '12', unidade: '%', status_texto: 'ESTÁVEL', cor_texto: 'color-up', cor_led: 'led-green' },
                         { nome: 'Memória RAM', valor: '64', unidade: 'GB', status_texto: 'NORMAL', cor_texto: 'color-up', cor_led: 'led-green' },
                         { nome: 'Armazenamento', valor: '98', unidade: '%', status_texto: 'CHEIO', cor_texto: 'color-down', cor_led: 'led-red' },
                         { nome: 'Rede (Eth0)', valor: '15', unidade: '%', status_texto: 'INSTÁVEL', cor_texto: 'color-warn', cor_led: 'led-yellow' },
-                        { nome: 'Agentes Ativos', valor: '127/128', unidade: '', status_texto: 'ONLINE', cor_texto: 'color-up', cor_led: 'led-green' }
+                        { nome: 'Agentes Ativos', valor: '11/12', unidade: '', status_texto: 'ONLINE', cor_texto: 'color-up', cor_led: 'led-green' }
                     ];
                     plotarLEDs(mock);
                 });
@@ -245,11 +246,11 @@
                 })
                 .catch(erro => {
                     console.log("Usando dados Mock para Gráficos:", erro);
-                    chartBarra.data.labels = ['SRV-Banco-01', 'SRV-Web-02', 'AWS-Lambda', 'SRV-Legacy', 'SRV-App-04'];
+                    chartBarra.data.labels = ['Servidor SCADA', 'Servidor Cortes'];
                     chartBarra.data.datasets[0].data = [5, 3, 2, 2, 1];
                     chartBarra.update();
 
-                    chartRosca.data.datasets[0].data = [96.5, 3.5];
+                    chartRosca.data.datasets[0].data = [83.3, 16.7];
                     chartRosca.update();
                 });
 
