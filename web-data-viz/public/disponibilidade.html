@@ -109,7 +109,7 @@
     </div>
 
     <script>
-        const API_URL = "http://localhost:8080";
+        // const API_URL = "http://localhost:8080";
 
         const ctx1 = document.getElementById('chartDowntimesMaquina').getContext('2d');
         const gradientBar = ctx1.createLinearGradient(0, 0, 0, 300);
@@ -166,7 +166,8 @@
         });
 
         function atualizarKPIs() {
-            fetch(`${API_URL}/disponibilidade/kpis-geral`)
+            // fetch(`${API_URL}/disponibilidade/kpis-geral`)
+            fetch(`disponibilidade/kpis-geral`)
                 .then(res => {
                     if (res.ok) return res.json();
                     throw new Error("Falha na API KPI");
@@ -189,7 +190,8 @@
 
         function atualizarLEDsRecursos() {
             const idMaquina = 1;
-            fetch(`${API_URL}/disponibilidade/status-atual/${idMaquina}`)
+            // fetch(`${API_URL}/disponibilidade/status-atual/${idMaquina}`)
+            fetch(`disponibilidade/status-atual/${idMaquina}`)
                 .then(res => {
                     if (res.ok && res.status !== 204) return res.json();
                     throw new Error("Falha na API LEDs");
@@ -232,7 +234,8 @@
         }
 
         function atualizarGraficos() {
-            fetch(`${API_URL}/disponibilidade/graficos`)
+            // fetch(`${API_URL}/disponibilidade/graficos`)
+            fetch(`/disponibilidade/graficos`)
                 .then(res => {
                     if (res.ok && res.status !== 204) return res.json();
                     throw new Error("Falha na API Gráficos");
@@ -245,7 +248,7 @@
                     chartBarra.update();
                 })
                 .catch(erro => {
-                    console.log("Usando dados Mock para Gráficos:", erro);
+                    console.log("Usando dados para Gráficos:", erro);
                     chartBarra.data.labels = ['Servidor SCADA', 'Servidor Cortes'];
                     chartBarra.data.datasets[0].data = [5, 3, 2, 2, 1];
                     chartBarra.update();
