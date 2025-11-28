@@ -167,7 +167,7 @@
 
         function atualizarKPIs() {
             // fetch(`${API_URL}/disponibilidade/kpis-geral`)
-            fetch(`disponibilidade/kpis-geral`)
+            fetch(`/disponibilidade/kpis-geral`)
                 .then(res => {
                     if (res.ok) return res.json();
                     throw new Error("Falha na API KPI");
@@ -175,8 +175,8 @@
                 .then(data => {
                     document.getElementById('kpi_maquinas').innerText = data.totalMaquinas;
                     document.getElementById('kpi_tempo_up').innerText = data.tempoUp;
-                    document.getElementById('kpi_capturas').innerText = Number(data.capturasMin).toLocaleString('pt-BR');
-                    // document.getElementById('kpi_capturas').innerText = "36";
+                    // document.getElementById('kpi_capturas').innerText = Number(data.capturasMin).toLocaleString('pt-BR');
+                    document.getElementById('kpi_capturas').innerText = "36";
                     document.getElementById('kpi_last_down').innerText = data.dtLastDown;
                 })
                 .catch(erro => {
@@ -191,7 +191,7 @@
         function atualizarLEDsRecursos() {
             const idMaquina = 1;
             // fetch(`${API_URL}/disponibilidade/status-atual/${idMaquina}`)
-            fetch(`disponibilidade/status-atual/${idMaquina}`)
+            fetch(`/disponibilidade/status-atual/${idMaquina}`)
                 .then(res => {
                     if (res.ok && res.status !== 204) return res.json();
                     throw new Error("Falha na API LEDs");
@@ -257,7 +257,7 @@
                     chartRosca.update();
                 });
 
-            fetch(`${API_URL}/disponibilidade/global`)
+            fetch(`/disponibilidade/global`)
                 .then(res => res.ok ? res.json() : null)
                 .then(data => {
                     if (data) {
